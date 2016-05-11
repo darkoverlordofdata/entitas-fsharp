@@ -1,0 +1,197 @@
+{
+  "namespace": "ShmupWarz",
+  "src": "lib/src",
+  "output": {
+    "javascript": "web/src/schmupwarz/generatedExtensions.js",
+    "typescript": "lib/src/generatedComponents.ts",
+    "declaration": "lib/ext/schmupwarz.d.ts",
+	"fsharp":"ShmupWarz/"
+  },
+  "alloc": {
+    "entities": 200,
+    "components": 128
+  },
+  "components": {
+    "Bounds": [
+      "radius:number"
+    ],
+    "Bullet": false,
+    "ColorAnimation": [
+      "redMin:number",
+      "redMax:number",
+      "redSpeed:number",
+      "greenMin:number",
+      "greenMax:number",
+      "greenSpeed:number",
+      "blueMin:number",
+      "blueMax:number",
+      "blueSpeed:number",
+      "alphaMin:number",
+      "alphaMax:number",
+      "alphaSpeed:number",
+      "redAnimate:boolean",
+      "greenAnimate:boolean",
+      "blueAnimate:boolean",
+      "alphaAnimate:boolean",
+      "repeat:boolean"
+    ],
+    "Enemy": false,
+    "Expires": [
+      "delay:number"
+    ],
+    "Firing": false,
+    "Health": [
+      "health:number",
+      "maximumHealth:number"
+    ],
+    "ParallaxStar": false,
+    "Player": false,
+    "Position": [
+      "x:number",
+      "y:number",
+	  "z:number"
+    ],
+    "ScaleAnimation": [
+      "min:number",
+      "max:number",
+      "speed:number",
+      "repeat:boolean",
+      "active:boolean"
+    ],
+    "SoundEffect": [
+      "effect:number"
+    ],
+    "View": [
+      "gameObject:any"
+    ],
+    "Velocity": [
+      "x:number",
+      "y:number",
+	  "z:number"
+    ],
+    "Score": [
+      "value:number"
+    ],
+    "Destroy": false,
+    "Mouse": [
+      "x:number",
+      "y:number"
+    ],
+    "Scale": [
+      "x:number",
+      "y:number"
+    ],
+    "Resource": [
+      "name:string"
+    ],
+    "Layer": [
+      "ordinal:number"
+    ],
+    "Background": [
+      "filter:any"
+    ],
+    "Mine": false,
+    "Status": [
+      "percent:number",
+      "immunity:number"
+    ],
+    "Life": [
+      "count:number"
+    ]
+  },
+  "systems": {
+    "MovementSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "PlayerInputSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "SoundEffectSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "CollisionSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ExpiringSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "EntitySpawningTimerSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ParallaxStarRepeatingSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ColorAnimationSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "ScaleAnimationSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "RemoveOffscreenShipsSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "RenderPositionSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "ViewManagerSystem": [
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ]
+  },
+  "entities": {
+    "Score": true,
+    "Mouse": true,
+    "Firing": true,
+    "Status": true,
+    "Player": true
+  },
+  "extensions": {
+    "Pool": {
+      "createPlayer:void": [],
+      "createBullet:void": [
+        "x:number",
+        "y:number"
+      ],
+      "createParticle:void": [
+        "x:number",
+        "y:number"
+      ],
+      "createExplosion:void": [
+        "x:number",
+        "y:number",
+        "scale:number"
+      ],
+      "createEnemy1:void": [],
+      "createEnemy2:void": [],
+      "createEnemy3:void": [],
+      "createBackground:Entity": [],
+      "createLife:void": [
+        "ordinal:number"
+      ],
+      "createMine:void": [
+        "health:number",
+        "x:number",
+        "y:number",
+        "velocity:number",
+        "radius:number"
+      ],
+      "createStatus:void": []
+    }
+  }
+}

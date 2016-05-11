@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FCE96792-0BBB-4213-9646-562AB981A60F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Platformer</RootNamespace>
+    <AssemblyName>Platformer</AssemblyName>
+    <Name>Platformer</Name>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\Platformer.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Release\Platformer.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\MonoGame.Framework.Linux.3.4.0.459\lib\net40\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="OpenTK">
+      <HintPath>..\packages\MonoGame.Framework.Linux.3.4.0.459\lib\net40\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="Tao.Sdl">
+      <HintPath>..\packages\MonoGame.Framework.Linux.3.4.0.459\lib\net40\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DemoGame.fs" />
+    <Compile Include="Program.fs" />
+    <None Include="App.config" />
+    <None Include="SDL.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Content\obstacle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\animtest.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="OpenTK.dll.config" />
+    <None Include="Tao.Sdl.dll.config" />
+    <None Include="packages.config" />
+    <None Include="Content\fonts\TitanOne-Regular.ttf" />
+    <None Include="Content\fonts\hud.fnt" />
+    <None Include="Content\fonts\hud_0.png" />
+    <None Include="Content\fonts\normal.fnt" />
+    <None Include="Content\fonts\normal_0.png" />
+    <None Include="Content\fonts\skranji.regular.ttf" />
+    <Content Include="Content\images\BackdropBlackLittleSparkBlack.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\bullet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\enemy1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\enemy2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\enemy3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\explosion.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\fighter.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\particle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\images\star.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\tom-thumb-original.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\tom-thumb-white.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Generated\ComponentExtensions.fs" />
+    <Compile Include="Generated\EntityExtensions.fs" />
+    <Compile Include="Generated\GlobalExtensions.fs" />
+    <Compile Include="Generated\MatcherExtensions.fs" />
+    <Compile Include="Generated\PoolExtensions.fs" />
+    <Compile Include="Generated\EntityFactory.fs" />
+    <Compile Include="Systems\CollisionSystem.fs" />
+    <Compile Include="Systems\ColorAnimationSystem.fs" />
+    <Compile Include="Systems\EntitySpawningTimerSystem.fs" />
+    <Compile Include="Systems\ExpiringSystem.fs" />
+    <Compile Include="Systems\HealthRenderSystem.fs" />
+    <Compile Include="Systems\HudRenderSystem.fs" />
+    <Compile Include="Systems\MovementSystem.fs" />
+    <Compile Include="Systems\ParallaxStarRepeatingSystem.fs" />
+    <Compile Include="Systems\PlayerInputSystem.fs" />
+    <Compile Include="Systems\RemoveOffscreenShipsSystem.fs" />
+    <Compile Include="Systems\RenderPositionSystem.fs" />
+    <Compile Include="Systems\ScaleAnimationSystem.fs" />
+    <Compile Include="Systems\ScoreSystem.fs" />
+    <Compile Include="Systems\SoundEffectSystem.fs" />
+    <Compile Include="Systems\ViewManagerSystem.fs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Folder Include="Generated\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entitas\Entitas.fsproj">
+      <Project>{5AE10E79-DC80-4EDB-A57B-44116A20D867}</Project>
+      <Name>Entitas</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

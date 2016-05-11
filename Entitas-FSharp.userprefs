@@ -1,0 +1,20 @@
+﻿<Properties StartupItem="Demo/Demo.fsproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Entitas/Entitas.fs">
+    <Files>
+      <File FileName="Demo/Systems/CollisionSystem.fs" Line="25" Column="47" />
+      <File FileName="Entitas/Entitas.fs" Line="839" Column="42" />
+    </Files>
+    <Pads>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State name="__root__">
+          <Node name="Entitas-FSharp" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
