@@ -16,6 +16,8 @@ module ComponentExtensions =
 
     type IGame = 
         abstract delta: float32
+        abstract height: int
+        abstract width: int
 
     [<AllowNullLiteral>]
     type BoundsComponent() =

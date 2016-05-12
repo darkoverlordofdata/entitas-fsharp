@@ -56,3 +56,5 @@ type Demo () as this =
 
     interface IGame with
         member this.delta with get() = deltaTime    
+        member this.height with get() = ScreenHeight    
+        member this.width with get() = ScreenWidth    
