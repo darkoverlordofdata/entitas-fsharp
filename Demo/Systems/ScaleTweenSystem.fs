@@ -21,7 +21,6 @@ type ScaleTweenSystem(game: IGame, pool:Pool) =
                     let scale = e.scale
                     scale.x <- scale.x + (scaleAnimation.speed * game.delta)
                     scale.y <- scale.x
-                    printfn "%s %f %f %f" e.Name scale.x scaleAnimation.speed game.delta
                     if scale.x > scaleAnimation.max then
                         scale.x <- scaleAnimation.max
                         scale.y <- scale.x

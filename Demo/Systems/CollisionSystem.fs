@@ -5,6 +5,7 @@ namespace ShmupWarz
  *)
 open System
 open System.Collections.Generic
+open Microsoft.Xna.Framework
 open Entitas
 
 
@@ -14,17 +15,9 @@ type CollisionTypes =
 
 type CollisionSystem(game: IGame, pool:Pool) =
 
-    [<DefaultValue>] val mutable pool:Pool
-    [<DefaultValue>] val mutable bullets:Group
-    [<DefaultValue>] val mutable enemies:Group
-    [<DefaultValue>] val mutable players:Group
-    [<DefaultValue>] val mutable mines:Group
-
-
     let bullets = pool.GetGroup(Matcher.Bullet)
     let enemies = pool.GetGroup(Matcher.Enemy)
     let players = pool.GetGroup(Matcher.Player)
-    let mines = pool.GetGroup(Matcher.Mine)
 
     let collidesWith(e1:Entity, e2:Entity) =
         let position1 = e1.position
@@ -37,7 +30,7 @@ type CollisionSystem(game: IGame, pool:Pool) =
     let collisionHandler(weapon:Entity, ship:Entity) =
 
         let pos = weapon.position
-        pool.CreateSmallExplosion(pos.x, pos.y) |> ignore
+        pool.CreateSmallExplosion(game:?>Game, pos.x, pos.y) |> ignore
         weapon.SetDestroy(true) |> ignore
 
         let mutable health = ship.health
@@ -46,7 +39,7 @@ type CollisionSystem(game: IGame, pool:Pool) =
             pool.score.value <- pool.score.value + int health.maximumHealth
             ship.SetDestroy(true) |> ignore
             let position = ship.position
-            pool.CreateBigExplosion(position.x, position.y) |> ignore
+            pool.CreateBigExplosion(game:?>Game, position.x, position.y) |> ignore
 
     interface IExecuteSystem with
         member this.Execute() =

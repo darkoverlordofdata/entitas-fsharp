@@ -15,7 +15,7 @@ type ExpiringSystem(game: IGame, pool:Pool) =
 
     interface IExecuteSystem with
         member this.Execute() =
-            for e in (group.GetEntities()) do
+            for e in group.GetEntities() do
                 e.expires.delay <- e.expires.delay - game.delta
                 if e.expires.delay <= 0.0f then
                     e.SetDestroy(true) |> ignore

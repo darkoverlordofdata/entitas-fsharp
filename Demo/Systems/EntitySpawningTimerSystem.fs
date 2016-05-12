@@ -5,6 +5,8 @@ namespace ShmupWarz
  *)
 open System
 open System.Collections.Generic
+open Microsoft.Xna.Framework
+open Microsoft.Xna.Framework.Graphics
 open Entitas
 
 type Enemies =
@@ -30,16 +32,13 @@ type EntitySpawningTimerSystem(game: IGame, pool:Pool) =
         if delta < 0.0f then
             match enemy with
             | Enemy1 -> 
-                printfn "Enemy1"
-                pool.CreateEnemy1() |> ignore
+                pool.CreateEnemy1(game:?>Game) |> ignore
                 float32(Timers.Timer1)
             | Enemy2 ->
-                printfn "Enemy2"
-                pool.CreateEnemy2() |> ignore
+                pool.CreateEnemy2(game:?>Game) |> ignore
                 float32(Timers.Timer2)
             | Enemy3 ->
-                printfn "Enemy3"
-                pool.CreateEnemy3() |> ignore
+                pool.CreateEnemy3(game:?>Game) |> ignore
                 float32(Timers.Timer3)
 
         else

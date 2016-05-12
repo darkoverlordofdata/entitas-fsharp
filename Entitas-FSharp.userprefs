@@ -1,9 +1,8 @@
 ﻿<Properties StartupItem="Demo/Demo.fsproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Entitas/Entitas.fs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Demo/Systems/RenderPositionSystem.fs">
     <Files>
-      <File FileName="Demo/DemoGame.fs" Line="54" Column="37" />
-      <File FileName="Entitas/Entitas.fs" Line="229" Column="1" />
+      <File FileName="Demo/Systems/RenderPositionSystem.fs" Line="6" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

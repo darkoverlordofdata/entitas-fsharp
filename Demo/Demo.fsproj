@@ -114,6 +114,7 @@
     <Compile Include="Generated\PoolExtensions.fs" />
     <Compile Include="Generated\EntityFactory.fs" />
     <Compile Include="Systems\CollisionSystem.fs" />
+    <Compile Include="Systems\DestroySystem.fs" />
     <Compile Include="Systems\ColorAnimationSystem.fs" />
     <Compile Include="Systems\EntitySpawningTimerSystem.fs" />
     <Compile Include="Systems\ExpiringSystem.fs" />
@@ -123,11 +124,10 @@
     <Compile Include="Systems\ParallaxStarRepeatingSystem.fs" />
     <Compile Include="Systems\PlayerInputSystem.fs" />
     <Compile Include="Systems\RemoveOffscreenShipsSystem.fs" />
-    <Compile Include="Systems\RenderPositionSystem.fs" />
     <Compile Include="Systems\ScaleTweenSystem.fs" />
     <Compile Include="Systems\ScoreSystem.fs" />
     <Compile Include="Systems\SoundEffectSystem.fs" />
-    <Compile Include="Systems\ViewManagerSystem.fs" />
+    <Compile Include="Systems\RenderPositionSystem.fs" />
     <Compile Include="DemoGame.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

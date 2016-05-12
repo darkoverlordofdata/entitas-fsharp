@@ -15,49 +15,40 @@ open Entitas
 type PlayerInputSystem(game: IGame, pool:Pool) =
 
     let group = pool.GetGroup(Matcher.Player)
+    let lazyPlayer = lazy ( pool.CreatePlayer(game:?>Game) )
     let mutable timeToFire = 0.0f
 
     interface IExecuteSystem with
         member this.Execute() =
 
-            let player = group.GetSingleEntity()
+            let player = lazyPlayer.Force()
+
+            let shoot() =
+                timeToFire <- timeToFire - game.delta
+                if timeToFire <= 0.0f then
+                    pool.CreateBullet(game:?>Game, player.position.x-27.f, player.position.y) |> ignore
+                    pool.CreateBullet(game:?>Game, player.position.x+27.f, player.position.y) |> ignore
+                    timeToFire <- 0.1f
+
 
             let rec HandleKeys keys =
                 match keys with
-                | [] -> 
-                    0
+                | [] -> ()
                 | x :: xs ->
-                    match x with
-                    | Keys.Z -> 
-                        timeToFire <- timeToFire - game.delta
-                        if timeToFire <= 0.0f then
-                            pool.CreateBullet(player.position.x-27.f, player.position.y) |> ignore
-                            pool.CreateBullet(player.position.x+27.f, player.position.y) |> ignore
-                            timeToFire <- 0.1f
-                        HandleKeys xs 
-                    | _ -> 
-                        HandleKeys xs 
+                    if x = Keys.Z then shoot()
+                    HandleKeys xs 
 
 
             HandleKeys (Keyboard.GetState().GetPressedKeys() |> Array.toList) |> ignore
-            let position = 
-                let pos = (game:?>Game).Window.Position
-                let x = float32(Mouse.GetState().X-pos.X)
-                let y = float32(Mouse.GetState().Y-pos.Y)
-                match Mouse.GetState().LeftButton with
-                | ButtonState.Pressed ->
-                    timeToFire <- timeToFire - game.delta
-                    if timeToFire <= 0.0f then
-                        pool.CreateBullet(x-27.f, y) |> ignore
-                        pool.CreateBullet(x+27.f, y) |> ignore
-                        timeToFire <- 0.1f
-                    ()
+            let pos = (game:?>Game).Window.Position
+            let x = float32(Mouse.GetState().X-pos.X)
+            let y = float32(Mouse.GetState().Y-pos.Y)
+            player.position.x <- x
+            player.position.y <- y
+            match Mouse.GetState().LeftButton with
+            | ButtonState.Pressed ->
+                shoot()
 
-                | ButtonState.Released ->
-                    ()
+            | _ -> ()
 
-                | _ ->
-                    ()
-
-            ()
 

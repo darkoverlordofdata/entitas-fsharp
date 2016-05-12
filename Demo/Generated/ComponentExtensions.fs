@@ -97,7 +97,7 @@ module ComponentExtensions =
     [<AllowNullLiteral>]
     type SoundEffectComponent() =
         inherit Component()
-        member val effect = 0.0f with get, set
+        member val effect = 0 with get, set
 
     [<AllowNullLiteral>]
     type ViewComponent() =
@@ -140,7 +140,7 @@ module ComponentExtensions =
     [<AllowNullLiteral>]
     type LayerComponent() =
         inherit Component()
-        member val ordinal = 0.0f with get, set
+        member val ordinal = 0 with get, set
 
     [<AllowNullLiteral>]
     type BackgroundComponent() =
