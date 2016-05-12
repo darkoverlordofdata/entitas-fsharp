@@ -7,15 +7,13 @@ namespace ShmupWarz
 
 open System
 open System.Collections.Generic
-open Bosco.ECS
-open ShmupWarz
-open UnityEngine
+open Entitas
 
-type HealthRenderSystem(world:World) =
+type HealthRenderSystem(game: IGame, pool:Pool) =
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.Position, Matcher.Health, Matcher.Enemy))
+    let group = pool.GetGroup(Matcher.AllOf(Component.Position, Component.Health, Component.Enemy))
 
     interface IExecuteSystem with
         member this.Execute() =
             for e in (group.GetEntities()) do
-                
+               () 

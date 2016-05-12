@@ -302,17 +302,16 @@ module EntityExtensions =
         member this.ClearPositionComponentPool() =
             this._positionComponentPool.Clear()
 
-        member this.AddPosition(x, y, z) =
+        member this.AddPosition(x, y) =
             let mutable c = 
               match this._positionComponentPool.Count with
               | 0 -> new PositionComponent()
               | _ -> this._positionComponentPool.Pop()
             c.x <- x;
             c.y <- y;
-            c.z <- z;
             this.AddComponent(Component.Position, c)
 
-        member this.ReplacePosition(x, y, z) =
+        member this.ReplacePosition(x, y) =
             let previousComponent = if this.hasPosition then this.position else null
             let mutable c = 
               match this._positionComponentPool.Count with
@@ -320,7 +319,6 @@ module EntityExtensions =
               | _ -> this._positionComponentPool.Pop()
             c.x <- x;
             c.y <- y;
-            c.z <- z;
             this.ReplaceComponent(Component.Position, c) |> ignore
             if not(isNull(previousComponent)) then
                 this._positionComponentPool.Push(previousComponent)
@@ -431,21 +429,21 @@ module EntityExtensions =
         member this.ClearViewComponentPool() =
             this._viewComponentPool.Clear()
 
-        member this.AddView(gameObject) =
+        member this.AddView(sprite) =
             let mutable c = 
               match this._viewComponentPool.Count with
               | 0 -> new ViewComponent()
               | _ -> this._viewComponentPool.Pop()
-            c.gameObject <- gameObject;
+            c.sprite <- sprite;
             this.AddComponent(Component.View, c)
 
-        member this.ReplaceView(gameObject) =
+        member this.ReplaceView(sprite) =
             let previousComponent = if this.hasView then this.view else null
             let mutable c = 
               match this._viewComponentPool.Count with
               | 0 -> new ViewComponent()
               | _ -> this._viewComponentPool.Pop()
-            c.gameObject <- gameObject;
+            c.sprite <- sprite;
             this.ReplaceComponent(Component.View, c) |> ignore
             if not(isNull(previousComponent)) then
                 this._viewComponentPool.Push(previousComponent)
@@ -470,17 +468,16 @@ module EntityExtensions =
         member this.ClearVelocityComponentPool() =
             this._velocityComponentPool.Clear()
 
-        member this.AddVelocity(x, y, z) =
+        member this.AddVelocity(x, y) =
             let mutable c = 
               match this._velocityComponentPool.Count with
               | 0 -> new VelocityComponent()
               | _ -> this._velocityComponentPool.Pop()
             c.x <- x;
             c.y <- y;
-            c.z <- z;
             this.AddComponent(Component.Velocity, c)
 
-        member this.ReplaceVelocity(x, y, z) =
+        member this.ReplaceVelocity(x, y) =
             let previousComponent = if this.hasVelocity then this.velocity else null
             let mutable c = 
               match this._velocityComponentPool.Count with
@@ -488,7 +485,6 @@ module EntityExtensions =
               | _ -> this._velocityComponentPool.Pop()
             c.x <- x;
             c.y <- y;
-            c.z <- z;
             this.ReplaceComponent(Component.Velocity, c) |> ignore
             if not(isNull(previousComponent)) then
                 this._velocityComponentPool.Push(previousComponent)

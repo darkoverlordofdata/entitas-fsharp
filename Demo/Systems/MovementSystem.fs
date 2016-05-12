@@ -5,21 +5,20 @@ namespace ShmupWarz
  *
  *)
 
-open Bosco.ECS
 open System
 open System.Collections.Generic
-open UnityEngine
+open Entitas
 
-type MovementSystem(world:World) =
+type MovementSystem(game: IGame, pool:Pool) =
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.Position, Matcher.Velocity))
+    let group = pool.GetGroup(Matcher.AllOf(Component.Position, Component.Velocity))
 
     interface IExecuteSystem with
         member this.Execute() =
 
-            let delta = Time.deltaTime/100.0f
+            for entity in group.GetEntities() do
 
-            for e in (group.GetEntities()) do
-                e.position.x <- e.position.x + (e.velocity.x * delta)
-                e.position.y <- e.position.y + (e.velocity.y * delta)
-                e.position.z <- e.position.z + (e.velocity.z * delta)
+                entity.position.x <- entity.position.x + entity.velocity.x * game.delta
+
+                entity.position.y <- entity.position.y + entity.velocity.y * game.delta
+

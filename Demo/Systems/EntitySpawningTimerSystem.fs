@@ -5,9 +5,7 @@ namespace ShmupWarz
  *)
 open System
 open System.Collections.Generic
-open Bosco.ECS
-open ShmupWarz
-open UnityEngine
+open Entitas
 
 type Enemies =
     | Enemy1
@@ -20,25 +18,28 @@ type Timers =
     | Timer3 = 12
 
 
-type EntitySpawningTimerSystem(world:World) =
+type EntitySpawningTimerSystem(game: IGame, pool:Pool) =
 
     let mutable t1 = 0.0f
     let mutable t2 = 0.0f
     let mutable t3 = 0.0f
 
     let spawnEnemy (t, enemy) =
-        let delta = t - Time.deltaTime
+        let delta = t - game.delta
 
         if delta < 0.0f then
             match enemy with
             | Enemy1 -> 
-                world.CreateEnemy1() |> ignore
+                printfn "Enemy1"
+                pool.CreateEnemy1() |> ignore
                 float32(Timers.Timer1)
             | Enemy2 ->
-                world.CreateEnemy2() |> ignore
+                printfn "Enemy2"
+                pool.CreateEnemy2() |> ignore
                 float32(Timers.Timer2)
             | Enemy3 ->
-                world.CreateEnemy3() |> ignore
+                printfn "Enemy3"
+                pool.CreateEnemy3() |> ignore
                 float32(Timers.Timer3)
 
         else

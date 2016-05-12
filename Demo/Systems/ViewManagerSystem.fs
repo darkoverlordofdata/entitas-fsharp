@@ -3,53 +3,40 @@ namespace ShmupWarz
  * Entitas Generated Systems for ShmupWarz
  *
  *)
-open Bosco.ECS
 open System
 open System.Collections.Generic
-open UnityEngine
+open Microsoft.Xna.Framework
+open Microsoft.Xna.Framework.Graphics
+open Entitas
 
 
-type DestroySystem(world:World) =
+type DestroySystem(game: IGame, pool:Pool) =
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.Destroy))
+    let group = pool.GetGroup(Matcher.Destroy)
 
     interface IExecuteSystem with
         member this.Execute() =
             for e in (group.GetEntities()) do
-                if e.hasView then 
-                    let gameObject = (e.view.gameObject):?>Object
-                    Object.Destroy(gameObject)
-                    e.RemoveView() |> ignore
-                world.DestroyEntity(e)
+                //if e.hasView then 
+                //    let gameObject = (e.view.gameObject):?>Object
+                //    Object.Destroy(gameObject)
+                //    e.RemoveView() |> ignore
+                pool.DestroyEntity(e)
             
 
 
-type ViewManagerSystem(world:World) =
-
-    let _viewContainer = ((new GameObject("Views")).transform)
+type ViewManagerSystem(game: IGame, pool:Pool) =
 
     interface IInitializeSystem with
         member this.Initialize() =
 
+            pool.GetGroup(Matcher.Resource).OnEntityAdded.AddHandler(fun sender args ->
 
-            world.GetGroup(Matcher.Resource).OnEntityAdded.AddHandler(fun sender args ->
+                let entity = args.Entity
 
-                let e = args.entity
-                let res = Resources.Load<GameObject>(e.resource.name)
-                let gameObject:GameObject = UnityEngine.Object.Instantiate(res):?>GameObject
+                entity.AddView((game:?>Game).Content.Load<Texture2D>(entity.resource.name)) |> ignore
 
-                if not(IsNull(gameObject)) then
-
-                    if e.hasPosition then
-                        let pos = e.position
-                        gameObject.transform.position <- new Vector3(pos.x, pos.y, 0.0f)
-
-                    if e.hasScale then
-                        let scale = e.scale
-                        gameObject.transform.localScale <- new Vector3(scale.x, scale.y, 0.0f)
-
-                    gameObject.transform.SetParent(_viewContainer, false)
-                    e.AddView(gameObject) |> ignore
+                ()
             )
 
 

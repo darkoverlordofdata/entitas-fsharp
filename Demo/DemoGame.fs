@@ -5,6 +5,8 @@ open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
 open System.Collections.Generic
+open Entitas
+open ShmupWarz
 
 
 type Demo () as this =
@@ -12,8 +14,11 @@ type Demo () as this =
 
     let ScreenWidth = 480
     let ScreenHeight = 720
+    let mutable deltaTime = 0.0f
     let mutable first = true
     let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
+    let mutable systems = Unchecked.defaultof<Systems>
+    let pool = new Pool(Component.TotalComponents)
     do this.Content.RootDirectory <- "Content"
     let graphics = new GraphicsDeviceManager(this)
     do 
@@ -21,34 +26,29 @@ type Demo () as this =
         graphics.PreferredBackBufferHeight <- ScreenHeight
         graphics.ApplyChanges()
 
+
+
     (** Define Entities *)
     let bgdImage = lazy(this.Content.Load<Texture2D>("images/BackdropBlackLittleSparkBlack.png"))
-    let mutable fpsRect = Rectangle(0, 0, 16, 24)
-
-    let fntImage = lazy(this.Content.Load<Texture2D>("tom-thumb-white.png"))
     let bgdRect = Rectangle(0, 0, ScreenWidth, ScreenHeight)
 
-    (** Draw a FPS in top left corner *)
-    let DrawFps(spriteBatch:SpriteBatch, fps:float32)  =
-        let ms = int fps
-        let d0 = ms / 10        // 9x.xx
-        let d1 = ms - d0*10     // x9.xx
-        let fp = int((fps - float32 ms) * 100.f)
-        let d2 = fp / 10        // xx.9x
-        let d3 = fp - d2*10     // xx.x9
 
-        fpsRect.Y <- 24
-        fpsRect.X <- 16*(16+d0)
-        spriteBatch.Draw(fntImage.Value, Vector2(0.f, 0.f), System.Nullable(fpsRect), Color.White)    
-        fpsRect.X <- 16*(16+d1)
-        spriteBatch.Draw(fntImage.Value, Vector2(16.f, 0.f), System.Nullable(fpsRect), Color.White)    
-        fpsRect.X <- 224
-        spriteBatch.Draw(fntImage.Value, Vector2(32.f, 0.f), System.Nullable(fpsRect), Color.White)    
-        fpsRect.X <- 16*(16+d2)
-        spriteBatch.Draw(fntImage.Value, Vector2(48.f, 0.f), System.Nullable(fpsRect), Color.White)    
-        fpsRect.X <- 16*(16+d3)
-        spriteBatch.Draw(fntImage.Value, Vector2(64.f, 0.f), System.Nullable(fpsRect), Color.White)    
-
+    (** Draw the sprite for an Entity *)
+    member this.CreateSystems(pool:Pool):Systems =
+        (new Systems()
+        ).Add(pool.CreateSystem(new ViewManagerSystem(this, pool))
+        ).Add(pool.CreateSystem(new MovementSystem(this, pool))
+        //).Add(pool.CreateSystem(new PlayerInputSystem(this, pool))
+        //).Add(pool.CreateSystem(new SoundEffectSystem(this, pool))
+        //).Add(pool.CreateSystem(new CollisionSystem(this, pool))
+        ).Add(pool.CreateSystem(new ExpiringSystem(this, pool))
+        ).Add(pool.CreateSystem(new EntitySpawningTimerSystem(this, pool))
+        //).Add(pool.CreateSystem(new ScaleTweenSystem(this, pool))
+        ).Add(pool.CreateSystem(new RemoveOffscreenShipsSystem(this, pool))
+        ).Add(pool.CreateSystem(new RenderPositionSystem(this, pool, spriteBatch))
+        //).Add(pool.CreateSystem(new HealthRenderSystem(this, pool))
+        //).Add(pool.CreateSystem(new ScoreSystem(this, pool))
+        ).Add(pool.CreateSystem(new DestroySystem(this, pool)))
 
 
     (** Initialize MonoGame *)
@@ -56,6 +56,8 @@ type Demo () as this =
         spriteBatch <- new SpriteBatch(this.GraphicsDevice)
         this.IsMouseVisible <- true
         base.Initialize()
+        systems <- this.CreateSystems(pool)
+        systems.Initialize()
 
 
     (** Load Resources *)
@@ -63,10 +65,7 @@ type Demo () as this =
         first = false |> ignore
 
     (** Game Logic Loop *)
-    override this.Update (gameTime) =
-        //let delta = float32 gameTime.ElapsedGameTime.TotalSeconds  
-        first = false |> ignore
-
+    //override this.Update (gameTime) =
 
 
     (** Game Graphic Loop *)
@@ -74,5 +73,14 @@ type Demo () as this =
         this.GraphicsDevice.Clear Color.Black
         spriteBatch.Begin()
         spriteBatch.Draw(bgdImage.Value, bgdRect, Color.White)   
-        DrawFps(spriteBatch, 1.f / float32 gameTime.ElapsedGameTime.TotalSeconds)
+        deltaTime <- float32 gameTime.ElapsedGameTime.TotalSeconds  
+        systems.Execute()
+        //sprites
+        //|> List.sortBy(fun e -> e.layer.ordinal) 
+        //|> List.iter(fun e -> DrawSprite(e))
         spriteBatch.End()
+
+    member this.delta with get() = deltaTime
+
+    interface IGame with
+        member this.delta with get() = deltaTime    

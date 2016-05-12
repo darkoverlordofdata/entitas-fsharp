@@ -7,13 +7,11 @@ namespace ShmupWarz
 
 open System
 open System.Collections.Generic
-open Bosco.ECS
-open ShmupWarz
-open UnityEngine
+open Entitas
 
-type RemoveOffscreenShipsSystem(world:World) =
+type RemoveOffscreenShipsSystem(game: IGame, pool:Pool) =
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.Velocity, Matcher.Position, Matcher.Health, Matcher.Bounds))
+    let group = pool.GetGroup(Matcher.AllOf(Component.Velocity, Component.Position, Component.Health, Component.Bounds))
 
     interface IExecuteSystem with
         member this.Execute() =

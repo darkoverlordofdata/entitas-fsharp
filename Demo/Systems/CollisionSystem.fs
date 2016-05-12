@@ -12,7 +12,7 @@ type CollisionTypes =
     | BulletHitEnemy
     | MineHitPlayer
 
-type CollisionSystem(pool:Pool) =
+type CollisionSystem(game: IGame, pool:Pool) =
 
     [<DefaultValue>] val mutable pool:Pool
     [<DefaultValue>] val mutable bullets:Group
@@ -34,49 +34,28 @@ type CollisionSystem(pool:Pool) =
         let b = float(position1.y) - float(position2.y)
         (float32(Math.Sqrt(a * a + b * b)) - e1.bounds.radius) < e2.bounds.radius
 
-    let collisionHandler(attack, weapon:Entity, ship:Entity) =
+    let collisionHandler(weapon:Entity, ship:Entity) =
 
-        match attack with 
+        let pos = weapon.position
+        pool.CreateSmallExplosion(pos.x, pos.y) |> ignore
+        weapon.SetDestroy(true) |> ignore
 
-        | BulletHitEnemy ->
-            let pos = weapon.position
-            pool.CreateSmallExplosion(pos.x, pos.y) |> ignore
-            weapon.SetDestroy(true) |> ignore
-
-            let mutable health = ship.health
-            health.health <- health.health-1.0f
-            if health.health <= 0.0f then
-                pool.score.value <- pool.score.value + int health.maximumHealth
-                ship.SetDestroy(true) |> ignore
-                let position = ship.position
-                pool.CreateBigExplosion(position.x, position.y) |> ignore
-            //else
-                //let percentage = Math.Truncate(float(health.health / health.maximumHealth) * 100.0)
-                //let text = ((ship.view).gameObject:?>GameObject).GetComponent("TextMesh")
-
-                //(text:?>TextMesh).text <- (sprintf "%i%%" (int percentage))
-
-        | MineHitPlayer ->
-            //Debug.Log("MineHitPlayer")
-            printfn "MineHitPlayer"
-        
+        let mutable health = ship.health
+        health.health <- health.health-1.0f
+        if health.health <= 0.0f then
+            pool.score.value <- pool.score.value + int health.maximumHealth
+            ship.SetDestroy(true) |> ignore
+            let position = ship.position
+            pool.CreateBigExplosion(position.x, position.y) |> ignore
 
     interface IExecuteSystem with
         member this.Execute() =
             for bullet in bullets.GetEntities() do
                 for enemy in enemies.GetEntities() do
                     if collidesWith(bullet, enemy) then
-                        collisionHandler(BulletHitEnemy, bullet, enemy)
-
-            //let player = players.GetSingleEntity()
-            //for mine in mines.GetEntities() do
-            //    if collidesWith(mine, player) then
-            //        collisionHandler(MineHitPlayer, mine, player)
+                        collisionHandler(bullet, enemy)
 
 
-    interface ISetPool with
-        member this.SetPool(pool) =
-            this.pool <- pool
 
     interface IInitializeSystem with
         member this.Initialize() =

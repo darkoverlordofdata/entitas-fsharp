@@ -1,4 +1,4 @@
-﻿namespace Entitas
+﻿namespace Demo
 open DemoGame
 [<AutoOpen>]
 module Main =

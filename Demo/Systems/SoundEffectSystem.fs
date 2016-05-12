@@ -7,15 +7,13 @@ namespace ShmupWarz
 
 open System
 open System.Collections.Generic
-open Bosco.ECS
-open ShmupWarz
-open UnityEngine
+open Entitas
 
-type SoundEffectSystem(world:World) =
+type SoundEffectSystem(game: IGame, pool:Pool) =
 
-    let AudioSources = new Dictionary<string, AudioSource>()
+    //let AudioSources = new Dictionary<string, AudioSource>()
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.SoundEffect))
+    let group = pool.GetGroup(Matcher.SoundEffect)
 
     interface IExecuteSystem with
         member this.Execute() =
@@ -23,10 +21,10 @@ type SoundEffectSystem(world:World) =
             for e in (group.GetEntities()) do
                 match (int e.soundEffect.effect) with
                 | 0 ->
-                    AudioSources.["pew"].PlayOneShot(AudioSources.["pew"].clip, 0.5f)            
+                    () //AudioSources.["pew"].PlayOneShot(AudioSources.["pew"].clip, 0.5f)            
                 | 1 ->
-                    AudioSources.["asplode"].PlayOneShot(AudioSources.["asplode"].clip, 0.5f)            
+                    () //AudioSources.["asplode"].PlayOneShot(AudioSources.["asplode"].clip, 0.5f)            
                 | 2 ->
-                    AudioSources.["smallasplode"].PlayOneShot(AudioSources.["smallasplode"].clip, 0.5f)            
+                    () //AudioSources.["smallasplode"].PlayOneShot(AudioSources.["smallasplode"].clip, 0.5f)            
                 | _ -> ()
             

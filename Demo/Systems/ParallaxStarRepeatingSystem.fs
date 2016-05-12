@@ -5,11 +5,11 @@ namespace ShmupWarz
  *
  *)
 
-open Bosco.ECS
 open System
 open System.Collections.Generic
+open Entitas
 
-type ParallaxStarRepeatingSystem(world:World) =
+type ParallaxStarRepeatingSystem(pool:Pool) =
     interface IExecuteSystem with
         member this.Execute() =
             ()

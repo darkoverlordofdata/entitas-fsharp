@@ -893,6 +893,22 @@ module EntitasECS =
         _entities.CopyTo(_entitiesCache)
       _entitiesCache
 
+    static member SetPool(system: ISystem, pool: Pool) =
+        match system with
+        | :? ISetPool as s -> s.SetPool(pool)
+        | _ -> ()
+        system
+
+    member this.CreateSystem(system: ISystem):ISystem =
+        Pool.SetPool(system, this) |> ignore
+        match system with 
+        | :? IReactiveSystem as s ->
+            ReactiveSystem(this, s) :> ISystem
+        | :? IMultiReactiveSystem as s ->
+            ReactiveSystem(this, s) :> ISystem
+        | _ -> system
+
+
     (** 
      * GetGroup
      *
@@ -999,7 +1015,7 @@ module EntitasECS =
      *
      * @param system
      *)
-    member this.Add(system:ISystem) =
+    member this.Add(system:ISystem):Systems =
 
       match system with 
       | :? ReactiveSystem as reactiveSystem ->
@@ -1015,6 +1031,7 @@ module EntitasECS =
       | :? IExecuteSystem as executeSystem ->
         _executeSystems.Add(executeSystem)
       | _ -> ()
+      this
 
     (** 
      * Initialize 

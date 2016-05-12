@@ -5,11 +5,11 @@ namespace ShmupWarz
  *
  *)
 
-open Bosco.ECS
 open System
 open System.Collections.Generic
+open Entitas
 
-type ColorAnimationSystem(world:World) =
+type ColorAnimationSystem(pool:Pool) =
     interface IExecuteSystem with
         member this.Execute() =
             ()

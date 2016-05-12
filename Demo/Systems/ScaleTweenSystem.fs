@@ -5,14 +5,13 @@ namespace ShmupWarz
  *
  *)
 
-open Bosco.ECS
 open System
 open System.Collections.Generic
-open UnityEngine
+open Entitas
 
-type ScaleAnimationSystem(world:World) =
+type ScaleTweenSystem(game: IGame, pool:Pool) =
 
-    let group = world.GetGroup(Matcher.AllOf(Matcher.Scale, Matcher.ScaleAnimation, Matcher.View))
+    let group = pool.GetGroup(Matcher.AllOf(Component.Scale, Component.ScaleAnimation, Component.View))
 
     interface IExecuteSystem with
         member this.Execute() =
@@ -20,9 +19,9 @@ type ScaleAnimationSystem(world:World) =
                 let scaleAnimation = e.scaleAnimation
                 if scaleAnimation.active then
                     let scale = e.scale
-                    scale.x <- scale.x + (scaleAnimation.speed * Time.deltaTime)
+                    scale.x <- scale.x + (scaleAnimation.speed * game.delta)
                     scale.y <- scale.x
-                    Debug.Log(sprintf "%s %f %f %f" e.Name scale.x scaleAnimation.speed Time.deltaTime)
+                    printfn "%s %f %f %f" e.Name scale.x scaleAnimation.speed game.delta
                     if scale.x > scaleAnimation.max then
                         scale.x <- scaleAnimation.max
                         scale.y <- scale.x
@@ -32,5 +31,5 @@ type ScaleAnimationSystem(world:World) =
                         scale.y <- scale.x
                         scaleAnimation.active <- false
 
-                    let transform = ((e.view).gameObject:?>GameObject).transform
-                    transform.localScale <- new Vector3(scale.x, scale.y, transform.localScale.z)
+                    //let transform = ((e.view).gameObject:?>GameObject).transform
+                    //transform.localScale <- new Vector3(scale.x, scale.y, transform.localScale.z)

@@ -14,7 +14,8 @@ module EntityFactory =
     let EFFECT_PEW = 0
     let EFFECT_ASPLODE = 1
     let EFFECT_SMALLASPLODE = 1
-
+    let ScreenWidth = 480
+    let ScreenHeight = 720
     type Pool with
 
         (** 
@@ -23,13 +24,12 @@ module EntityFactory =
          * @returns new player entity
          *)
         member this.CreatePlayer() =
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(Screen.width/2), 100.0f, 0.0f))
             this.CreateEntity("Player")
                 .AddBounds(1.0f)
                 .AddHealth(100.0f, 100.0f)
-                //.AddPosition(pos.x, pos.y, pos.z)
+                .AddPosition(float32(ScreenWidth/2), 100.0f)
                 .SetPlayer(true)
-                .AddResource("fighter")
+                .AddResource("images/fighter.png")
 
         (** 
          * Create Bullet
@@ -41,12 +41,12 @@ module EntityFactory =
         member this.CreateBullet(x, y) =
             this.CreateEntity("Bullet")
                 .AddBounds(0.1f)
-                .AddVelocity(0.0f, float32(800*3), 0.0f)
-                .AddPosition(x, y, 0.0f)
+                .AddVelocity(0.0f, float32(800*3))
+                .AddPosition(x, y)
                 .AddExpires(2.0f)
                 .AddSoundEffect(float32(EFFECT_PEW))
                 .SetBullet(true)
-                .AddResource("bullet")
+                .AddResource("images/bullet.png")
 
         (** 
          * Create Mine
@@ -58,14 +58,13 @@ module EntityFactory =
          * @returns new mine entity
          *)
         member this.CreateMine(health, x, y, velocity) =
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(Screen.height-y), 0.0f))
             this.CreateEntity("Mine")
                 .AddBounds(0.25f)
-                .AddVelocity(0.0f, float32(-velocity), 0.0f)
-                //.AddPosition(pos.x, pos.y, pos.z)
+                .AddVelocity(0.0f, float32(-velocity))
+                .AddPosition(x, y)
                 .AddHealth(float32(health*10), float32(health*10))
                 .SetMine(true)
-                .AddResource("mine"+health.ToString())
+                .AddResource(sprintf "images/mine%s.png" (health.ToString()))
 
         (** 
          * Create Life
@@ -74,13 +73,12 @@ module EntityFactory =
          * @returns new life entity
          *)
         member this.CreateLife(ordinal) =
-            //let x = (Screen.width/2)-((ordinal+1) * 40)+87
-            //let y = 80
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(Screen.height-y), 0.0f))
+            let x = float32((ScreenWidth/2)-((ordinal+1) * 40)+87)
+            let y = 80.0f
             this.CreateEntity("Life")
-                //.AddPosition(pos.x, pos.y, pos.z)
+                .AddPosition(x, y)
                 .AddLife(float32(ordinal))
-                .AddResource("life")
+                .AddResource("images/life.png")
 
         (** 
          * Create Status
@@ -88,12 +86,11 @@ module EntityFactory =
          * @returns new status entity
          *)
         member this.CreateStatus() =
-            //let x = (Screen.width/2)
-            //let y = 120
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(Screen.height-y), 0.0f))
+            let x = float32(ScreenWidth/2)
+            let y = 120.0f
             this.CreateEntity("Status")
-                //.AddPosition(pos.x, pos.y, pos.z)
-                .AddResource("status")
+                .AddPosition(x, y)
+                .AddResource("images/status.png")
 
         (** 
          * Create Enemy1
@@ -101,16 +98,15 @@ module EntityFactory =
          * @returns new enemy entity
          *)
         member this.CreateEnemy1() =
-            //let x = rnd.Next(Screen.width)
-            //let y = Screen.height-100
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(y), 0.0f))
+            let x = float32(rnd.Next(ScreenWidth))
+            let y = float32(ScreenHeight-100)
             this.CreateEntity("Enemy1")
                 .AddBounds(1.0f)
-                //.AddPosition(pos.x, pos.y, pos.z)
-                .AddVelocity(0.0f, float32(-40*3), 0.0f)
+                .AddPosition(x, y)
+                .AddVelocity(0.0f, float32(-40*3))
                 .AddHealth(10.0f, 10.0f)
                 .SetEnemy(true)
-                .AddResource("enemy1")
+                .AddResource("images/enemy1.png")
 
         (** 
          * Create Enemy2
@@ -118,16 +114,15 @@ module EntityFactory =
          * @returns new enemy entity
          *)
         member this.CreateEnemy2() =
-            //let x = rnd.Next(Screen.width)
-            //let y = Screen.height-200
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(y), 0.0f))
+            let x = float32(rnd.Next(ScreenWidth))
+            let y = float32(ScreenHeight-200)
             this.CreateEntity("Enemy2")
                 .AddBounds(2.0f)
-                //.AddPosition(pos.x, pos.y, pos.z)
-                .AddVelocity(0.0f, float32(-30*3), 0.0f)
+                .AddPosition(x, y)
+                .AddVelocity(0.0f, float32(-30*3))
                 .AddHealth(20.0f, 20.0f)
                 .SetEnemy(true)
-                .AddResource("enemy2")
+                .AddResource("images/enemy2.png")
 
         (** 
          * Create Enemy3
@@ -135,16 +130,15 @@ module EntityFactory =
          * @returns new enemy entity
          *)
         member this.CreateEnemy3() =
-            //let x = rnd.Next(Screen.width)
-            //let y = Screen.height-300
-            //let pos = Camera.main.ScreenToWorldPoint(new Vector3(float32(x), float32(y), 0.0f))
+            let x = float32(rnd.Next(ScreenWidth))
+            let y = float32(ScreenHeight-300)
             this.CreateEntity("Enemy3")
                 .AddBounds(3.0f)
-                //.AddPosition(pos.x, pos.y, pos.z)
-                .AddVelocity(0.0f, float32(-20*3), 0.0f)
+                .AddPosition(x, y)
+                .AddVelocity(0.0f, float32(-20*3))
                 .AddHealth(40.0f, 40.0f)
                 .SetEnemy(true)
-                .AddResource("enemy3")
+                .AddResource("images/enemy3.png")
 
         (** 
          * Create Huge Explosion
@@ -159,8 +153,8 @@ module EntityFactory =
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddPosition(x, y, 0.0f)
-                .AddResource("bigExplosion")
+                .AddPosition(x, y)
+                .AddResource("images/bigExplosion.png")
 
         (** 
          * Create Big Explosion
@@ -175,8 +169,8 @@ module EntityFactory =
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddPosition(x, y, 0.0f)
-                .AddResource("bigExplosion")
+                .AddPosition(x, y)
+                .AddResource("images/bigExplosion.png")
 
         (** 
          * Create Small Explosion
@@ -191,6 +185,6 @@ module EntityFactory =
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddPosition(x, y, 0.0f)
-                .AddResource("smallExplosion")
+                .AddPosition(x, y)
+                .AddResource("images/smallExplosion.png")
 

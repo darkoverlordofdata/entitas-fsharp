@@ -5,23 +5,19 @@ namespace ShmupWarz
  *
  *)
 
-open Bosco.ECS
 open System
 open System.Collections.Generic
-open UnityEngine
+open Entitas
 
-type ScoreSystem(world:World) =
+type ScoreSystem(game: IGame, pool:Pool) =
+
+    let group = pool.GetGroup(Matcher.AllOf(Component.Score))
 
     interface IInitializeSystem with
         member this.Initialize() =
-            world.SetScore(0)
+            //pool.SetScore(0)
+            ()
 
     interface IExecuteSystem with
         member this.Execute() =
-
-            let delta = Time.deltaTime/100.0f
-
-            for e in (group.GetEntities()) do
-                e.position.x <- e.position.x + (e.velocity.x * delta)
-                e.position.y <- e.position.y + (e.velocity.y * delta)
-                e.position.z <- e.position.z + (e.velocity.z * delta)
+            ()
