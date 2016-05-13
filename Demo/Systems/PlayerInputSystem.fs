@@ -15,7 +15,7 @@ open Entitas
 type PlayerInputSystem(game: IGame, pool:Pool) =
 
     let group = pool.GetGroup(Matcher.Player)
-    let lazyPlayer = lazy ( pool.CreatePlayer(game:?>Game) )
+    let lazyPlayer = lazy ( pool.CreatePlayer(game) )
     let mutable timeToFire = 0.0f
 
     interface IExecuteSystem with
@@ -26,8 +26,8 @@ type PlayerInputSystem(game: IGame, pool:Pool) =
             let shoot() =
                 timeToFire <- timeToFire - game.delta
                 if timeToFire <= 0.0f then
-                    pool.CreateBullet(game:?>Game, player.position.x-27.f, player.position.y) |> ignore
-                    pool.CreateBullet(game:?>Game, player.position.x+27.f, player.position.y) |> ignore
+                    pool.CreateBullet(game, player.position.x-27.f, player.position.y) |> ignore
+                    pool.CreateBullet(game, player.position.x+27.f, player.position.y) |> ignore
                     timeToFire <- 0.1f
 
 

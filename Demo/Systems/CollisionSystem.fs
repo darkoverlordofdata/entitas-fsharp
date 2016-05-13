@@ -19,40 +19,36 @@ type CollisionSystem(game: IGame, pool:Pool) =
     let enemies = pool.GetGroup(Matcher.Enemy)
     let players = pool.GetGroup(Matcher.Player)
 
-    let collidesWith(e1:Entity, e2:Entity) =
-        let position1 = e1.position
-        let position2 = e2.position
+    (** Return Rect defining the current bounds *)
+    let BoundingRect(entity:Entity) =
+        let r = int entity.bounds.radius
+        let x = int entity.position.x - int r/2
+        let y = int entity.position.y
+        Rectangle(x,y,r,r)
 
-        let a = float(position1.x) - float(position2.x)
-        let b = float(position1.y) - float(position2.y)
-        (float32(Math.Sqrt(a * a + b * b)) - e1.bounds.radius) < e2.bounds.radius
-
-    let collisionHandler(weapon:Entity, ship:Entity) =
-
-        let pos = weapon.position
-        pool.CreateSmallExplosion(game:?>Game, pos.x, pos.y) |> ignore
-        weapon.SetDestroy(true) |> ignore
-
-        let mutable health = ship.health
-        health.health <- health.health-1.0f
-        if health.health <= 0.0f then
-            pool.score.value <- pool.score.value + int health.maximumHealth
-            ship.SetDestroy(true) |> ignore
-            let position = ship.position
-            pool.CreateBigExplosion(game:?>Game, position.x, position.y) |> ignore
 
     interface IExecuteSystem with
         member this.Execute() =
-            for bullet in bullets.GetEntities() do
-                for enemy in enemies.GetEntities() do
-                    if collidesWith(bullet, enemy) then
-                        collisionHandler(bullet, enemy)
+            let mutable inactive = []
 
+            for enemy in enemies.GetEntities() do
+                for bullet in bullets.GetEntities() do
+                    if not(inactive |> List.contains enemy.Id) then
 
+                        if (BoundingRect(bullet).Intersects(BoundingRect(enemy))) then
 
-    interface IInitializeSystem with
-        member this.Initialize() =
-            pool.SetStatus(100.0f, 0.0f) |> ignore
-            pool.SetScore(0) |> ignore
+                            let pos = bullet.position
+                            pool.CreateSmallExplosion(game:?>Game, pos.x, pos.y) |> ignore
+                            bullet.SetDestroy(true) |> ignore
+
+                            let mutable health = enemy.health
+                            health.health <- health.health-1.0f
+                            if health.health <= 0.0f then
+                                inactive <- enemy.Id :: inactive
+                                let player = players.GetSingleEntity()
+                                player.score.value <- player.score.value + int health.maximumHealth
+                                enemy.SetDestroy(true) |> ignore
+                                let position = enemy.position
+                                pool.CreateBigExplosion(game:?>Game, position.x, position.y) |> ignore
 
 

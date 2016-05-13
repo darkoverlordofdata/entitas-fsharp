@@ -14,11 +14,6 @@ module ComponentExtensions =
     open System
     open System.Collections.Generic
 
-    type IGame = 
-        abstract delta: float32
-        abstract height: int
-        abstract width: int
-
     [<AllowNullLiteral>]
     type BoundsComponent() =
         inherit Component()

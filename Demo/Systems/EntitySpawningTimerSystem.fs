@@ -32,13 +32,13 @@ type EntitySpawningTimerSystem(game: IGame, pool:Pool) =
         if delta < 0.0f then
             match enemy with
             | Enemy1 -> 
-                pool.CreateEnemy1(game:?>Game) |> ignore
+                pool.CreateEnemy1(game) |> ignore
                 float32(Timers.Timer1)
             | Enemy2 ->
-                pool.CreateEnemy2(game:?>Game) |> ignore
+                pool.CreateEnemy2(game) |> ignore
                 float32(Timers.Timer2)
             | Enemy3 ->
-                pool.CreateEnemy3(game:?>Game) |> ignore
+                pool.CreateEnemy3(game) |> ignore
                 float32(Timers.Timer3)
 
         else

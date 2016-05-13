@@ -38,7 +38,6 @@ type Demo () as this =
         ).Add(pool.CreateSystem(new ScaleTweenSystem(this, pool))
         ).Add(pool.CreateSystem(new RemoveOffscreenShipsSystem(this, pool))
         ).Add(pool.CreateSystem(new HealthRenderSystem(this, pool))
-        ).Add(pool.CreateSystem(new ScoreSystem(this, pool))
         ).Add(pool.CreateSystem(new DestroySystem(this, pool)))
 
 
