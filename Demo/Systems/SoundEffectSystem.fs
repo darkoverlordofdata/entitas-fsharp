@@ -18,8 +18,8 @@ type SoundEffectSystem(game: IGame, pool:Pool) =
     interface IExecuteSystem with
         member this.Execute() =
 
-            for e in (group.GetEntities()) do
-                match (int e.soundEffect.effect) with
+            for entity in group.GetEntities() do
+                match (int entity.soundEffect.effect) with
                 | 0 ->
                     () //AudioSources.["pew"].PlayOneShot(AudioSources.["pew"].clip, 0.5f)            
                 | 1 ->

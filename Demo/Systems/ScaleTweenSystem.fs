@@ -15,10 +15,10 @@ type ScaleTweenSystem(game: IGame, pool:Pool) =
 
     interface IExecuteSystem with
         member this.Execute() =
-            for e in (group.GetEntities()) do
-                let scaleAnimation = e.scaleAnimation
+            for entity in group.GetEntities() do
+                let scaleAnimation = entity.scaleAnimation
                 if scaleAnimation.active then
-                    let scale = e.scale
+                    let scale = entity.scale
                     scale.x <- scale.x + (scaleAnimation.speed * game.delta)
                     scale.y <- scale.x
                     if scale.x > scaleAnimation.max then

@@ -15,6 +15,6 @@ type RemoveOffscreenShipsSystem(game: IGame, pool:Pool) =
 
     interface IExecuteSystem with
         member this.Execute() =
-            for e in (group.GetEntities()) do
-                if e.position.y < (0.0f - e.bounds.radius*4.0f) then
-                    if not e.isPlayer then e.SetDestroy(true) |> ignore
+            for entity in group.GetEntities() do
+                if entity.position.y < (0.0f - entity.bounds.radius*4.0f) then
+                    if not entity.isPlayer then entity.SetDestroy(true) |> ignore

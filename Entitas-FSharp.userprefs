@@ -1,12 +1,9 @@
 ﻿<Properties StartupItem="Demo/Demo.fsproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Demo/Systems/CollisionSystem.fs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Demo/Systems/RenderPositionSystem.fs">
     <Files>
-      <File FileName="Demo/Systems/RenderPositionSystem.fs" Line="1" Column="1" />
-      <File FileName="Demo/DemoGame.fs" Line="25" Column="59" />
-      <File FileName="Demo/Systems/CollisionSystem.rec.fs" Line="29" Column="53" />
-      <File FileName="Demo/Systems/CollisionSystem.fs" Line="55" Column="1" />
-      <File FileName="Demo/Generated/EntityFactory.fs" Line="39" Column="12" />
+      <File FileName="Demo/DemoGame.fs" Line="1" Column="1" />
+      <File FileName="Demo/Systems/RenderPositionSystem.fs" Line="41" Column="104" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
