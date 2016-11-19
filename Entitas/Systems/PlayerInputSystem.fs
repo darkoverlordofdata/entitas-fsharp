@@ -40,9 +40,8 @@ type PlayerInputSystem(game: IGame, pool:Pool) =
 
 
             HandleKeys (Keyboard.GetState().GetPressedKeys() |> Array.toList) |> ignore
-            let pos = (game:?>Game).Window.Position
-            let x = float32(Mouse.GetState().X-pos.X)
-            let y = float32(Mouse.GetState().Y-pos.Y)
+            let x = float32(Mouse.GetState().X)
+            let y = float32(Mouse.GetState().Y)
             player.position.x <- x
             player.position.y <- y
             match Mouse.GetState().LeftButton with

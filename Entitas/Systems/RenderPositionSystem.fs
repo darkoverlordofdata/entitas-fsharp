@@ -17,7 +17,7 @@ type RenderPositionSystem(game: IGame, pool:Pool) =
     let group = pool.GetGroup(Matcher.AllOf(Component.Position, Component.View))
     let mutable scale1 = new ScaleComponent()
     let bgdRect = Rectangle(0, 0, game.width, game.height)
-    let bgdImage = lazy( (game:?>Game).Content.Load<Texture2D>("images/BackdropBlackLittleSparkBlack.png") )
+    let bgdImage = lazy( (game:?>Game).Content.Load<Texture2D>("images/BackdropBlackLittleSparkBlack") )
     let spriteBatch = lazy( new SpriteBatch((game:?>Game).GraphicsDevice) )
     let mutable sprites = []
 

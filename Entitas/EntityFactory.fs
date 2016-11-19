@@ -52,7 +52,7 @@ module EntityFactory =
                 .AddLayer(Layer.PLAYER)
                 .AddScore(0)
                 .SetPlayer(true)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/fighter.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/fighter"))
 
         (** 
          * Create Bullet
@@ -70,7 +70,7 @@ module EntityFactory =
                 .AddSoundEffect(Effect.EFFECT_PEW)
                 .AddLayer(Layer.BATTLE)
                 .SetBullet(true)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/bullet.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/bullet"))
 
         (** 
          * Create Mine
@@ -89,7 +89,7 @@ module EntityFactory =
                 .AddLayer(Layer.BATTLE)
                 .AddHealth(float32(health*10), float32(health*10))
                 .SetMine(true)
-                .AddView(game.Content.Load<Texture2D>(sprintf "images/mine%s.png" (health.ToString())))
+                .AddView(game.Content.Load<Texture2D>(sprintf "images/mine%s" (health.ToString())))
 
         (** 
          * Create Life
@@ -104,7 +104,7 @@ module EntityFactory =
                 .AddPosition(x, y)
                 .AddLayer(Layer.DEFAULT)
                 .AddLife(float32(ordinal))
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/life.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/life"))
 
         (** 
          * Create Status
@@ -117,7 +117,7 @@ module EntityFactory =
             this.CreateEntity("Status")
                 .AddLayer(Layer.DEFAULT)
                 .AddPosition(x, y)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/status.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/status"))
 
         (** 
          * Create Enemy1
@@ -134,7 +134,7 @@ module EntityFactory =
                 .AddHealth(10.0f, 10.0f)
                 .AddLayer(Layer.ENEMY1)
                 .SetEnemy(true)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy1.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy1"))
 
         (** 
          * Create Enemy2
@@ -151,7 +151,7 @@ module EntityFactory =
                 .AddHealth(20.0f, 20.0f)
                 .AddLayer(Layer.ENEMY2)
                 .SetEnemy(true)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy2.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy2"))
 
         (** 
          * Create Enemy3
@@ -168,7 +168,7 @@ module EntityFactory =
                 .AddHealth(40.0f, 40.0f)
                 .AddLayer(Layer.ENEMY3)
                 .SetEnemy(true)
-                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy3.png"))
+                .AddView((game:?>Game).Content.Load<Texture2D>("images/enemy3"))
 
         (** 
          * Create Huge Explosion
@@ -185,7 +185,7 @@ module EntityFactory =
                 .AddScaleAnimation(float32(scale/100.0f), scale, -3.0f, false, true)
                 .AddPosition(x, y)
                 .AddLayer(Layer.BATTLE)
-                .AddView(game.Content.Load<Texture2D>("images/explosion.png"))
+                .AddView(game.Content.Load<Texture2D>("images/explosion"))
 
         (** 
          * Create Big Explosion
@@ -202,7 +202,7 @@ module EntityFactory =
                 .AddScaleAnimation(float32(scale/100.0f), scale, -3.0f, false, true)
                 .AddPosition(x, y)
                 .AddLayer(Layer.BATTLE)
-                .AddView(game.Content.Load<Texture2D>("images/explosion.png"))
+                .AddView(game.Content.Load<Texture2D>("images/explosion"))
 
         (** 
          * Create Small Explosion
@@ -219,5 +219,5 @@ module EntityFactory =
                 .AddScaleAnimation(float32(scale/100.0f), scale, -3.0f, false, true)
                 .AddPosition(x, y)
                 .AddLayer(Layer.BATTLE)
-                .AddView(game.Content.Load<Texture2D>("images/explosion.png"))
+                .AddView(game.Content.Load<Texture2D>("images/explosion"))
 

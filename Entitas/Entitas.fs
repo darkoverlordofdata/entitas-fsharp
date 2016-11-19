@@ -229,7 +229,7 @@ module EntitasECS =
      *)
     member this.ReplaceComponent(index:int, c:Component) =
       if not _isEnabled then 
-        failwith "Entity is disabled, cannot replace at index %d, %s" index (this.ToString())
+        failwithf "Entity is disabled, cannot replace at index %d, %s" index (this.ToString())
    
       if this.HasComponent(index) then
         this._replaceComponent(index, c)
@@ -395,7 +395,7 @@ module EntitasECS =
     let mutable _allOfIndices             = Array.empty
     let mutable _anyOfIndices             = Array.empty
     let mutable _noneOfIndices            = Array.empty
-    let mutable _toStringCache             = ""
+    let mutable _toStringCache            = ""
 
     static let toStringHelper(sb:StringBuilder, text:string, indices:int[]) =
       if indices.Length > 0 then
@@ -752,7 +752,7 @@ module EntitasECS =
             group.OnEntityRemoved.RemoveHandler(this.AddEntity)
             group.OnEntityRemoved.AddHandler(this.AddEntity)
         | _ ->
-            failwithf "Invalid eventType $s in GroupObserver::activate" eventType
+            failwithf "Invalid eventType %s in GroupObserver::activate" (eventType.ToString())
 
     member this.Deactivate() =
       for group in groups do
