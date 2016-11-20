@@ -1,6 +1,10 @@
-entitas-fsharp
-=============================
+# entitas-fsharp
 
-Update for MonoGame 3.5 & MonoDevelop 6.3
+Uses MonoGame 3.5 
 
-Seperate library from per platform demos.
+### folders
+
+* demo - example 
+* entitas-fsharp - library
+* entitas-fsharp-linux - open in MonoDevelop 6.3
+* entitas-fsharp-windows - open in Visual Studio Community 2015 
