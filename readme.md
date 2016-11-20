@@ -1,4 +1,6 @@
 entitas-fsharp
 =============================
 
-3rd times a charm
+Update for MonoGame 3.5 & MonoDevelop 6.3
+
+Seperate library from per platform demos.

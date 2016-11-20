@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FCE96792-0BBB-4213-9646-562AB981A60F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Platformer</RootNamespace>
+    <AssemblyName>Platformer</AssemblyName>
+    <Name>Platformer</Name>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\Platformer.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Release\Platformer.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="FSharp.Core">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\..\..\..\..\..\opt\MonoGameSDK\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="MonoGame.Framework.dll.config" />
+    <None Include="libSDL2-2.0.0.dylib" />
+    <None Include="libopenal.1.dylib" />
+    <None Include="x64\SDL2.dll" />
+    <None Include="x64\libSDL2-2.0.so.0" />
+    <None Include="x64\libopenal.so.1" />
+    <None Include="x64\soft_oal.dll" />
+    <None Include="x86\SDL2.dll" />
+    <None Include="x86\libSDL2-2.0.so.0" />
+    <None Include="x86\libopenal.so.1" />
+    <None Include="x86\soft_oal.dll" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\entitas-fsharp\Entitas.fs">
+      <Link>Entitas.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\GlobalExtensions.fs">
+      <Link>GlobalExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\ComponentExtensions.fs">
+      <Link>ComponentExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\EntityExtensions.fs">
+      <Link>EntityExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\MatcherExtensions.fs">
+      <Link>MatcherExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\PoolExtensions.fs">
+      <Link>PoolExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\EntityFactory.fs">
+      <Link>EntityFactory.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\CollisionSystem.fs">
+      <Link>CollisionSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\DestroySystem.fs">
+      <Link>DestroySystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\EntitySpawningTimerSystem.fs">
+      <Link>EntitySpawningTimerSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\ExpiringSystem.fs">
+      <Link>ExpiringSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\HealthRenderSystem.fs">
+      <Link>HealthRenderSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\MovementSystem.fs">
+      <Link>MovementSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\PlayerInputSystem.fs">
+      <Link>PlayerInputSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\RemoveOffscreenShipsSystem.fs">
+      <Link>RemoveOffscreenShipsSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\ScaleTweenSystem.fs">
+      <Link>ScaleTweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\SoundEffectSystem.fs">
+      <Link>SoundEffectSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\RenderPositionSystem.fs">
+      <Link>RenderPositionSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\DemoGame.fs">
+      <Link>DemoGame.fs</Link>
+    </Compile>
+    <Compile Include="..\..\demo\Program.fs">
+      <Link>Program.fs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
