@@ -1,7 +1,0 @@
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\bin\Debug\entitas_fsharp.XML
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\bin\Debug\entitas_fsharp.dll
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\bin\Debug\entitas_fsharp.pdb
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\bin\Debug\FSharp.Core.dll
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\bin\Debug\FSharp.Core.xml
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\obj\Debug\entitas_fsharp.dll
-C:\Users\darko\Documents\GitHub\entitas-fsharp\entitas-fsharp\obj\Debug\entitas_fsharp.pdb
