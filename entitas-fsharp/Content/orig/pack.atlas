@@ -1,0 +1,213 @@
+
+pack.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BackdropBlackLittleSparkBlack
+  rotate: false
+  xy: 2, 374
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+bang
+  rotate: false
+  xy: 626, 901
+  size: 52, 52
+  orig: 52, 52
+  offset: 0, 0
+  index: -1
+bg
+  rotate: false
+  xy: 516, 955
+  size: 198, 191
+  split: 46, 46, 38, 45
+  pad: 45, 47, 39, 46
+  orig: 198, 191
+  offset: 0, 0
+  index: -1
+btn
+  rotate: false
+  xy: 1962, 1610
+  size: 12, 52
+  split: 4, 5, 6, 7
+  orig: 12, 52
+  offset: 0, 0
+  index: -1
+btnPressed
+  rotate: false
+  xy: 2021, 1938
+  size: 12, 46
+  split: 4, 5, 4, 5
+  orig: 12, 46
+  offset: 0, 0
+  index: -1
+btnbg
+  rotate: false
+  xy: 2, 242
+  size: 300, 130
+  split: 44, 49, 38, 41
+  pad: 45, 47, 39, 76
+  orig: 300, 130
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 716, 961
+  size: 5, 17
+  orig: 5, 17
+  offset: 0, 0
+  index: -1
+cloud
+  rotate: false
+  xy: 304, 244
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+enemy1
+  rotate: false
+  xy: 1664, 1443
+  size: 69, 91
+  orig: 69, 91
+  offset: 0, 0
+  index: -1
+enemy2
+  rotate: false
+  xy: 2, 68
+  size: 172, 172
+  orig: 172, 172
+  offset: 0, 0
+  index: -1
+enemy3
+  rotate: false
+  xy: 1664, 1664
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: -1
+explosion
+  rotate: false
+  xy: 2, 888
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+fire
+  rotate: false
+  xy: 516, 1148
+  size: 265, 252
+  orig: 265, 252
+  offset: 0, 0
+  index: -1
+green
+  rotate: false
+  xy: 1664, 1536
+  size: 296, 126
+  split: 48, 48, 44, 40
+  pad: 46, 43, 44, 40
+  orig: 296, 126
+  offset: 0, 0
+  index: -1
+greenpressed
+  rotate: false
+  xy: 783, 1274
+  size: 296, 126
+  split: 52, 51, 45, 41
+  pad: 51, 48, 46, 40
+  orig: 296, 126
+  offset: 0, 0
+  index: -1
+life
+  rotate: false
+  xy: 1081, 1342
+  size: 71, 58
+  orig: 71, 58
+  offset: 0, 0
+  index: -1
+logo
+  rotate: false
+  xy: 2, 1402
+  size: 1660, 582
+  orig: 1660, 582
+  offset: 0, 0
+  index: -1
+mine1
+  rotate: false
+  xy: 516, 713
+  size: 40, 66
+  orig: 40, 66
+  offset: 0, 0
+  index: -1
+mine2
+  rotate: false
+  xy: 176, 174
+  size: 40, 66
+  orig: 40, 66
+  offset: 0, 0
+  index: -1
+nine
+  rotate: false
+  xy: 783, 1192
+  size: 80, 80
+  split: 22, 22, 22, 22
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+particle
+  rotate: false
+  xy: 1986, 1784
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+ring
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+spaceshipspr
+  rotate: false
+  xy: 516, 781
+  size: 108, 172
+  orig: 108, 172
+  offset: 0, 0
+  index: -1
+speck
+  rotate: false
+  xy: 751, 1145
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+splatter1
+  rotate: false
+  xy: 434, 322
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 1664, 1409
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+statusred
+  rotate: false
+  xy: 1986, 1818
+  size: 33, 166
+  orig: 33, 166
+  offset: 0, 0
+  index: -1
+statusyellow
+  rotate: false
+  xy: 716, 980
+  size: 33, 166
+  orig: 33, 166
+  offset: 0, 0
+  index: -1

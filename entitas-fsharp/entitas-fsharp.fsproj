@@ -5,14 +5,15 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>26021e63-965a-4190-99a3-e7c38dd331c1</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>d5f13fc2-b329-4f94-bb1a-94f948ecca2b</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <RootNamespace>entitas_fsharp</RootNamespace>
     <AssemblyName>entitas_fsharp</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
     <Name>entitas-fsharp</Name>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,7 +23,9 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Debug\entitas_fsharp.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,21 +34,10 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DocumentationFile>bin\Release\entitas_fsharp.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="mscorlib" />
-    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Entitas.fs" />
-  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>
@@ -62,6 +54,45 @@
     </Otherwise>
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <None Include="App.config" />
+    <Content Include="packages.config" />
+    <Compile Include="Entitas.fs" />
+    <Compile Include="Extensions.ComponentExtensions.fs" />
+    <Compile Include="Extensions.EntityExtensions.fs" />
+    <Compile Include="Extensions.MatcherExtensions.fs" />
+    <Compile Include="Extensions.WorldExtensions.fs" />
+    <Compile Include="Extensions.EntityFactory.fs" />
+    <Compile Include="Systems.ViewManagerSystem.fs" />
+    <Compile Include="Systems.CollisionSystem.fs" />
+    <Compile Include="Systems.ColorAnimationSystem.fs" />
+    <Compile Include="Systems.EntitySpawningTimerSystem.fs" />
+    <Compile Include="Systems.ExpiringSystem.fs" />
+    <Compile Include="Systems.MovementSystem.fs" />
+    <Compile Include="Systems.ParallaxStarRepeatingSystem.fs" />
+    <Compile Include="Systems.PlayerInputSystem.fs" />
+    <Compile Include="Systems.RemoveOffscreenShipsSystem.fs" />
+    <Compile Include="Systems.RenderPositionSystem.fs" />
+    <Compile Include="Systems.ScaleAnimationSystem.fs" />
+    <Compile Include="Systems.SoundEffectSystem.fs" />
+    <Compile Include="Game.fs" />
+    <Compile Include="Program.fs" />
+    <None Include="Content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

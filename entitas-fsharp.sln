@@ -3,10 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "entitas-fsharp", "entitas-fsharp\entitas-fsharp.fsproj", "{26021E63-965A-4190-99A3-E7C38DD331C1}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "entitas-fsharp", "entitas-fsharp\entitas-fsharp.fsproj", "{D5F13FC2-B329-4F94-BB1A-94F948ECCA2B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D05B67E0-1425-42B9-9F78-4CC07A6B456C}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{59A212B0-ED28-4F9C-91CE-3D345FF21195}"
 	ProjectSection(SolutionItems) = preProject
+		entitas.json = entitas.json
 		license.md = license.md
 		readme.md = readme.md
 	EndProjectSection
@@ -17,10 +18,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{26021E63-965A-4190-99A3-E7C38DD331C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26021E63-965A-4190-99A3-E7C38DD331C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26021E63-965A-4190-99A3-E7C38DD331C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26021E63-965A-4190-99A3-E7C38DD331C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5F13FC2-B329-4F94-BB1A-94F948ECCA2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5F13FC2-B329-4F94-BB1A-94F948ECCA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5F13FC2-B329-4F94-BB1A-94F948ECCA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5F13FC2-B329-4F94-BB1A-94F948ECCA2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

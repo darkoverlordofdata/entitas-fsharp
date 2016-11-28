@@ -1,10 +1,10 @@
 ﻿(*
- * Entitas ECS
+ * Entitas
  *)
 namespace Entitas
 
 [<AutoOpen>]
-module EntitasECS =
+module CoreECS =
 
   open System
   open System.Text
@@ -17,88 +17,37 @@ module EntitasECS =
     * Base Component Type
     *)
   [<AbstractClass>][<AllowNullLiteral>]
-  type Component() = 
-    class
-      static member None with get() = 0
-    end
+  type Component() = class end
 
-  and IMatcher =
-    interface
-      abstract Id: int
-      abstract Indices: int[]
-      abstract Matches: Entity -> Boolean
-    end
+  (**
+   * Component Active Pattern  
+   * parse component class name
+   *)
+  let (|Component|) (s:string) =
+    let s0 = s.Split(if s.IndexOf('+') = -1 then '.' else '+')
+    let s1 = s0.[1]
+    if s1.EndsWith("Component") then
+      s1.Substring(0,s1.LastIndexOf("Component"))
+    else
+      s1
 
-  and ICompoundMatcher =
-    inherit IMatcher
-    abstract AllOfIndices: int[] with get,set
-    abstract AnyOfIndices: int[] with get,set
-    abstract NoneOfIndices: int[] with get,set
-
-  and INoneOfMatcher =
-    inherit ICompoundMatcher
-    abstract Ignore: Array -> INoneOfMatcher
-
-  and IAnyOfMatcher =
-    inherit ICompoundMatcher
-    abstract NoneOf: Array -> INoneOfMatcher
-
-  and IAllOfMatcher = 
-    inherit ICompoundMatcher
-    abstract AnyOf: Array -> IAnyOfMatcher
-    abstract NoneOf: Array -> INoneOfMatcher
-
-  and ISystem = 
-    interface end
-
-  and ISetPool =
-    inherit ISystem
-    abstract SetPool: Pool -> unit
-
+  (** parse component class name **)
+  let ComponentName = function
+    | Component (c) -> c
 
   (**
     * Interface: System with an Initialization phase
     * Initialize is called before the game loop is started
     *)
-  and IInitializeSystem = 
-    inherit ISystem
-    abstract Initialize: unit -> unit
+  type IInitializeSystem =
+    abstract member Initialize: unit -> unit
 
   (**
     * Interface: System with an Execute
     * Execute is called once per game loop
     *)
   and IExecuteSystem =
-    inherit ISystem
-    abstract Execute: unit -> unit
-
-  and IReactiveExecuteSystem =
-    inherit ISystem
-    abstract Execute: Array -> unit
-
-  and IReactiveSystem = 
-    inherit IReactiveExecuteSystem
-    abstract Trigger: TriggerOnEvent
-
-  and IMultiReactiveSystem = 
-    inherit IReactiveExecuteSystem
-    abstract Triggers: TriggerOnEvent[]
-
-  and IEnsureComponents =
-    abstract EnsureComponents: IMatcher
-
-  and IExcludeComponents =
-    abstract ExcludeComponents: IMatcher
-
-  and IClearReactiveSystem =
-    abstract ClearAfterExecute: Boolean
-
-  and TriggerOnEvent(trigger, eventType) =
-    inherit System.EventArgs()
-    member this.Trigger = trigger
-    member this.EventType = eventType
-
-  and TriggerOnEventDelegate = delegate of obj * TriggerOnEvent -> unit
+    abstract member Execute: unit -> unit
 
   (** 
    * Entity Events
@@ -108,19 +57,19 @@ module EntitasECS =
 
   and ComponentAddedArgs(index, newComponent) =
     inherit System.EventArgs()
-    member this.Index = index
-    member this.Component = newComponent
+    member this.index = index
+    member this.newComponent = newComponent
 
   and ComponentRemovedArgs(index, previous) =
     inherit System.EventArgs()
-    member this.Index = index
-    member this.Component = previous
+    member this.index = index
+    member this.previous = previous
 
   and ComponentReplacedArgs(index, previous, replacement) =
     inherit System.EventArgs()
-    member this.Index = index
-    member this.Component = previous
-    member this.Replacement = replacement
+    member this.index = index
+    member this.previous = previous
+    member this.replacement = replacement
 
   and EntityReleasedDelegate = delegate of obj * EntityReleasedArgs -> unit
   and ComponentAddedDelegate = delegate of obj * ComponentAddedArgs -> unit
@@ -130,61 +79,35 @@ module EntitasECS =
   (** 
    * Entity
    *)
-  and Entity(totalComponents:int) =
+  and Entity (totalComponents:int) =
 
-    (**
-     * Component Active Pattern  
-     * parse component class name
-     *)
-    let (|Component|) (s:string) =
-        let s0 = s.Split(if s.IndexOf('+') = -1 then '.' else '+')
-        let s1 = s0.[1]
-        if s1.EndsWith("Component") then
-            s1.Substring(0, s1.LastIndexOf("Component"))
-        else
-            s1
+    let onComponentAdded                  = new Event<ComponentAddedDelegate, ComponentAddedArgs>()
+    let onComponentRemoved                = new Event<ComponentRemovedDelegate, ComponentRemovedArgs>()
+    let onComponentReplaced               = new Event<ComponentReplacedDelegate, ComponentReplacedArgs>()
+    let onEntityReleased                  = new Event<EntityReleasedDelegate, EntityReleasedArgs>()
+    let components: Component array       = (Array.zeroCreate totalComponents)
+    let mutable componentsCache           = Array.empty<Component>
+    let mutable toStringCache             = "" 
 
-    (** parse component class name **)
-    let parsec s =
-        match s with 
-        | Component (c) -> c
-
-    let _onComponentAdded               = new Event<ComponentAddedDelegate, ComponentAddedArgs>()
-    let _onComponentRemoved             = new Event<ComponentRemovedDelegate, ComponentRemovedArgs>()
-    let _onComponentReplaced            = new Event<ComponentReplacedDelegate, ComponentReplacedArgs>()
-    let _onEntityReleased               = new Event<EntityReleasedDelegate, EntityReleasedArgs>()
-
-    let _components: Component array    = (Array.zeroCreate totalComponents)
-    let mutable _componentsCache        = Array.empty<Component>
-    let mutable _toStringCache          = "" 
-    let mutable _name                   = ""
-    let mutable _id                     = 0
-    let mutable _isEnabled              = false
-        
-    member val OnComponentAdded         = _onComponentAdded.Publish
-    member val OnComponentRemoved       = _onComponentRemoved.Publish
-    member val OnComponentReplaced      = _onComponentReplaced.Publish
-    member val OnEntityReleased         = _onEntityReleased.Publish
-
-    member val internal RefCount        = 0 with get, set 
-    member this.Id with get()           = _id
-    member this.Name with get()         = _name
-    member this.IsEnabled with get()    = _isEnabled
+    member val OnComponentAdded           = onComponentAdded.Publish
+    member val OnComponentRemoved         = onComponentRemoved.Publish
+    member val OnComponentReplaced        = onComponentReplaced.Publish
+    member val OnEntityReleased           = onEntityReleased.Publish
+    member val internal refCount          = 0 with get, set                
+    member val Id                         = 0 with get, set
+    member val Name                       = "" with get, set
+    member val IsEnabled                  = false with get, set
          
     (** 
-     * support for Pool.NullEntity 
+     * support for World.NullEntity 
      * Returned instead of null for Group::GetSingleEntity
      *)
-    member this.IsNull with get() = if totalComponents = 0 then true else false
-    member this.NotNull with get() = if totalComponents = 0 then false else true
-    //static member Empty with get() = new Entity(0)
-    static member Empty = lazy(new Entity(0))
-        
-
-    member this.Init(name:string, creationIndex:int) =
-      _name <- name
-      _id <- creationIndex
-      _isEnabled <- true
+    new () = Entity(0)
+    member this.IsNull
+      with get() = if totalComponents = 0 then true else false
+    member this.NotNull
+      with get() = if totalComponents = 0 then false else true
+    static member NullEntity with get() = new Entity()
 
      (** 
      * AddComponent 
@@ -194,15 +117,15 @@ module EntitasECS =
      * @returns this entity
      *)
     member this.AddComponent(index:int, c:Component) =
-      if not _isEnabled then 
+      if not this.IsEnabled then 
         failwith "Entity is disabled, cannot add component"
       if this.HasComponent(index) then 
         failwithf "Entity already has component, cannot add at index %d, %s" index (this.ToString())
 
-      _components.[index] <- c
-      _componentsCache <- Array.empty<Component>
-      _toStringCache <- ""
-      _onComponentAdded.Trigger(this, new ComponentAddedArgs(index, c))
+      components.[index] <- c
+      componentsCache <- Array.empty<Component>
+      toStringCache <- ""
+      onComponentAdded.Trigger(this, new ComponentAddedArgs(index, c))
       this
     
     (** 
@@ -212,12 +135,12 @@ module EntitasECS =
      * @returns this entity
      *)
     member this.RemoveComponent(index:int) =
-      if not _isEnabled then 
+      if not this.IsEnabled then 
         failwith "Entity is disabled, cannot remove component"
       if not(this.HasComponent(index)) then 
         failwithf "Entity does not have component, cannot remove at index %d, %s" index (this.ToString())
     
-      this._replaceComponent(index, null)
+      this.replaceComponent(index, null)
       this
 
     (** 
@@ -228,11 +151,11 @@ module EntitasECS =
      * @returns this entity
      *)
     member this.ReplaceComponent(index:int, c:Component) =
-      if not _isEnabled then 
+      if not this.IsEnabled then 
         failwithf "Entity is disabled, cannot replace at index %d, %s" index (this.ToString())
    
       if this.HasComponent(index) then
-        this._replaceComponent(index, c)
+        this.replaceComponent(index, c)
       elif NotNull(c) then
         this.AddComponent(index, c) |> ignore
       this
@@ -247,7 +170,7 @@ module EntitasECS =
       if not(this.HasComponent(index)) then 
         failwithf "Entity does not have component, cannot get at index %d, %s" index (this.ToString())
 
-      _components.[index]
+      components.[index]
 
     (** 
      * GetComponents 
@@ -255,9 +178,9 @@ module EntitasECS =
      * @returns a list of components
      *)
     member this.GetComponents() =
-      if _componentsCache.Length = 0 then
-        _componentsCache <- Array.filter NotNull _components
-      _componentsCache
+      if componentsCache.Length = 0 then
+        componentsCache <- Array.filter NotNull components
+      componentsCache
 
     (** 
      * HasComponent
@@ -266,7 +189,7 @@ module EntitasECS =
      * @returns true if entity has component at index
      *)
     member this.HasComponent(index:int) =
-      NotNull(_components.[index])
+      NotNull(components.[index])
 
     (** 
      * HasComponents
@@ -277,7 +200,7 @@ module EntitasECS =
     member this.HasComponents(indices:int[]) =
       let mutable flag = true
       for index in indices do
-        if IsNull(_components.[index]) then
+        if IsNull(components.[index]) then
           flag <- false
       flag
 
@@ -290,7 +213,7 @@ module EntitasECS =
     member this.HasAnyComponent(indices:int[]) =
       let mutable flag = false
       for index in indices do
-        if NotNull(_components.[index]) then
+        if NotNull(components.[index]) then
           flag <- true
       flag
 
@@ -299,27 +222,27 @@ module EntitasECS =
      *
      *)
     member this.RemoveAllComponents() =
-      for i = 0 to _components.Length-1 do
-        if NotNull(_components.[i]) then
-          this._replaceComponent(i, null)
+      for i = 0 to components.Length-1 do
+        if NotNull(components.[i]) then
+          this.replaceComponent(i, null)
 
     (** 
      * Retain (reference count)
      *
      *)
     member this.Retain() =
-      this.RefCount <- this.RefCount + 1
-
+      this.refCount <- this.refCount + 1
 
     (** 
      * Release (reference count)
      *
      *)
     member this.Release() =
-      this.RefCount <- this.RefCount - 1
-      if this.RefCount = 0 then
-        _onEntityReleased.Trigger(this, new EntityReleasedArgs())
-      elif this.RefCount < 0 then
+      this.refCount <- this.refCount - 1
+      if this.refCount = 0 then
+        //WHY??? - should't get triggered...
+        onEntityReleased.Trigger(this, new EntityReleasedArgs())
+      elif this.refCount < 0 then
         failwithf "Entity is already released %s" (this.ToString())
 
     (** 
@@ -327,21 +250,23 @@ module EntitasECS =
      *
      *)
     override this.ToString() =
-      if _toStringCache = "" then
+      if toStringCache = "" then
+
         let sb = new StringBuilder()
         sb.Append("Entity_") |> ignore
-        sb.Append(_name) |> ignore
+        sb.Append(this.Name) |> ignore
         sb.Append("(") |> ignore
-        sb.Append(_id.ToString()) |> ignore
-        sb.Append(")(") |> ignore
-        let c = Array.filter NotNull _components
+        sb.Append(this.Id.ToString()) |> ignore
+        sb.Append(")") |> ignore
+        sb.Append("(") |> ignore
+        let c = Array.filter NotNull components
         for i = 0 to c.Length-1 do
-          sb.Append(parsec(c.[i].GetType().ToString())) |> ignore
+          sb.Append(ComponentName(c.[i].GetType().ToString())) |> ignore
           if i < c.Length-1 then sb.Append(",") |> ignore
         sb.Append(")") |> ignore
-        _toStringCache <- sb.ToString()
+        toStringCache <- sb.ToString()
 
-      _toStringCache
+      toStringCache
 
     (** 
      * destroy an entity
@@ -349,9 +274,9 @@ module EntitasECS =
      *)
     member this.destroy() =
       this.RemoveAllComponents()
-      _componentsCache <- Array.empty<Component>
-      _name <- ""
-      _isEnabled <- false
+      componentsCache <- Array.empty<Component>
+      this.Name <- ""
+      this.IsEnabled <- false
 
     (** 
      * replaceComponent 
@@ -359,18 +284,18 @@ module EntitasECS =
      * @param index
      * @param component
      *)
-    member private this._replaceComponent(index, replacement) =
-      let previousComponent = _components.[index]
+    member this.replaceComponent(index, replacement) =
+      let previousComponent = components.[index]
       if obj.ReferenceEquals(previousComponent, replacement) then
-        _onComponentReplaced.Trigger(this, new ComponentReplacedArgs(index, previousComponent, replacement))
+        onComponentReplaced.Trigger(this, new ComponentReplacedArgs(index, previousComponent, replacement))
       else
-        _components.[index] <- replacement
-        _componentsCache <- Array.empty<Component> 
-        _toStringCache <- ""
+        components.[index] <- replacement
+        componentsCache <- Array.empty<Component> 
+        toStringCache <- ""
         if obj.ReferenceEquals(replacement, null) then
-          _onComponentRemoved.Trigger(this, new ComponentRemovedArgs(index, previousComponent))
+          onComponentRemoved.Trigger(this, new ComponentRemovedArgs(index, previousComponent))
         else
-          _onComponentReplaced.Trigger(this, new ComponentReplacedArgs(index, previousComponent, replacement))
+          onComponentReplaced.Trigger(this, new ComponentReplacedArgs(index, previousComponent, replacement))
 
   and EntityEqualityComparer() =
     static member comparer with get() = new EntityEqualityComparer()
@@ -386,7 +311,7 @@ module EntitasECS =
    * Matcher
    * matchers can match an entity by components used
    *)
-  and Matcher() =
+  and Matcher () =
     static let mutable uniqueId           = 0
     do uniqueId <- uniqueId+1
 
@@ -395,7 +320,7 @@ module EntitasECS =
     let mutable _allOfIndices             = Array.empty
     let mutable _anyOfIndices             = Array.empty
     let mutable _noneOfIndices            = Array.empty
-    let mutable _toStringCache            = ""
+    let mutable toStringCache             = ""
 
     static let toStringHelper(sb:StringBuilder, text:string, indices:int[]) =
       if indices.Length > 0 then
@@ -406,6 +331,23 @@ module EntitasECS =
         sb.Append(")") |> ignore
 
     member val uuid = System.Guid.NewGuid().ToString() with get
+
+    member this.Id
+      with get() = _id
+    member this.Indices
+      with get():int[] = 
+        if _indices.Length = 0 then
+          _indices <- this.mergeIndices()
+        _indices
+    member internal this.AllOfIndices
+      with get() = _allOfIndices
+      and  set(value) = _allOfIndices <- value
+    member internal this.AnyOfIndices
+      with get() = _anyOfIndices
+      and  set(value) = _anyOfIndices <- value
+    member internal this.NoneOfIndices
+      with get() = _noneOfIndices
+      and  set(value) = _noneOfIndices <- value
 
     (** 
      * AnyOf 
@@ -443,9 +385,17 @@ module EntitasECS =
       _indices <- Matcher.distinctIndices(indicesList.ToArray())
       _indices
 
-    //static member Empty with get() = new Matcher() 
-    static member Empty = lazy(new Matcher())
-
+    (** 
+     * Matches 
+     *
+     * @param entity
+     * @returns true if entity is a match 
+     *)
+    member this.Matches(entity:Entity) =
+      let matchesAllOf = if _allOfIndices.Length = 0 then true else entity.HasComponents(_allOfIndices)
+      let matchesAnyOf = if _anyOfIndices.Length = 0 then true else entity.HasAnyComponent(_allOfIndices)
+      let matchesNoneOf = if _noneOfIndices.Length = 0 then true else not(entity.HasAnyComponent(_allOfIndices))
+      matchesAllOf && matchesAnyOf && matchesNoneOf
 
     (** 
      * AllOf 
@@ -454,7 +404,7 @@ module EntitasECS =
      * @returns this 
      *)
     static member AllOf([<ParamArray>] indices: int[]) =
-      let matcher = new Matcher():>ICompoundMatcher
+      let matcher = new Matcher()
       matcher.AllOfIndices <- Matcher.distinctIndices(indices)
       matcher
 
@@ -468,7 +418,7 @@ module EntitasECS =
      * @returns this 
      *)
     static member AnyOf([<ParamArray>] indices: int[]) =
-      let matcher = new Matcher():>ICompoundMatcher
+      let matcher = new Matcher()
       matcher.AnyOfIndices <- Matcher.distinctIndices(indices)
       matcher
 
@@ -484,10 +434,10 @@ module EntitasECS =
     static member mergeIndices(matchers:Matcher[]):int[] =
       let mutable indices = (Array.zeroCreate matchers.Length)
       for i=0 to matchers.Length-1 do
-        let matcher = matchers.[i]:>IMatcher
+        let matcher = matchers.[i]
         if matcher.Indices.Length <> 1 then
           failwithf "Matcher indices length not = 1 %s" (matchers.[i].ToString())
-        indices.[i] <- matcher.Indices.[0]   //.GetValue(0)
+        indices.[i] <- matcher.Indices.[0]
       indices
 
     (** 
@@ -509,69 +459,29 @@ module EntitasECS =
      * @returns the string representation of this matcher
      *)
     override this.ToString() =
-      if _toStringCache = "" then
+      if toStringCache = "" then
         let sb = new StringBuilder()
         toStringHelper(sb, "AllOf", _allOfIndices)
         toStringHelper(sb, "AnyOf", _anyOfIndices)
         toStringHelper(sb, "NoneOf", _noneOfIndices)
-        _toStringCache <- sb.ToString()
-      _toStringCache
+        toStringCache <- sb.ToString()
 
-    (** *)
-    interface INoneOfMatcher with
-      member this.Ignore(indices:Array) =
-        this:>INoneOfMatcher
-    interface IAnyOfMatcher with
-      member this.NoneOf(indices:Array) =
-        this:>INoneOfMatcher
-    interface IAllOfMatcher with
-      member this.AnyOf(indices:Array) =
-        this:>IAnyOfMatcher
-      member this.NoneOf(indices:Array) =
-        this:>INoneOfMatcher
-    interface ICompoundMatcher with
-      member this.AllOfIndices
-        with get() = _allOfIndices
-        and  set(value) = _allOfIndices <- value
-      member this.AnyOfIndices
-        with get() = _anyOfIndices
-        and  set(value) = _anyOfIndices <- value
-      member this.NoneOfIndices
-        with get() = _noneOfIndices
-        and  set(value) = _noneOfIndices <- value
-    interface IMatcher with
-      member this.Id with get() = _id
-      member this.Indices with get():int[] = if _indices.Length = 0 then
-                                               _indices <- this.mergeIndices()
-                                             _indices
-        (** 
-         * Matches 
-         *
-         * @param entity
-         * @returns true if entity is a match 
-         *)
-      member this.Matches(entity:Entity) =
-        let matchesAllOf = if _allOfIndices.Length = 0 then true else entity.HasComponents(_allOfIndices)
-        let matchesAnyOf = if _anyOfIndices.Length = 0 then true else entity.HasAnyComponent(_allOfIndices)
-        let matchesNoneOf = if _noneOfIndices.Length = 0 then true else not(entity.HasAnyComponent(_allOfIndices))
-        matchesAllOf && matchesAnyOf && matchesNoneOf
-
-
+      toStringCache
   (** 
    * Group Events
    *)
   and GroupChangedArgs(entity, index, newComponent) =
     inherit System.EventArgs()
-    member this.Entity = entity
-    member this.Index = index
-    member this.Component = newComponent
+    member this.entity = entity
+    member this.index = index
+    member this.newComponent = newComponent
 
   and GroupUpdatedArgs(entity, index, prevComponent, newComponent) =
     inherit System.EventArgs()
-    member this.Entity = entity
-    member this.Index = index
-    member this.Component = prevComponent
-    member this.Replacement = newComponent
+    member this.entity = entity
+    member this.index = index
+    member this.prevComponent = prevComponent
+    member this.newComponent = newComponent
 
   and GroupChangedDelegate = delegate of obj * GroupChangedArgs -> unit
   and GroupUpdatedDelegate = delegate of obj * GroupUpdatedArgs -> unit
@@ -579,22 +489,27 @@ module EntitasECS =
   (** 
    * Group
    *)
-  and Group(matcher:IMatcher) =
+  and Group (matcher:Matcher) =
+   
+    [<DefaultValue>] val mutable singleEntityCache:Entity
+    [<DefaultValue>] val mutable singleEntityCacheFlag:bool
 
-    let _onEntityAdded                  = new Event<GroupChangedDelegate, GroupChangedArgs>()
-    let _onEntityRemoved                = new Event<GroupChangedDelegate, GroupChangedArgs>()
-    let _onEntityUpdated                = new Event<GroupUpdatedDelegate, GroupUpdatedArgs>()
-    let _entities:HashSet<Entity>       = new HashSet<Entity>(EntityEqualityComparer.comparer)
-    let mutable _entitiesCache          = Array.empty<Entity>
-    let mutable _toStringCache          = ""
 
-    member val OnEntityAdded            = _onEntityAdded.Publish
-    member val OnEntityRemoved          = _onEntityRemoved.Publish
-    member val OnEntityUpdated          = _onEntityUpdated.Publish
+    let onEntityAdded                     = new Event<GroupChangedDelegate, GroupChangedArgs>()
+    let onEntityRemoved                   = new Event<GroupChangedDelegate, GroupChangedArgs>()
+    let onEntityUpdated                   = new Event<GroupUpdatedDelegate, GroupUpdatedArgs>()
+    let entities:HashSet<Entity>          = new HashSet<Entity>(EntityEqualityComparer.comparer)
+    let mutable singleEntityValue         = new Entity()
+    let mutable entitiesCache             = Array.empty<Entity>
+    let mutable toStringCache             = ""
 
-    member this.Count with get()        = _entities.Count
+    member val OnEntityAdded              = onEntityAdded.Publish
+    member val OnEntityRemoved            = onEntityRemoved.Publish
+    member val OnEntityUpdated            = onEntityUpdated.Publish
+    member val matcher                    = matcher
 
-    //member this.CreateObserver
+    member this.count                     with get() = entities.Count
+
     (** 
      * HandleEntitySilently
      *
@@ -602,9 +517,9 @@ module EntitasECS =
      *)
     member this.HandleEntitySilently(entity) =
       if matcher.Matches(entity) then
-        this.AddEntitySilently(entity)
+        this.addEntitySilently(entity)
       else
-        this.RemoveEntitySilently(entity)
+        this.removeEntitySilently(entity)
 
     (** 
      * HandleEntity
@@ -615,9 +530,9 @@ module EntitasECS =
      *)
     member this.HandleEntity(entity, index, comp) =
       if matcher.Matches(entity) then
-        this.AddEntity(entity, index, comp)
+        this.addEntity(entity, index, comp)
       else
-        this.RemoveEntity(entity, index, comp)
+        this.removeEntity(entity, index, comp)
 
     (** 
      * HandleEntity
@@ -628,20 +543,21 @@ module EntitasECS =
      * @paran new component
      *)
     member this.UpdateEntity(entity, index, previousComponent, newComponent) =
-      if _entities.Contains(entity) then
-        _onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, previousComponent))
-        _onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, newComponent))
-        _onEntityUpdated.Trigger(this, new GroupUpdatedArgs(entity, index, previousComponent, newComponent))
+      if entities.Contains(entity) then
+        onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, previousComponent))
+        onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, newComponent))
+        onEntityUpdated.Trigger(this, new GroupUpdatedArgs(entity, index, previousComponent, newComponent))
 
     (** 
      * addEntitySilently
      *
      * @param entity
      *)
-    member this.AddEntitySilently(entity) =
-      let added  = _entities.Add(entity)
+    member this.addEntitySilently(entity) =
+      let added  = entities.Add(entity)
       if added then
-        _entitiesCache <- Array.empty<Entity>
+        entitiesCache <- Array.empty<Entity>
+        this.singleEntityCacheFlag <- false
         entity.Retain()
       added
 
@@ -650,16 +566,17 @@ module EntitasECS =
      *
      * @param entity
      *)
-    member this.RemoveEntitySilently(entity) =
-      let removed = _entities.Remove(entity)
+    member this.removeEntitySilently(entity) =
+      let removed = entities.Remove(entity)
       if removed then
-        _entitiesCache <- Array.empty<Entity>
+        entitiesCache <- Array.empty<Entity>
+        this.singleEntityCacheFlag <- false
         entity.Release()
       removed
 
-    member this.AddEntity(entity, index, comp) =
-      if this.AddEntitySilently(entity) then
-        _onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, comp))
+    member this.addEntity(entity, index, comp) =
+      if this.addEntitySilently(entity) then
+        onEntityAdded.Trigger(this, new GroupChangedArgs(entity, index, comp))
 
     (** 
      * removeEntity
@@ -668,9 +585,9 @@ module EntitasECS =
      * @param index
      * @param component
      *)
-    member this.RemoveEntity(entity, index, comp) =
-      if this.RemoveEntitySilently(entity) then
-        _onEntityRemoved.Trigger(this, new GroupChangedArgs(entity, index, comp))
+    member this.removeEntity(entity, index, comp) =
+      if this.removeEntitySilently(entity) then
+        onEntityRemoved.Trigger(this, new GroupChangedArgs(entity, index, comp))
 
     (** 
      * ContainsEntity
@@ -679,7 +596,7 @@ module EntitasECS =
      * @returns true if the group has the entity
      *)
     member this.ContainsEntity(entity) =
-      _entities.Contains(entity)
+      entities.Contains(entity)
     
     (** 
      * GetSingleEntity
@@ -687,16 +604,19 @@ module EntitasECS =
      * @returns entity or null
      *)
     member this.GetSingleEntity() =
-      match _entities.Count with
-      | 1 ->
-        use mutable enumerator = _entities.GetEnumerator()
-        enumerator.MoveNext() |> ignore
-        enumerator.Current
-      | 0 -> 
-        //Entity.Empty
-        Entity.Empty.Force()
-      | _ ->
-        failwithf "Single Entity Execption %s" (matcher.ToString())
+      if not(this.singleEntityCacheFlag) then
+        match entities.Count with
+        | 1 ->
+          use mutable enumerator = entities.GetEnumerator()
+          enumerator.MoveNext() |> ignore
+          this.singleEntityCache <- enumerator.Current
+          this.singleEntityCacheFlag <- true
+        | 0 -> // return a dummy 'null' entity
+          this.singleEntityCache <- Entity.NullEntity
+          this.singleEntityCacheFlag <- false
+        | _ ->
+          failwithf "Single Entity Execption %s" (matcher.ToString())
+      this.singleEntityCache
     
     (** 
      * GetEntities
@@ -704,77 +624,21 @@ module EntitasECS =
      * @returns the array of entities
      *)
     member this.GetEntities() =
-      if _entitiesCache.Length = 0 then
-        _entitiesCache <- (Array.zeroCreate _entities.Count)  
-        _entities.CopyTo(_entitiesCache)
-      _entitiesCache
-
-  and GroupEventType =
-    | OnEntityAdded = 0
-    | OnEntityRemoved = 1
-    | OnEntityAddedOrRemoved = 2
-
-  and GroupObserver(groups: Group[], eventTypes: GroupEventType[]) as this =
-
-    let _collectedEntities              = new HashSet<Entity>()
-
-    do
-      if groups.Length <> eventTypes.Length then
-        failwithf "Unbalanced count with groups (%d) and event types (%d)" groups.Length eventTypes.Length
-      this.Activate()
-
-    //static member Empty with get() = new GroupObserver(Array.empty<Group>, Array.empty<GroupEventType>) 
-    static member Empty = lazy(new GroupObserver(Array.empty<Group>, Array.empty<GroupEventType>))
-
-    member this.CollectedEntities with get() = _collectedEntities
-
-    member this.AddEntity =
-      new GroupChangedDelegate(fun sender evt ->
-        if not(_collectedEntities.Contains(evt.Entity)) then
-          _collectedEntities.Add(evt.Entity) |> ignore
-          evt.Entity.Retain()
-      )
-
-    member this.Activate() =
-      for i=0 to groups.Length-1 do
-        let group:Group = groups.[i]
-        let eventType = eventTypes.[i]
-        match eventType with 
-        | GroupEventType.OnEntityAdded ->
-            group.OnEntityAdded.RemoveHandler(this.AddEntity)
-            group.OnEntityAdded.AddHandler(this.AddEntity)
-        | GroupEventType.OnEntityRemoved ->
-            group.OnEntityRemoved.RemoveHandler(this.AddEntity)
-            group.OnEntityRemoved.AddHandler(this.AddEntity)
-        | GroupEventType.OnEntityAddedOrRemoved ->
-            group.OnEntityAdded.RemoveHandler(this.AddEntity)
-            group.OnEntityAdded.AddHandler(this.AddEntity)
-            group.OnEntityRemoved.RemoveHandler(this.AddEntity)
-            group.OnEntityRemoved.AddHandler(this.AddEntity)
-        | _ ->
-            failwithf "Invalid eventType %s in GroupObserver::activate" (eventType.ToString())
-
-    member this.Deactivate() =
-      for group in groups do
-        group.OnEntityAdded.RemoveHandler(this.AddEntity)
-        group.OnEntityRemoved.RemoveHandler(this.AddEntity)
-      this.ClearCollectedEntities()
-
-    member this.ClearCollectedEntities() = 
-      for entity in _collectedEntities do
-        entity.Release()
-      _collectedEntities = new HashSet<Entity>() |> ignore
+      if entitiesCache.Length = 0 then
+        entitiesCache <- (Array.zeroCreate entities.Count)  
+        entities.CopyTo(entitiesCache)
+      entitiesCache
 
   (** 
-   * Pool Events
+   * World Events
    *)
   and EntityEventArgs(entity) =
     inherit System.EventArgs()
-    member this.Entity = entity
+    member this.entity = entity
 
   and GroupEventArgs(group) =
     inherit System.EventArgs()
-    member this.Group = group
+    member this.group = group
 
   and GroupCreatedDelegate = delegate of obj * GroupEventArgs -> unit
   and GroupClearedDelegate = delegate of obj * GroupEventArgs -> unit
@@ -783,39 +647,44 @@ module EntitasECS =
   and EntityDestroyedDelegate = delegate of obj * EntityEventArgs -> unit
 
   (** 
-   * Pool
+   * World
    *)
-  and Pool(totalComponents:int) as this =
+  and World (totalComponents:int) as this =
 
-    let _onEntityCreated                = new Event<EntityCreatedDelegate, EntityEventArgs>() 
-    let _onEntityWillBeDestroyed        = new Event<EntityWillBeDestroyedDelegate, EntityEventArgs>()
-    let _onEntityDestroyed              = new Event<EntityDestroyedDelegate, EntityEventArgs>()
-    let _onGroupCreated                 = new Event<GroupCreatedDelegate, GroupEventArgs>()
-    let _onGroupCleared                 = new Event<GroupClearedDelegate, GroupEventArgs>()
-    let _entities                       = new HashSet<Entity>(EntityEqualityComparer.comparer)
-    let _groups                         = new Dictionary<string,Group>()
-    let _groupsForIndex                 = (Array.zeroCreate (totalComponents+1))
-    let _reusableEntities               = new Stack<Entity>()
-    let _retainedEntities               = new HashSet<Entity>()
-    let mutable _creationIndex          = 0
-    let mutable _entitiesCache          = (Array.zeroCreate 0)
+    let onEntityCreated                   = new Event<EntityCreatedDelegate, EntityEventArgs>() 
+    let onEntityWillBeDestroyed           = new Event<EntityWillBeDestroyedDelegate, EntityEventArgs>()
+    let onEntityDestroyed                 = new Event<EntityDestroyedDelegate, EntityEventArgs>()
+    let onGroupCreated                    = new Event<GroupCreatedDelegate, GroupEventArgs>()
+    let onGroupCleared                    = new Event<GroupClearedDelegate, GroupEventArgs>()
+    let entities                          = new HashSet<Entity>(EntityEqualityComparer.comparer)
+    let groups                            = new Dictionary<string,Group>()
+    let groupsForIndex                    = (Array.zeroCreate (totalComponents+1))
+    let reusableEntities                  = new Stack<Entity>()
+    let retainedEntities                  = new HashSet<Entity>()
+    let initializeSystems                 = new ResizeArray<IInitializeSystem>()
+    let executeSystems                    = new ResizeArray<IExecuteSystem>()
+    let mutable creationIndex             = 0
+    let mutable entitiesCache             = (Array.zeroCreate 0)
+    let mutable _deltaTime                = 0.0f
 
     [<DefaultValue>]
-    static val mutable private _instance:Pool
-    static member Instance with get() = Pool._instance
-    do Pool._instance <- this
+    static val mutable private _instance:World
+    static member Instance with get() = World._instance
+    do World._instance <- this
 
-    member val OnEntityCreated          = _onEntityCreated.Publish
-    member val OnEntityWillBeDestroyed  = _onEntityWillBeDestroyed.Publish
-    member val OnEntityDestroyed        = _onEntityDestroyed.Publish
-    member val OnGroupCreated           = _onGroupCreated.Publish
-    member val OnGroupCleared           = _onGroupCleared.Publish
+    member val OnEntityCreated            = onEntityCreated.Publish
+    member val OnEntityWillBeDestroyed    = onEntityWillBeDestroyed.Publish
+    member val OnEntityDestroyed          = onEntityDestroyed.Publish
+    member val OnGroupCreated             = onGroupCreated.Publish
+    member val OnGroupCleared             = onGroupCleared.Publish
 
-    member this.TotalComponents         with get() = totalComponents 
-    member this.Count                   with get() = _entities.Count
-    member this.ReusableEntitiesCount   with get() = _reusableEntities.Count
-    member this.RetainedEntitiesCount   with get() = _retainedEntities.Count
-    member this.ReusableEntities        with get() = _reusableEntities
+    member this.deltaTime                 with get() = _deltaTime
+    member this.totalComponents           with get() = totalComponents 
+    member this.count                     with get() = entities.Count
+    member this.reusableEntitiesCount     with get() = reusableEntities.Count
+    member this.retainedEntitiesCount     with get() = retainedEntities.Count
+    member this.ReusableEntities          with get() = reusableEntities
+
 
     (** 
      * CreateEntity
@@ -824,20 +693,24 @@ module EntitasECS =
      *)
     member this.CreateEntity(name) =
       let mutable entity = 
-        match _reusableEntities.Count with
-        | 0 -> new Entity(totalComponents+1)
-        | _ -> _reusableEntities.Pop()
+        match reusableEntities.Count with
+        | 0 -> 
+          new Entity(totalComponents+1)
+        | _ -> 
+          reusableEntities.Pop()
 
-      entity.Init(name, _creationIndex+1)
+      entity.IsEnabled <- true
+      entity.Id <- creationIndex+1
+      entity.Name <- name
       entity.Retain()
-      entity.OnComponentAdded.AddHandler(this.UpdateGroupsComponentAdded)
-      entity.OnComponentRemoved.AddHandler(this.UpdateGroupsComponentRemoved)
-      entity.OnComponentReplaced.AddHandler(this.UpdateGroupsComponentReplaced)
-      entity.OnEntityReleased.AddHandler(this.OnEntityReleased)
-      _creationIndex <- entity.Id
-      _entities.Add(entity) |> ignore    
-      _entitiesCache <- (Array.zeroCreate 0)
-      _onEntityCreated.Trigger(this, new EntityEventArgs(entity))
+      entity.OnComponentAdded.AddHandler(this.updateGroupsComponentAdded)
+      entity.OnComponentRemoved.AddHandler(this.updateGroupsComponentRemoved)
+      entity.OnComponentReplaced.AddHandler(this.updateGroupsComponentReplaced)
+      entity.OnEntityReleased.AddHandler(this.onEntityReleased)
+      creationIndex <- entity.Id
+      entities.Add(entity) |> ignore    
+      entitiesCache <- (Array.zeroCreate 0)
+      onEntityCreated.Trigger(this, new EntityEventArgs(entity))
       entity
 
     (** 
@@ -847,19 +720,19 @@ module EntitasECS =
      * @returns new entity
      *)
     member this.DestroyEntity(entity:Entity) =
-      let removed = _entities.Remove(entity)
+      let removed = entities.Remove(entity)
       if not removed then 
         failwithf "Pool does not contain entity, could not destroy %s" (entity.ToString())
 
-      _entitiesCache <- (Array.zeroCreate 0)
-      _onEntityWillBeDestroyed.Trigger(this, new EntityEventArgs(entity))
+      entitiesCache <- (Array.zeroCreate 0)
+      onEntityWillBeDestroyed.Trigger(this, new EntityEventArgs(entity))
       entity.destroy() |> ignore
-      _onEntityDestroyed.Trigger(this, new EntityEventArgs(entity))
-      if entity.RefCount = 1 then
-        entity.OnEntityReleased.RemoveHandler(this.OnEntityReleased)
-        _reusableEntities.Push(entity)
+      onEntityDestroyed.Trigger(this, new EntityEventArgs(entity))
+      if entity.refCount = 1 then
+        entity.OnEntityReleased.RemoveHandler(this.onEntityReleased)
+        reusableEntities.Push(entity)
       else
-        _retainedEntities.Add(entity) |> ignore
+        retainedEntities.Add(entity) |> ignore
       entity.Release()
 
     (** 
@@ -869,8 +742,8 @@ module EntitasECS =
     member this.DestroyAllEntities() =
       for entity in this.GetEntities() do
         this.DestroyEntity(entity)
-      _entities.Clear()
-      if this.RetainedEntitiesCount <> 0 then
+      entities.Clear()
+      if this.retainedEntitiesCount <> 0 then
         failwith "Pool still has retained entities" 
     
     (** 
@@ -880,7 +753,7 @@ module EntitasECS =
      * @returns true if entity is found
      *)
     member this.HasEntity(entity) =
-      _entities.Contains(entity)
+      entities.Contains(entity)
 
     (** 
      * GetEntities
@@ -888,26 +761,10 @@ module EntitasECS =
      * @returns array of entities
      *)
     member this.GetEntities() =
-      if _entitiesCache.Length = 0 then
-        _entitiesCache <- (Array.zeroCreate _entities.Count)
-        _entities.CopyTo(_entitiesCache)
-      _entitiesCache
-
-    static member SetPool(system: ISystem, pool: Pool) =
-        match system with
-        | :? ISetPool as s -> s.SetPool(pool)
-        | _ -> ()
-        system
-
-    member this.CreateSystem(system: ISystem):ISystem =
-        Pool.SetPool(system, this) |> ignore
-        match system with 
-        | :? IReactiveSystem as s ->
-            ReactiveSystem(this, s) :> ISystem
-        | :? IMultiReactiveSystem as s ->
-            ReactiveSystem(this, s) :> ISystem
-        | _ -> system
-
+      if entitiesCache.Length = 0 then
+        entitiesCache <- (Array.zeroCreate entities.Count)
+        entities.CopyTo(entitiesCache)
+      entitiesCache
 
     (** 
      * GetGroup
@@ -916,19 +773,19 @@ module EntitasECS =
      * @returns group for matcher
      *)
     member this.GetGroup(matcher) =
-      match _groups.ContainsKey(matcher.ToString()) with
+      match groups.ContainsKey(matcher.ToString()) with
       | true -> 
-        _groups.[matcher.ToString()]
+        groups.[matcher.ToString()]
       | _ ->
-        let group = new Group(matcher)
+        let group = new Group(matcher:Matcher)
         for entity in this.GetEntities() do
           group.HandleEntitySilently(entity) |> ignore
-        _groups.Add(matcher.ToString(), group) |> ignore
-        for index in (matcher:>IMatcher).Indices do
-          if (IsNull(_groupsForIndex.[index])) then
-            _groupsForIndex.[index] <- new ResizeArray<Group>()
-          _groupsForIndex.[index].Add(group)
-        _onGroupCreated.Trigger(this, new GroupEventArgs(group))
+        groups.Add(matcher.ToString(), group) |> ignore
+        for index in matcher.Indices do
+          if (IsNull(groupsForIndex.[index])) then
+            groupsForIndex.[index] <- new ResizeArray<Group>()
+          groupsForIndex.[index].Add(group)
+        onGroupCreated.Trigger(this, new GroupEventArgs(group))
         group
 
     (** 
@@ -936,207 +793,103 @@ module EntitasECS =
      *
      *)
     member this.ClearGroups() =
-      for group in _groups.Values do
+      for group in groups.Values do
         for i=0 to group.GetEntities().Length-1 do
           group.GetEntities().[i].Release()
-        _onGroupCleared.Trigger(this, GroupEventArgs(group))
+        onGroupCleared.Trigger(this, GroupEventArgs(group))
 
-      _groups.Clear()
-      for i=0 to _groupsForIndex.Length-1 do
-        _groupsForIndex.[i] <- null
+      groups.Clear()
+      for i=0 to groupsForIndex.Length-1 do
+        groupsForIndex.[i] <- null
 
     (** 
      * ResetCreationIndex
      *
      *)
     member this.ResetCreationIndex() =
-      _creationIndex <- 0
+      creationIndex <- 0
 
     (** 
      * OnComponentAdded
      *
      *)
-    member this.UpdateGroupsComponentAdded =
+    member this.updateGroupsComponentAdded =
       new ComponentAddedDelegate(fun sender evt ->
-        let groups = _groupsForIndex.[evt.Index]
+        let groups = groupsForIndex.[evt.index]
         if not(IsNull(groups)) then
           for group in groups do
-            group.HandleEntity(sender:?>Entity, evt.Index, evt.Component)
+            group.HandleEntity(sender:?>Entity, evt.index, evt.newComponent)
       )
 
     (** 
      * OnComponentRemoved
      *
      *)
-    member this.UpdateGroupsComponentRemoved =
+    member this.updateGroupsComponentRemoved =
       new ComponentRemovedDelegate(fun sender evt ->
-        let groups = _groupsForIndex.[evt.Index]
+        let groups = groupsForIndex.[evt.index]
         if not(IsNull(groups)) then
           for group in groups do
-            group.HandleEntity(sender:?>Entity, evt.Index, evt.Component)
+            group.HandleEntity(sender:?>Entity, evt.index, evt.previous)
       )
 
     (** 
      * OnComponentReplaced
      *
      *)
-    member this.UpdateGroupsComponentReplaced =
+    member this.updateGroupsComponentReplaced =
       new ComponentReplacedDelegate(fun sender evt ->
-        let groups = _groupsForIndex.[int evt.Index]
+        let groups = groupsForIndex.[int evt.index]
         if not(IsNull(groups)) then
           for group in groups do
-            group.UpdateEntity(sender:?>Entity, evt.Index, evt.Component, evt.Replacement)
+            group.UpdateEntity(sender:?>Entity, evt.index, evt.previous, evt.replacement)
       )
 
     (** 
      * OnComponentReleased
      *
      *)
-    member this.OnEntityReleased =
+    member this.onEntityReleased =
       new EntityReleasedDelegate (fun sender evt ->
         let entity = sender:?>Entity
 
         if entity.IsEnabled then
-          failwithf "Entity is not destroyed, cannot release entity %d/%s" (entity.RefCount) (entity.ToString())
+          failwithf "Entity is not destroyed, cannot release entity %d/%s" (entity.refCount) (entity.ToString())
 
-        entity.OnEntityReleased.RemoveHandler(this.OnEntityReleased)
-        _retainedEntities.Remove(entity) |> ignore
+        entity.OnEntityReleased.RemoveHandler(this.onEntityReleased)
+        retainedEntities.Remove(entity) |> ignore
+        //reusableEntities.Push(entity)
       )
-
-
-
-  and Systems() =
-
-    let _initializeSystems              = new ResizeArray<IInitializeSystem>()
-    let _executeSystems                 = new ResizeArray<IExecuteSystem>()
 
     (** 
      * Add 
      *
      * @param system
      *)
-    member this.Add(system:ISystem):Systems =
-
+    member this.Add(system:obj) =
       match system with 
-      | :? ReactiveSystem as reactiveSystem ->
-        match box reactiveSystem.subsystem with
-        | :? IInitializeSystem as initializeSystem ->
-            _initializeSystems.Add(initializeSystem)
-        | _ -> ()
       | :? IInitializeSystem as initializeSystem ->
-        _initializeSystems.Add(initializeSystem)
-      | _ -> ()
+        initializeSystems.Add(initializeSystem)
+      | _ -> ignore()
 
       match system with 
       | :? IExecuteSystem as executeSystem ->
-        _executeSystems.Add(executeSystem)
-      | _ -> ()
-      this
+        executeSystems.Add(executeSystem)
+      | _ -> ignore()
 
     (** 
      * Initialize 
      *
      *)
     member this.Initialize() =
-      for system in _initializeSystems do
+      for system in initializeSystems do
         system.Initialize()
     
     (** 
      * Execute
      *
      *)
-    member this.Execute() =
-      for system in _executeSystems do
+    member this.Execute(delta) =
+      _deltaTime <- delta
+      for system in executeSystems do
         system.Execute()
-
-    member this.ClearReactiveSystems() =
-      for system in _executeSystems do
-        match system with
-        | :? ReactiveSystem as system -> system.Clear()
-        | :? Systems as system -> system.ClearReactiveSystems()
-        | _ -> ()
-
-
-  and ReactiveSystem(pool:Pool, subsystem: IReactiveExecuteSystem) =
-
-    let mutable _buffer = new ResizeArray<Entity>()
-
-    let _clearAfterExecute = subsystem :? IClearReactiveSystem 
-
-    let _ensureComponents =
-        match subsystem with
-        | :? IEnsureComponents as s -> s.EnsureComponents
-        | _ -> Matcher.Empty.Force():>IMatcher
-
-    let _excludeComponents = 
-        match subsystem with
-        | :? IExcludeComponents as s -> s.ExcludeComponents
-        | _ -> Matcher.Empty.Force():>IMatcher
-
-    let groups = new ResizeArray<Group>()
-    let eventTypes = new ResizeArray<GroupEventType>()
-    let _observer = 
-      match subsystem with
-
-      | :? IReactiveSystem as s -> 
-        let groups = Array.init 1 (fun i -> s.Trigger.Trigger)
-        let eventTypes = Array.init 1 (fun i -> s.Trigger.EventType)
-        new GroupObserver(groups, eventTypes)
-
-      | :? IMultiReactiveSystem as s -> 
-        let groups = Array.init s.Triggers.Length (fun i -> s.Triggers.[i].Trigger)
-        let eventTypes = Array.init s.Triggers.Length (fun i -> s.Triggers.[i].EventType)
-        new GroupObserver(groups, eventTypes)
-
-      | _ ->  
-        GroupObserver.Empty.Force()
-
-    member this.subsystem with get() = subsystem
-
-    member this.Clear() =
-      _observer.ClearCollectedEntities()
-
-    member this.Activate() =
-      _observer.Activate()
-
-    member this.Deactivate() =
-      _observer.Deactivate()
-
-
-    interface IExecuteSystem with
-      member this.Execute() = 
-        let collectedEntities = _observer.CollectedEntities //|> Seq.toArray
-        if collectedEntities.Count <> 0 then
-          if _ensureComponents.Indices.Length > 0 then
-            if _excludeComponents.Indices.Length > 0 then
-              for entity in collectedEntities do
-                if _ensureComponents.Matches(entity) && _excludeComponents.Matches(entity) then
-                  entity.Retain()
-                  _buffer.Add(entity)
-
-            else
-              for entity in collectedEntities do
-                if _ensureComponents.Matches(entity) then
-                  entity.Retain()
-                  _buffer.Add(entity)
-
-          else
-            if _excludeComponents.Indices.Length > 0 then
-              for entity in collectedEntities do
-                if _excludeComponents.Matches(entity) then
-                  entity.Retain()
-                  _buffer.Add(entity)
-
-
-        else
-          for entity in collectedEntities do
-            entity.Retain()
-            _buffer.Add(entity)
-
-        _observer.ClearCollectedEntities()
-        if _buffer.Count <> 0 then
-          subsystem.Execute(_buffer.ToArray())
-          for buf in _buffer do
-            buf.Release()
-          _buffer.Clear()
-          if _clearAfterExecute then _observer.ClearCollectedEntities()

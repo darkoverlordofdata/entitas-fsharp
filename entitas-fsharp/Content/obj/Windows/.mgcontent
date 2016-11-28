@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/BackdropBlackLittleSparkBlack.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/bullet.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy1.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy2.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy3.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/explosion.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/fighter.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/particle.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/star.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/tom-thumb-white.png</File>
+    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/bang.png</File>
+  </SourceFiles>
+</SourceFileCollection>
