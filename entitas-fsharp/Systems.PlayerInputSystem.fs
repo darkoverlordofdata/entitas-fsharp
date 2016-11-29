@@ -25,12 +25,12 @@ type PlayerInputSystem(world:World) =
 
             let mouseState = Mouse.GetState()
             let mutable player = group.GetSingleEntity()
-            player.position.x <- (float32)mouseState.X
-            player.position.y <- (float32)mouseState.Y
+            player.Position.X <- (float32)mouseState.X
+            player.Position.Y <- (float32)mouseState.Y
 
             let isFiring = (mouseState.LeftButton = ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Z)
             //let isFiring = Keyboard.GetState().IsKeyDown(Keys.Z)
-            player.isFiring <- true
+            player.IsFiring <- true
 
             if isFiring then
                 if timeToFire <= 0.0f then

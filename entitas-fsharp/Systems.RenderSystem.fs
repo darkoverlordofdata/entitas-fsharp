@@ -13,11 +13,13 @@ open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Content
 
-type RenderPositionSystem(world:World) =
+type RenderSystem(world:World) =
 
     let group = world.GetGroup(Matcher.AllOf(Matcher.View))
 
+    static member val ViewContainer = List.empty<Entity> with get, set
+
     interface IExecuteSystem with
         member this.Execute() =
-            for e in (group.GetEntities()) do
-                viewContainer <- e :: viewContainer
+            for entity in (group.GetEntities()) do
+                RenderSystem.ViewContainer <- entity :: RenderSystem.ViewContainer

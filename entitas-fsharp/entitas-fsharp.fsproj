@@ -70,7 +70,7 @@
     <Compile Include="Systems.ParallaxStarRepeatingSystem.fs" />
     <Compile Include="Systems.PlayerInputSystem.fs" />
     <Compile Include="Systems.RemoveOffscreenShipsSystem.fs" />
-    <Compile Include="Systems.RenderPositionSystem.fs" />
+    <Compile Include="Systems.RenderSystem.fs" />
     <Compile Include="Systems.ScaleTweenSystem.fs" />
     <Compile Include="Systems.SoundEffectSystem.fs" />
     <Compile Include="Game.fs" />

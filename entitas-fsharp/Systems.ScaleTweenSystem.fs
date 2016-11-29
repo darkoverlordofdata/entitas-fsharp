@@ -20,20 +20,19 @@ type ScaleTweenSystem(world:World) =
     interface IExecuteSystem with
         member this.Execute() =
             for e in (group.GetEntities()) do
-                let scaleTween = e.scaleTween
-                if scaleTween.active then
-                    let scale = e.scale
-                    scale.x <- scale.x + (scaleTween.speed * world.deltaTime)
-                    scale.y <- scale.x
-                    Console.WriteLine(sprintf "%s %f %f %f" e.Name scale.x scaleTween.speed world.deltaTime)
-                    if scale.x > scaleTween.max then
-                        scale.x <- scaleTween.max
-                        scale.y <- scale.x
-                        scaleTween.active <- false
-                    elif scale.x < scaleTween.min then
-                        scale.x <- scaleTween.min
-                        scale.y <- scale.x
-                        scaleTween.active <- false
+                let scaleTween = e.ScaleTween
+                if scaleTween.Active then
+                    let scale = e.Scale
+                    scale.X <- scale.X + (scaleTween.Speed * world.deltaTime)
+                    scale.Y <- scale.X
+                    if scale.X > scaleTween.Max then
+                        scale.X <- scaleTween.Max
+                        scale.Y <- scale.X
+                        scaleTween.Active <- false
+                    elif scale.X < scaleTween.Min then
+                        scale.X <- scaleTween.Min
+                        scale.Y <- scale.X
+                        scaleTween.Active <- false
 
                     //let transform = ((e.view).gameObject:?>GameObject).transform
-                    //transform.localScale <- new Vector3(scale.x, scale.y, transform.localScale.z)
+                    //transform.localScale <- new Vector3(scale.X, scale.Y, transform.localScale.z)

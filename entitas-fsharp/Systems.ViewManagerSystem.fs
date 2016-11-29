@@ -30,7 +30,7 @@ type ViewManagerSystem(world:World, content:ContentManager) =
             world.GetGroup(Matcher.Resource).OnEntityAdded.AddHandler(fun sender args ->
 
                 let e = args.entity
-                e.AddView(content.Load<Texture2D>(e.resource.name)) |> ignore
+                e.AddView(content.Load<Texture2D>(e.Resource.Name)) |> ignore
             )
 
 

@@ -33,24 +33,24 @@ type ShmupWarz (width, height) as this =
         world.Add(new ViewManagerSystem(world, this.Content))
         world.Add(new ExpiringSystem(world))
         world.Add(new DestroySystem(world))
-        world.Add(new RenderPositionSystem(world))
+        world.Add(new RenderSystem(world))
  
     let drawSprite(spriteBatch:SpriteBatch) (entity:Entity) =
-        let sprite = entity.view.gameObject:?>Texture2D
+        let sprite = entity.View.GameObject:?>Texture2D
         let scaleX, scaleY = 
             if entity.HasScale then
-                entity.scale.x, entity.scale.y
+                entity.Scale.X, entity.Scale.Y
             else
                 1.0f, 1.0f
         let color = 
             if entity.HasColorTween then
-                Color((int)entity.colorTween.redMin, (int)entity.colorTween.greenMin, (int)entity.colorTween.blueMin)
+                Color((int)entity.ColorTween.RedMin, (int)entity.ColorTween.GreenMin, (int)entity.ColorTween.BlueMin)
             else 
                 Color.White
         let w = int(float32 sprite.Width * scaleX)
         let h = int(float32 sprite.Height * scaleY)
-        let x = int(entity.position.x) - w/2
-        let y = int(entity.position.y) - h/2
+        let x = int(entity.Position.X) - w/2
+        let y = int(entity.Position.Y) - h/2
         spriteBatch.Draw(sprite, Rectangle(x, y, w, h), color)    
 
     override this.Initialize() =
@@ -66,14 +66,14 @@ type ShmupWarz (width, height) as this =
     override this.Update (gameTime) =
         if GamePad.GetState(PlayerIndex.One).Buttons.Back = ButtonState.Pressed then 
             this.Exit()
-        viewContainer <- []
+        RenderSystem.ViewContainer <- []
         world.Execute((float32)gameTime.ElapsedGameTime.Milliseconds*0.001f)
  
     override this.Draw (gameTime) =
         this.GraphicsDevice.Clear Color.Black
         spriteBatch.Value.Begin()
         spriteBatch.Value.Draw(bgdImage.Value, bgdRect, Color.White)   
-        viewContainer
-        |> List.sortBy(fun e -> e.layer.ordinal)
+        RenderSystem.ViewContainer
+        |> List.sortBy(fun e -> e.Layer.Ordinal)
         |> List.iter(drawSprite(spriteBatch.Value))
         spriteBatch.Value.End()

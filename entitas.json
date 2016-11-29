@@ -13,88 +13,88 @@
   },
   "components": {
     "Bounds": [
-      "radius:float32"
+      "Radius:float32"
     ],
     "Bullet": false,
     "ColorTween": [
-      "redMin:float32",
-      "redMax:float32",
-      "redSpeed:float32",
-      "greenMin:float32",
-      "greenMax:float32",
-      "greenSpeed:float32",
-      "blueMin:float32",
-      "blueMax:float32",
-      "blueSpeed:float32",
-      "alphaMin:float32",
-      "alphaMax:float32",
-      "alphaSpeed:float32",
-      "redAnimate:boolean",
-      "greenAnimate:boolean",
-      "blueAnimate:boolean",
-      "alphaAnimate:boolean",
-      "repeat:boolean"
+      "RedMin:float32",
+      "RedMax:float32",
+      "RedSpeed:float32",
+      "GreenMin:float32",
+      "GreenMax:float32",
+      "GreenSpeed:float32",
+      "BlueMin:float32",
+      "BlueMax:float32",
+      "BlueSpeed:float32",
+      "AlphaMin:float32",
+      "AlphaMax:float32",
+      "AlphaSpeed:float32",
+      "RedAnimate:boolean",
+      "GreenAnimate:boolean",
+      "BlueAnimate:boolean",
+      "AlphaAnimate:boolean",
+      "Repeat:boolean"
     ],
     "Enemy": false,
     "Expires": [
-      "delay:float32"
+      "Delay:float32"
     ],
     "Firing": false,
     "Health": [
-      "health:float32",
-      "maximumHealth:float32"
+      "Health:float32",
+      "MaximumHealth:float32"
     ],
     "ParallaxStar": false,
     "Player": false,
     "Position": [
-      "x:float32",
-      "y:float32"
+      "X:float32",
+      "Y:float32"
     ],
     "ScaleTween": [
-      "min:float32",
-      "max:float32",
-      "speed:float32",
-      "repeat:boolean",
-      "active:boolean"
+      "Min:float32",
+      "Max:float32",
+      "Speed:float32",
+      "Repeat:boolean",
+      "Active:boolean"
     ],
     "SoundEffect": [
-      "effect:float32"
+      "Effect:float32"
     ],
     "View": [
-      "gameObject:null"
+      "GameObject:null"
     ],
     "Velocity": [
-      "x:float32",
-      "y:float32"
+      "X:float32",
+      "Y:float32"
     ],
     "Score": [
-      "value:float32"
+      "Value:float32"
     ],
     "Destroy": false,
     "Mouse": [
-      "x:float32",
-      "y:float32"
+      "X:float32",
+      "Y:float32"
     ],
     "Scale": [
-      "x:float32",
-      "y:float32"
+      "X:float32",
+      "Y:float32"
     ],
     "Resource": [
-      "name:string"
+      "Name:string"
     ],
     "Layer": [
-      "ordinal:float32"
+      "Ordinal:float32"
     ],
     "Background": [
-      "filter:null"
+      "Filter:null"
     ],
     "Mine": false,
     "Status": [
-      "percent:float32",
-      "immunity:float32"
+      "Percent:float32",
+      "Immunity:float32"
     ],
     "Life": [
-      "count:float32"
+      "Count:float32"
     ]
   },
   "systems": {
@@ -163,31 +163,31 @@
     "Pool": {
       "createPlayer:void": [],
       "createBullet:void": [
-        "x:float32",
-        "y:float32"
+        "X:float32",
+        "Y:float32"
       ],
       "createParticle:void": [
-        "x:float32",
-        "y:float32"
+        "X:float32",
+        "Y:float32"
       ],
       "createExplosion:void": [
-        "x:float32",
-        "y:float32",
-        "scale:float32"
+        "X:float32",
+        "Y:float32",
+        "Scale:float32"
       ],
       "createEnemy1:void": [],
       "createEnemy2:void": [],
       "createEnemy3:void": [],
       "createBackground:Entity": [],
       "createLife:void": [
-        "ordinal:float32"
+        "Ordinal:float32"
       ],
       "createMine:void": [
-        "health:float32",
-        "x:float32",
-        "y:float32",
-        "velocity:float32",
-        "radius:float32"
+        "Health:float32",
+        "X:float32",
+        "Y:float32",
+        "Velocity:float32",
+        "Radius:float32"
       ],
       "createStatus:void": []
     }

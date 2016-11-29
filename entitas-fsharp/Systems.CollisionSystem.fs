@@ -24,30 +24,30 @@ type CollisionSystem(world:World) =
     let mines = world.GetGroup(Matcher.Mine)
 
     let collidesWith(e1:Entity, e2:Entity) =
-        let position1 = e1.position
-        let position2 = e2.position
+        let position1 = e1.Position
+        let position2 = e2.Position
 
-        let a = float(position1.x) - float(position2.x)
-        let b = float(position1.y) - float(position2.y)
-        (float32(Math.Sqrt(a * a + b * b)) - e1.bounds.radius) < e2.bounds.radius
+        let a = float(position1.X) - float(position2.X)
+        let b = float(position1.Y) - float(position2.Y)
+        (float32(Math.Sqrt(a * a + b * b)) - e1.Bounds.Radius) < e2.Bounds.Radius
 
     let collisionHandler(attack, weapon:Entity, ship:Entity) =
 
         match attack with 
 
         | BulletHitEnemy ->
-            let pos = weapon.position
-            world.CreateSmallExplosion(pos.x, pos.y) |> ignore
-            //ShrapnelController.Spawn(pos.x, pos.y) |> ignore
+            let pos = weapon.Position
+            world.CreateSmallExplosion(pos.X, pos.Y) |> ignore
+            //ShrapnelController.Spawn(pos.X, pos.Y) |> ignore
             weapon.SetDestroy(true) |> ignore
 
-            let mutable health = ship.health
-            health.health <- health.health-1.0f
-            if health.health <= 0.0f then
+            let mutable health = ship.Health
+            health.Health <- health.Health-1.0f
+            if health.Health <= 0.0f then
                 //world.score.value <- world.score.value + int health.maximumHealth
                 ship.SetDestroy(true) |> ignore
-                let position = ship.position
-                world.CreateBigExplosion(position.x, position.y) |> ignore
+                let position = ship.Position
+                world.CreateBigExplosion(position.X, position.Y) |> ignore
             //else
                 //let percentage = Math.Truncate(float(health.health / health.maximumHealth) * 100.0)
                 //let text = ((ship.view).gameObject:?>GameObject).GetComponent("TextMesh")

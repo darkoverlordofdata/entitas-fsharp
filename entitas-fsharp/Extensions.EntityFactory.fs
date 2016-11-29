@@ -32,7 +32,6 @@ module EntityFactory =
     let EFFECT_ASPLODE = 1
     let EFFECT_SMALLASPLODE = 1
     let rnd = new Random()
-    let mutable viewContainer = List.empty<Entity>
 
     type World with
 
@@ -47,7 +46,7 @@ module EntityFactory =
                 .AddLayer((float32)Layer.PLAYER)
                 .AddBounds(1.0f)
                 .AddHealth(100.0f, 100.0f)
-                .AddPosition(pos.X, pos.Y, 0.0f)
+                .AddPosition(pos.X, pos.Y)
                 .SetPlayer(true)
                 .AddResource("images/fighter")
 
@@ -68,8 +67,8 @@ module EntityFactory =
                 .AddLayer((float32)Layer.BULLET)
                 .AddExpires(2.0f)
                 .AddBounds(3.0f)
-                .AddVelocity(0.0f, -800.0f, 0.0f)
-                .AddPosition(x, y, 0.0f)
+                .AddVelocity(0.0f, -800.0f)
+                .AddPosition(x, y)
                 .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
                 .AddSoundEffect(float32(EFFECT_PEW))
                 .SetBullet(true)
@@ -89,8 +88,8 @@ module EntityFactory =
             this.CreateEntity("Mine")
                 .AddLayer((float32)Layer.DEFAULT)
                 .AddBounds(0.25f)
-                .AddVelocity(0.0f, float32(-velocity), 0.0f)
-                .AddPosition(pos.X, pos.Y, 0.0f)
+                .AddVelocity(0.0f, float32(-velocity))
+                .AddPosition(pos.X, pos.Y)
                 .AddHealth(float32(health*10), float32(health*10))
                 .SetMine(true)
                 .AddResource("images/mine"+health.ToString())
@@ -107,7 +106,7 @@ module EntityFactory =
             let pos = new Vector2(float32(x), float32(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height-y))
             this.CreateEntity("Life")
                 .AddLayer((float32)Layer.DEFAULT)
-                .AddPosition(pos.X, pos.Y, 0.0f)
+                .AddPosition(pos.X, pos.Y)
                 .AddLife(float32(ordinal))
                 .AddResource("images/life")
 
@@ -122,7 +121,7 @@ module EntityFactory =
             let pos = new Vector2(float32(x), float32(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height-y))
             this.CreateEntity("Status")
                 .AddLayer((float32)Layer.DEFAULT)
-                .AddPosition(pos.X, pos.Y, 0.0f)
+                .AddPosition(pos.X, pos.Y)
                 .AddResource("images/status")
 
         (** 
@@ -138,8 +137,8 @@ module EntityFactory =
             this.CreateEntity("Enemy1")
                 .AddLayer((float32)Layer.ENEMY1)
                 .AddBounds(35.0f)
-                .AddPosition(pos.X, pos.Y, 0.0f)
-                .AddVelocity(0.0f, float32(40), 0.0f)
+                .AddPosition(pos.X, pos.Y)
+                .AddVelocity(0.0f, float32(40))
                 .AddHealth(10.0f, 10.0f)
                 .SetEnemy(true)
                 .AddResource("images/enemy1")
@@ -157,8 +156,8 @@ module EntityFactory =
             this.CreateEntity("Enemy2")
                 .AddLayer((float32)Layer.ENEMY2)
                 .AddBounds(86.0f)
-                .AddPosition(pos.X, pos.Y, 0.0f)
-                .AddVelocity(0.0f, float32(30), 0.0f)
+                .AddPosition(pos.X, pos.Y)
+                .AddVelocity(0.0f, float32(30))
                 .AddHealth(20.0f, 20.0f)
                 .SetEnemy(true)
                 .AddResource("images/enemy2")
@@ -176,8 +175,8 @@ module EntityFactory =
             this.CreateEntity("Enemy3")
                 .AddLayer((float32)Layer.ENEMY3)
                 .AddBounds(100.0f)
-                .AddPosition(pos.X, pos.Y, 0.0f)
-                .AddVelocity(0.0f, float32(20), 0.0f)
+                .AddPosition(pos.X, pos.Y)
+                .AddVelocity(0.0f, float32(20))
                 .AddHealth(40.0f, 40.0f)
                 .SetEnemy(true)
                 .AddResource("images/enemy3")
@@ -196,7 +195,7 @@ module EntityFactory =
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddPosition(x, y, 0.0f)
+                .AddPosition(x, y)
                 .AddResource("images/explosion")
 
         (** 
@@ -219,7 +218,7 @@ module EntityFactory =
                 .AddScale(scale, scale)
                 .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
                 .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
-                .AddPosition(x, y, 0.0f)
+                .AddPosition(x, y)
                 .AddResource("images/explosion")
 
         (** 
@@ -242,6 +241,6 @@ module EntityFactory =
                 .AddScale(scale, scale)
                 .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
                 .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
-                .AddPosition(x, y, 0.0f)
+                .AddPosition(x, y)
                 .AddResource("images/bang")
 
