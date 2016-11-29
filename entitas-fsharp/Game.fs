@@ -23,11 +23,10 @@ type ShmupWarz (width, height) as this =
     let createSystems(world:World) =
         world.Add(new MovementSystem(world))
         world.Add(new PlayerInputSystem(world))
-        //world.Add(new SoundEffectSystem(world)) Replaced in prefabs
+        world.Add(new SoundEffectSystem(world))
         world.Add(new CollisionSystem(world))
         world.Add(new EntitySpawningTimerSystem(world, width, height))
-        //world.Add(new ParallaxStarRepeatingSystem(world)) Repaced with static background
-        //world.Add(new ColorTweenSystem(world)) Replaced with particles (ShrapnelController)
+        world.Add(new ColorTweenSystem(world))
         world.Add(new ScaleTweenSystem(world))
         world.Add(new RemoveOffscreenShipsSystem(world))
         world.Add(new ViewManagerSystem(world, this.Content))
@@ -66,14 +65,14 @@ type ShmupWarz (width, height) as this =
     override this.Update (gameTime) =
         if GamePad.GetState(PlayerIndex.One).Buttons.Back = ButtonState.Pressed then 
             this.Exit()
-        RenderSystem.ViewContainer <- []
+        RenderSystem.Stage <- []
         world.Execute((float32)gameTime.ElapsedGameTime.Milliseconds*0.001f)
  
     override this.Draw (gameTime) =
         this.GraphicsDevice.Clear Color.Black
         spriteBatch.Value.Begin()
         spriteBatch.Value.Draw(bgdImage.Value, bgdRect, Color.White)   
-        RenderSystem.ViewContainer
+        RenderSystem.Stage
         |> List.sortBy(fun e -> e.Layer.Ordinal)
         |> List.iter(drawSprite(spriteBatch.Value))
         spriteBatch.Value.End()

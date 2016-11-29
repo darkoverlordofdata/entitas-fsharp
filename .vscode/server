@@ -1,0 +1,20 @@
+#!/usr/bin/env node
+/**
+ * tools/server
+ * 
+ * Used by F5 ./.vscode/launch.json
+ * 
+ * author: darkoverlordofdata@gmail.com
+ */
+(function() {
+	const exec = require('child_process').execFile;
+	exec('entitas-fsharp/bin/Debug/entitas_fsharp.exe', (error, stdout, stderr) => {
+		if (error) {
+			console.error(`exec error: ${error}`);
+			return;
+		}
+		console.log(`stdout: ${stdout}`);
+		console.log(`stderr: ${stderr}`);
+	});
+
+})();
