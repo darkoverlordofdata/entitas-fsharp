@@ -4,16 +4,16 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/BackdropBlackLittleSparkBlack.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/bullet.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy1.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy2.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/enemy3.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/explosion.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/fighter.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/particle.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/star.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/tom-thumb-white.png</File>
-    <File>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/bang.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/BackdropBlackLittleSparkBlack.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/bullet.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/enemy1.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/enemy2.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/enemy3.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/explosion.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/fighter.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/particle.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/star.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/tom-thumb-white.png</File>
+    <File>/home/bruce/Git/entitas-fsharp/entitas-fsharp/Content/images/bang.png</File>
   </SourceFiles>
 </SourceFileCollection>

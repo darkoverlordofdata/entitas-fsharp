@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -56,27 +57,65 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
-    <Content Include="packages.config" />
-    <Compile Include="Entitas.fs" />
-    <Compile Include="EntitasExtensions.fs" />
-    <Compile Include="Extensions.EntityFactory.fs" />
-    <Compile Include="Systems.ViewManagerSystem.fs" />
-    <Compile Include="Systems.CollisionSystem.fs" />
-    <Compile Include="Systems.ColorTweenSystem.fs" />
-    <Compile Include="Systems.EntitySpawningTimerSystem.fs" />
-    <Compile Include="Systems.ExpiringSystem.fs" />
-    <Compile Include="Systems.MovementSystem.fs" />
-    <Compile Include="Systems.ParallaxStarRepeatingSystem.fs" />
-    <Compile Include="Systems.PlayerInputSystem.fs" />
-    <Compile Include="Systems.RemoveOffscreenShipsSystem.fs" />
-    <Compile Include="Systems.RenderSystem.fs" />
-    <Compile Include="Systems.ScaleTweenSystem.fs" />
-    <Compile Include="Systems.SoundEffectSystem.fs" />
-    <Compile Include="Game.fs" />
-    <Compile Include="Program.fs" />
+    <Compile Include="..\entitas-fsharp\Entitas.fs">
+      <Link>Entitas.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\EntitasExtensions.fs">
+      <Link>EntitasExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Extensions.EntityFactory.fs">
+      <Link>Extensions.EntityFactory.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ViewManagerSystem.fs">
+      <Link>Systems.ViewManagerSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.CollisionSystem.fs">
+      <Link>Systems.CollisionSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ColorTweenSystem.fs">
+      <Link>Systems.ColorTweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.EntitySpawningTimerSystem.fs">
+      <Link>Systems.EntitySpawningTimerSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ExpiringSystem.fs">
+      <Link>Systems.ExpiringSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.MovementSystem.fs">
+      <Link>Systems.MovementSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ParallaxStarRepeatingSystem.fs">
+      <Link>Systems.ParallaxStarRepeatingSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.PlayerInputSystem.fs">
+      <Link>Systems.PlayerInputSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.RemoveOffscreenShipsSystem.fs">
+      <Link>Systems.RemoveOffscreenShipsSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.RenderSystem.fs">
+      <Link>Systems.RenderSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ScaleTweenSystem.fs">
+      <Link>Systems.ScaleTweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.SoundEffectSystem.fs">
+      <Link>Systems.SoundEffectSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Game.fs">
+      <Link>Game.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Program.fs">
+      <Link>Program.fs</Link>
+    </Compile>
+
     <None Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\packages\MonoGame.Framework.WindowsDX.3.5.1.1679\lib\net40\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <Private>True</Private>
@@ -84,9 +123,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\..\..\opt\MonoGameSDK\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

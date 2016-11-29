@@ -1,24 +1,24 @@
 {
-    // Use IntelliSense to learn about possible Node.js debug attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
+            "name": "Launch",
+            "type": "mono",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceRoot}/.vscode/server",
-            "args": [
-                "${workspaceRoot}/bin/Debug/<target-framework>/<project-name.dll>"
-            ],
-            "cwd": "${workspaceRoot}"
+            "program": "${workspaceRoot}/entitas-fsharp/bin/Debug/entitas_fsharp.exe",
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "",
+            "runtimeExecutable": null,
+            "env": {},
+            "externalConsole": false
         },
         {
-            "type": "node",
+            "name": "Attach",
+            "type": "mono",
             "request": "attach",
-            "name": "Attach to Process",
-            "port": 5858
+            "address": "localhost",
+            "port": 55555
         }
     ]
 }
