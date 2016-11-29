@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>2d348b0c-37e3-4978-8435-89e50b6fb35c</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>shmupwarz_fable</RootNamespace>
+    <AssemblyName>shmupwarz_fable</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
+    <Name>shmupwarz-fable</Name>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;HTML5</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\shmupwarz_fable.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;HTML5</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Release\shmupwarz_fable.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fable.Core">
+      <HintPath>../node_modules/fable-core/Fable.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=$(TargetFSharpCoreVersion), Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <None Include="App.config" />
+    <Compile Include="../node_modules/fable-import-pixi/Fable.Import.Pixi.fs">
+      <Link>Fable.Import.PIXI.fs</Link>
+    </Compile>
+    <Compile Include="Bosco.Mouse.fs" />
+    <Compile Include="Bosco.Keyboard.fs" />
+    <Compile Include="Bosco.Color.fs" />
+    <Compile Include="Bosco.Game.fs" />
+    <Compile Include="Components.fs" />
+    <Compile Include="Entities.fs" />
+    <Compile Include=".\Systems\SystemInterface.fs">
+      <Link>SystemInterface.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\EntitySystem.fs">
+      <Link>EntitySystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\CollisionSystem.fs">
+      <Link>CollisionSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\EnemySpawningSystem.fs">
+      <Link>EnemySpawningSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\InputSystem.fs">
+      <Link>InputSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\MovementSystem.fs">
+      <Link>MovementSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\ExpiringSystem.fs">
+      <Link>ExpiringSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\RemoveOffscreenShipsSystem.fs">
+      <Link>RemoveOffscreenShipsSystem.fs</Link>
+    </Compile>
+    <Compile Include=".\Systems\TweenSystem.fs">
+      <Link>TweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="ShmupWarz.fs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

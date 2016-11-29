@@ -1,0 +1,33 @@
+{
+    "version": "0.1.0",
+    "command": "npm",
+    "isShellCommand": true,
+    "args": ["run"],
+    "tasks": [
+        {
+            "taskName": "compile",
+            "args": [],
+            "isBuildCommand": true,
+            "problemMatcher": [
+                "$lessCompile",
+                "$tsc",
+                "$jshint"
+            ]
+        },{
+            "taskName": "build",
+            "args": [],
+            "isBuildCommand": false,
+            "problemMatcher": []
+        },{
+            "taskName": "clean",
+            "args": [],
+            "isBuildCommand": false,
+            "problemMatcher": []
+        },{
+            "taskName": "test",
+            "args": [],
+            "isBuildCommand": false,
+            "problemMatcher": []
+        }
+    ]
+}
