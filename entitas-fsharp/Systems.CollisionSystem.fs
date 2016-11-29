@@ -44,7 +44,7 @@ type CollisionSystem(world:World) =
             let mutable health = ship.health
             health.health <- health.health-1.0f
             if health.health <= 0.0f then
-                world.score.value <- world.score.value + int health.maximumHealth
+                //world.score.value <- world.score.value + int health.maximumHealth
                 ship.SetDestroy(true) |> ignore
                 let position = ship.position
                 world.CreateBigExplosion(position.x, position.y) |> ignore
@@ -73,7 +73,8 @@ type CollisionSystem(world:World) =
 
     interface IInitializeSystem with
         member this.Initialize() =
-            world.SetStatus(100.0f, 0.0f) |> ignore
-            world.SetScore(0) |> ignore
+            ()
+            //world.SetStatus(100.0f, 0.0f) |> ignore
+            //world.SetScore(0) |> ignore
 
 

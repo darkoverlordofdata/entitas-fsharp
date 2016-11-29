@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SourceFile>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/Content/images/fighter.png</SourceFile>
-  <SourceTime>2016-11-16T18:21:45.6136992-08:00</SourceTime>
+  <SourceTime>2016-11-28T00:08:38.7517354-08:00</SourceTime>
   <DestFile>C:/Users/darko/Documents/GitHub/entitas-fsharp/entitas-fsharp/bin/Debug/Content/images/fighter.xnb</DestFile>
-  <DestTime>2016-11-27T13:04:44.9208859-08:00</DestTime>
+  <DestTime>2016-11-28T18:18:21.0266475-08:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2016-03-29T23:36:08-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

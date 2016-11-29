@@ -25,10 +25,10 @@ type ShmupWarz (width, height) as this =
         world.Add(new PlayerInputSystem(world))
         //world.Add(new SoundEffectSystem(world)) Replaced in prefabs
         world.Add(new CollisionSystem(world))
-        world.Add(new EntitySpawningTimerSystem(world))
+        world.Add(new EntitySpawningTimerSystem(world, width, height))
         //world.Add(new ParallaxStarRepeatingSystem(world)) Repaced with static background
-        //world.Add(new ColorAnimationSystem(world)) Replaced with particles (ShrapnelController)
-        world.Add(new ScaleAnimationSystem(world))
+        //world.Add(new ColorTweenSystem(world)) Replaced with particles (ShrapnelController)
+        world.Add(new ScaleTweenSystem(world))
         world.Add(new RemoveOffscreenShipsSystem(world))
         world.Add(new ViewManagerSystem(world, this.Content))
         world.Add(new ExpiringSystem(world))
@@ -38,15 +38,20 @@ type ShmupWarz (width, height) as this =
     let drawSprite(spriteBatch:SpriteBatch) (entity:Entity) =
         let sprite = entity.view.gameObject:?>Texture2D
         let scaleX, scaleY = 
-            if entity.hasScale then
+            if entity.HasScale then
                 entity.scale.x, entity.scale.y
             else
                 1.0f, 1.0f
+        let color = 
+            if entity.HasColorTween then
+                Color((int)entity.colorTween.redMin, (int)entity.colorTween.greenMin, (int)entity.colorTween.blueMin)
+            else 
+                Color.White
         let w = int(float32 sprite.Width * scaleX)
         let h = int(float32 sprite.Height * scaleY)
         let x = int(entity.position.x) - w/2
         let y = int(entity.position.y) - h/2
-        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), Color.White)    
+        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), color)    
 
     override this.Initialize() =
         this.IsMouseVisible <- true

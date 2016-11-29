@@ -59,12 +59,18 @@ module EntityFactory =
          * @returns new bullet entity
          *)
         member this.CreateBullet(x, y) =
+            //GreenYellow = 0xadff2f
+            let r = (float32) 0xad
+            let g = (float32) 0xff
+            let b = (float32) 0x2f
+            let a = 255.0f
             this.CreateEntity("Bullet")
                 .AddLayer((float32)Layer.BULLET)
                 .AddExpires(2.0f)
-                .AddBounds(0.1f)
+                .AddBounds(3.0f)
                 .AddVelocity(0.0f, -800.0f, 0.0f)
                 .AddPosition(x, y, 0.0f)
+                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
                 .AddSoundEffect(float32(EFFECT_PEW))
                 .SetBullet(true)
                 .AddResource("images/bullet")
@@ -124,13 +130,14 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy1() =
-            let x = rnd.Next(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-35)
+        member this.CreateEnemy1(width, height) =
+            let x = rnd.Next(width-35)
             let y = 45
             let pos = new Vector2(float32(x), float32(y))
+            System.Diagnostics.Debug.WriteLine(sprintf "CreateEnemy1 %d %d" x width)
             this.CreateEntity("Enemy1")
                 .AddLayer((float32)Layer.ENEMY1)
-                .AddBounds(1.0f)
+                .AddBounds(35.0f)
                 .AddPosition(pos.X, pos.Y, 0.0f)
                 .AddVelocity(0.0f, float32(40), 0.0f)
                 .AddHealth(10.0f, 10.0f)
@@ -142,13 +149,14 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy2() =
-            let x = rnd.Next(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-86)
+        member this.CreateEnemy2(width, height) =
+            let x = rnd.Next(width-86)
             let y = 86
             let pos = new Vector2(float32(x), float32(y))
+            System.Diagnostics.Debug.WriteLine(sprintf "CreateEnemy2 %d %d" x width)
             this.CreateEntity("Enemy2")
                 .AddLayer((float32)Layer.ENEMY2)
-                .AddBounds(2.0f)
+                .AddBounds(86.0f)
                 .AddPosition(pos.X, pos.Y, 0.0f)
                 .AddVelocity(0.0f, float32(30), 0.0f)
                 .AddHealth(20.0f, 20.0f)
@@ -160,13 +168,14 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy3() =
-            let x = rnd.Next(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-160)
+        member this.CreateEnemy3(width, height) =
+            let x = rnd.Next(width-320)
             let y = 160
             let pos = new Vector2(float32(x), float32(y))
+            System.Diagnostics.Debug.WriteLine(sprintf "CreateEnemy3 %d %d" x width)
             this.CreateEntity("Enemy3")
                 .AddLayer((float32)Layer.ENEMY3)
-                .AddBounds(3.0f)
+                .AddBounds(100.0f)
                 .AddPosition(pos.X, pos.Y, 0.0f)
                 .AddVelocity(0.0f, float32(20), 0.0f)
                 .AddHealth(40.0f, 40.0f)
@@ -186,7 +195,7 @@ module EntityFactory =
                 .AddLayer((float32)Layer.EXPLOSION)
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
-                .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
+                .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
                 .AddPosition(x, y, 0.0f)
                 .AddResource("images/explosion")
 
@@ -199,11 +208,17 @@ module EntityFactory =
          *)
         member this.CreateBigExplosion(x, y) =
             let scale = 0.5f
+            //LightGoldenrodYellow = 0xfafad2
+            let r = (float32) 0xfa
+            let g = (float32) 0xfa
+            let b = (float32) 0xd2
+            let a = 255.0f
             this.CreateEntity("BigExplosion")
                 .AddLayer((float32)Layer.EXPLOSION)
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
-                .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
+                .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
+                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
                 .AddPosition(x, y, 0.0f)
                 .AddResource("images/explosion")
 
@@ -215,12 +230,18 @@ module EntityFactory =
          * @returns new explosion entity
          *)
         member this.CreateSmallExplosion(x, y) =
-            let scale = 0.1f
+            let scale = 1.0f
+            //PaleGoldenrod = 0xeee8aa
+            let r = (float32) 0xee
+            let g = (float32) 0xe8
+            let b = (float32) 0xaa
+            let a = 255.0f
             this.CreateEntity("SmallExplosion")
                 .AddLayer((float32)Layer.EXPLOSION)
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
-                .AddScaleAnimation(float32(scale/100.0f), scale, float32(-3), false, true)
+                .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
+                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
                 .AddPosition(x, y, 0.0f)
                 .AddResource("images/bang")
 

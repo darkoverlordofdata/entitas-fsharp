@@ -28,8 +28,8 @@ type PlayerInputSystem(world:World) =
             player.position.x <- (float32)mouseState.X
             player.position.y <- (float32)mouseState.Y
 
-            //let isFiring = (mouseState.LeftButton = ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Z)
-            let isFiring = Keyboard.GetState().IsKeyDown(Keys.Z)
+            let isFiring = (mouseState.LeftButton = ButtonState.Pressed) || Keyboard.GetState().IsKeyDown(Keys.Z)
+            //let isFiring = Keyboard.GetState().IsKeyDown(Keys.Z)
             player.isFiring <- true
 
             if isFiring then

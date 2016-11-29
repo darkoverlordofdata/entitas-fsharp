@@ -1,11 +1,11 @@
 {
   "namespace": "ShmupWarz",
-  "src": "lib/src",
+  "src": "entitas-fsharp",
   "output": {
     "javascript": "web/src/schmupwarz/generatedExtensions.js",
     "typescript": "lib/src/generatedComponents.ts",
     "declaration": "lib/ext/schmupwarz.d.ts",
-	"fsharp":"ShmupWarz/"
+	  "fsharp":""
   },
   "alloc": {
     "entities": 200,
@@ -13,22 +13,22 @@
   },
   "components": {
     "Bounds": [
-      "radius:number"
+      "radius:float32"
     ],
     "Bullet": false,
-    "ColorAnimation": [
-      "redMin:number",
-      "redMax:number",
-      "redSpeed:number",
-      "greenMin:number",
-      "greenMax:number",
-      "greenSpeed:number",
-      "blueMin:number",
-      "blueMax:number",
-      "blueSpeed:number",
-      "alphaMin:number",
-      "alphaMax:number",
-      "alphaSpeed:number",
+    "ColorTween": [
+      "redMin:float32",
+      "redMax:float32",
+      "redSpeed:float32",
+      "greenMin:float32",
+      "greenMax:float32",
+      "greenSpeed:float32",
+      "blueMin:float32",
+      "blueMax:float32",
+      "blueSpeed:float32",
+      "alphaMin:float32",
+      "alphaMax:float32",
+      "alphaSpeed:float32",
       "redAnimate:boolean",
       "greenAnimate:boolean",
       "blueAnimate:boolean",
@@ -37,66 +37,64 @@
     ],
     "Enemy": false,
     "Expires": [
-      "delay:number"
+      "delay:float32"
     ],
     "Firing": false,
     "Health": [
-      "health:number",
-      "maximumHealth:number"
+      "health:float32",
+      "maximumHealth:float32"
     ],
     "ParallaxStar": false,
     "Player": false,
     "Position": [
-      "x:number",
-      "y:number",
-	    "z:number"
+      "x:float32",
+      "y:float32"
     ],
-    "ScaleAnimation": [
-      "min:number",
-      "max:number",
-      "speed:number",
+    "ScaleTween": [
+      "min:float32",
+      "max:float32",
+      "speed:float32",
       "repeat:boolean",
       "active:boolean"
     ],
     "SoundEffect": [
-      "effect:number"
+      "effect:float32"
     ],
     "View": [
-      "gameObject:any"
+      "gameObject:null"
     ],
     "Velocity": [
-      "x:number",
-      "y:number",
-	  "z:number"
+      "x:float32",
+      "y:float32"
     ],
     "Score": [
-      "value:number"
+      "value:float32"
     ],
     "Destroy": false,
     "Mouse": [
-      "x:number",
-      "y:number"
+      "x:float32",
+      "y:float32"
     ],
     "Scale": [
-      "x:number",
-      "y:number"
+      "x:float32",
+      "y:float32"
     ],
     "Resource": [
       "name:string"
     ],
     "Layer": [
-      "ordinal:number"
+      "ordinal:float32"
     ],
     "Background": [
-      "filter:any"
+      "filter:null"
     ],
     "Mine": false,
     "Status": [
-      "percent:number",
-      "immunity:number"
+      "percent:float32",
+      "immunity:float32"
     ],
     "Life": [
-      "count:number"
+      "count:float32"
     ]
   },
   "systems": {
@@ -133,11 +131,11 @@
       "IExecuteSystem",
       "IInitializeSystem"
     ],
-    "ColorAnimationSystem": [
+    "ColorTweenSystem": [
       "ISetPool",
       "IExecuteSystem"
     ],
-    "ScaleAnimationSystem": [
+    "ScaleTweenSystem": [
       "ISetPool",
       "IExecuteSystem"
     ],
@@ -165,31 +163,31 @@
     "Pool": {
       "createPlayer:void": [],
       "createBullet:void": [
-        "x:number",
-        "y:number"
+        "x:float32",
+        "y:float32"
       ],
       "createParticle:void": [
-        "x:number",
-        "y:number"
+        "x:float32",
+        "y:float32"
       ],
       "createExplosion:void": [
-        "x:number",
-        "y:number",
-        "scale:number"
+        "x:float32",
+        "y:float32",
+        "scale:float32"
       ],
       "createEnemy1:void": [],
       "createEnemy2:void": [],
       "createEnemy3:void": [],
       "createBackground:Entity": [],
       "createLife:void": [
-        "ordinal:number"
+        "ordinal:float32"
       ],
       "createMine:void": [
-        "health:number",
-        "x:number",
-        "y:number",
-        "velocity:number",
-        "radius:number"
+        "health:float32",
+        "x:float32",
+        "y:float32",
+        "velocity:float32",
+        "radius:float32"
       ],
       "createStatus:void": []
     }

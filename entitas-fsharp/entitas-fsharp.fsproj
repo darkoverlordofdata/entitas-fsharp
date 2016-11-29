@@ -59,14 +59,11 @@
     <None Include="App.config" />
     <Content Include="packages.config" />
     <Compile Include="Entitas.fs" />
-    <Compile Include="Extensions.ComponentExtensions.fs" />
-    <Compile Include="Extensions.EntityExtensions.fs" />
-    <Compile Include="Extensions.MatcherExtensions.fs" />
-    <Compile Include="Extensions.WorldExtensions.fs" />
+    <Compile Include="EntitasExtensions.fs" />
     <Compile Include="Extensions.EntityFactory.fs" />
     <Compile Include="Systems.ViewManagerSystem.fs" />
     <Compile Include="Systems.CollisionSystem.fs" />
-    <Compile Include="Systems.ColorAnimationSystem.fs" />
+    <Compile Include="Systems.ColorTweenSystem.fs" />
     <Compile Include="Systems.EntitySpawningTimerSystem.fs" />
     <Compile Include="Systems.ExpiringSystem.fs" />
     <Compile Include="Systems.MovementSystem.fs" />
@@ -74,7 +71,7 @@
     <Compile Include="Systems.PlayerInputSystem.fs" />
     <Compile Include="Systems.RemoveOffscreenShipsSystem.fs" />
     <Compile Include="Systems.RenderPositionSystem.fs" />
-    <Compile Include="Systems.ScaleAnimationSystem.fs" />
+    <Compile Include="Systems.ScaleTweenSystem.fs" />
     <Compile Include="Systems.SoundEffectSystem.fs" />
     <Compile Include="Game.fs" />
     <Compile Include="Program.fs" />
