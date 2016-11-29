@@ -56,7 +56,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
-    <Content Include="packages.config" />
     <Compile Include="Entitas.fs" />
     <Compile Include="EntitasExtensions.fs" />
     <Compile Include="Extensions.EntityFactory.fs" />
