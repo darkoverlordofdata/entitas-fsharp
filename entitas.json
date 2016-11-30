@@ -1,17 +1,20 @@
 {
   "namespace": "ShmupWarz",
-  "src": "entitas-fsharp",
+  "src": "components",
   "output": {
     "javascript": "web/src/schmupwarz/generatedExtensions.js",
     "typescript": "lib/src/generatedComponents.ts",
     "declaration": "lib/ext/schmupwarz.d.ts",
-	  "fsharp":""
+	  "fsharp":"frodo"
   },
   "alloc": {
     "entities": 200,
     "components": 128
   },
   "components": {
+    "Background": [
+      "Filter:null"
+    ],
     "Bounds": [
       "Radius:float32"
     ],
@@ -35,6 +38,7 @@
       "AlphaAnimate:boolean",
       "Repeat:boolean"
     ],
+    "Destroy": false,
     "Enemy": false,
     "Expires": [
       "Delay:float32"
@@ -44,9 +48,27 @@
       "Health:float32",
       "MaximumHealth:float32"
     ],
+    "Layer": [
+      "Ordinal:float32"
+    ],
+    "Life": [
+      "Count:float32"
+    ],
+    "Mine": false,
+    "Mouse": [
+      "X:float32",
+      "Y:float32"
+    ],
     "ParallaxStar": false,
     "Player": false,
     "Position": [
+      "X:float32",
+      "Y:float32"
+    ],
+    "Resource": [
+      "Name:string"
+    ],
+    "Scale": [
       "X:float32",
       "Y:float32"
     ],
@@ -57,8 +79,15 @@
       "Repeat:boolean",
       "Active:boolean"
     ],
+    "Score": [
+      "Value:float32"
+    ],
     "SoundEffect": [
       "Effect:float32"
+    ],
+    "Status": [
+      "Percent:float32",
+      "Immunity:float32"
     ],
     "View": [
       "GameObject:null"
@@ -66,67 +95,10 @@
     "Velocity": [
       "X:float32",
       "Y:float32"
-    ],
-    "Score": [
-      "Value:float32"
-    ],
-    "Destroy": false,
-    "Mouse": [
-      "X:float32",
-      "Y:float32"
-    ],
-    "Scale": [
-      "X:float32",
-      "Y:float32"
-    ],
-    "Resource": [
-      "Name:string"
-    ],
-    "Layer": [
-      "Ordinal:float32"
-    ],
-    "Background": [
-      "Filter:null"
-    ],
-    "Mine": false,
-    "Status": [
-      "Percent:float32",
-      "Immunity:float32"
-    ],
-    "Life": [
-      "Count:float32"
     ]
   },
   "systems": {
-    "MovementSystem": [
-      "ISetPool",
-      "IExecuteSystem"
-    ],
-    "PlayerInputSystem": [
-      "ISetPool",
-      "IExecuteSystem",
-      "IInitializeSystem"
-    ],
-    "SoundEffectSystem": [
-      "ISetPool",
-      "IExecuteSystem",
-      "IInitializeSystem"
-    ],
     "CollisionSystem": [
-      "ISetPool",
-      "IExecuteSystem",
-      "IInitializeSystem"
-    ],
-    "ExpiringSystem": [
-      "ISetPool",
-      "IExecuteSystem"
-    ],
-    "EntitySpawningTimerSystem": [
-      "ISetPool",
-      "IExecuteSystem",
-      "IInitializeSystem"
-    ],
-    "ParallaxStarRepeatingSystem": [
       "ISetPool",
       "IExecuteSystem",
       "IInitializeSystem"
@@ -135,9 +107,28 @@
       "ISetPool",
       "IExecuteSystem"
     ],
-    "ScaleTweenSystem": [
+    "EntitySpawningTimerSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ExpiringSystem": [
       "ISetPool",
       "IExecuteSystem"
+    ],
+    "MovementSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "ParallaxStarRepeatingSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "PlayerInputSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
     ],
     "RemoveOffscreenShipsSystem": [
       "ISetPool",
@@ -147,49 +138,25 @@
       "ISetPool",
       "IExecuteSystem"
     ],
+    "SoundEffectSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ScaleTweenSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
     "ViewManagerSystem": [
       "IExecuteSystem",
       "IInitializeSystem"
     ]
   },
   "entities": {
-    "Score": true,
-    "Mouse": true,
     "Firing": true,
-    "Status": true,
-    "Player": true
-  },
-  "extensions": {
-    "Pool": {
-      "createPlayer:void": [],
-      "createBullet:void": [
-        "X:float32",
-        "Y:float32"
-      ],
-      "createParticle:void": [
-        "X:float32",
-        "Y:float32"
-      ],
-      "createExplosion:void": [
-        "X:float32",
-        "Y:float32",
-        "Scale:float32"
-      ],
-      "createEnemy1:void": [],
-      "createEnemy2:void": [],
-      "createEnemy3:void": [],
-      "createBackground:Entity": [],
-      "createLife:void": [
-        "Ordinal:float32"
-      ],
-      "createMine:void": [
-        "Health:float32",
-        "X:float32",
-        "Y:float32",
-        "Velocity:float32",
-        "Radius:float32"
-      ],
-      "createStatus:void": []
-    }
+    "Mouse": true,
+    "Player": true,
+    "Score": true,
+    "Status": true
   }
 }

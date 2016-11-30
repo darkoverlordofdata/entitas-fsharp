@@ -1,0 +1,195 @@
+{
+  "namespace": "ShmupWarz",
+  "src": "components",
+  "output": {
+    "javascript": "web/src/schmupwarz/generatedExtensions.js",
+    "typescript": "lib/src/generatedComponents.ts",
+    "declaration": "lib/ext/schmupwarz.d.ts",
+	  "fsharp":""
+  },
+  "alloc": {
+    "entities": 200,
+    "components": 128
+  },
+  "components": {
+    "Bounds": [
+      "Radius:float32"
+    ],
+    "Background": [
+      "Filter:null"
+    ],
+    "Bullet": false,
+    "ColorTween": [
+      "RedMin:float32",
+      "RedMax:float32",
+      "RedSpeed:float32",
+      "GreenMin:float32",
+      "GreenMax:float32",
+      "GreenSpeed:float32",
+      "BlueMin:float32",
+      "BlueMax:float32",
+      "BlueSpeed:float32",
+      "AlphaMin:float32",
+      "AlphaMax:float32",
+      "AlphaSpeed:float32",
+      "RedAnimate:boolean",
+      "GreenAnimate:boolean",
+      "BlueAnimate:boolean",
+      "AlphaAnimate:boolean",
+      "Repeat:boolean"
+    ],
+    "Destroy": false,
+    "Enemy": false,
+    "Expires": [
+      "Delay:float32"
+    ],
+    "Firing": false,
+    "Health": [
+      "Health:float32",
+      "MaximumHealth:float32"
+    ],
+    "Layer": [
+      "Ordinal:float32"
+    ],
+    "Life": [
+      "Count:float32"
+    ],
+    "Mine": false,
+    "Mouse": [
+      "X:float32",
+      "Y:float32"
+    ],
+    "ParallaxStar": false,
+    "Player": false,
+    "Position": [
+      "X:float32",
+      "Y:float32"
+    ],
+    "Resource": [
+      "Name:string"
+    ],
+    "Scale": [
+      "X:float32",
+      "Y:float32"
+    ],
+    "ScaleTween": [
+      "Min:float32",
+      "Max:float32",
+      "Speed:float32",
+      "Repeat:boolean",
+      "Active:boolean"
+    ],
+    "Score": [
+      "Value:float32"
+    ],
+    "SoundEffect": [
+      "Effect:float32"
+    ],
+    "Status": [
+      "Percent:float32",
+      "Immunity:float32"
+    ],
+    "View": [
+      "GameObject:null"
+    ],
+    "Velocity": [
+      "X:float32",
+      "Y:float32"
+    ]
+  },
+  "systems": {
+    "CollisionSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ColorTweenSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "EntitySpawningTimerSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ExpiringSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "MovementSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "ParallaxStarRepeatingSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "PlayerInputSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "RemoveOffscreenShipsSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "RenderPositionSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "SoundEffectSystem": [
+      "ISetPool",
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ],
+    "ScaleTweenSystem": [
+      "ISetPool",
+      "IExecuteSystem"
+    ],
+    "ViewManagerSystem": [
+      "IExecuteSystem",
+      "IInitializeSystem"
+    ]
+  },
+  "entities": {
+    "Firing": true,
+    "Mouse": true,
+    "Player": true,
+    "Score": true,
+    "Status": true
+  },
+  "extensions": {
+    "Pool": {
+      "createPlayer:void": [],
+      "createBullet:void": [
+        "X:float32",
+        "Y:float32"
+      ],
+      "createParticle:void": [
+        "X:float32",
+        "Y:float32"
+      ],
+      "createExplosion:void": [
+        "X:float32",
+        "Y:float32",
+        "Scale:float32"
+      ],
+      "createEnemy1:void": [],
+      "createEnemy2:void": [],
+      "createEnemy3:void": [],
+      "createBackground:Entity": [],
+      "createLife:void": [
+        "Ordinal:float32"
+      ],
+      "createMine:void": [
+        "Health:float32",
+        "X:float32",
+        "Y:float32",
+        "Velocity:float32",
+        "Radius:float32"
+      ],
+      "createStatus:void": []
+    }
+  }
+}

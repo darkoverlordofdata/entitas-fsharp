@@ -51,7 +51,7 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type BulletComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type ColorTweenComponent() =
@@ -77,7 +77,7 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type EnemyComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type ExpiresComponent() =
@@ -87,7 +87,7 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type FiringComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type HealthComponent() =
@@ -98,12 +98,12 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type ParallaxStarComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type PlayerComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type PositionComponent() =
@@ -144,7 +144,7 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type DestroyComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type MouseComponent() =
@@ -176,7 +176,7 @@ module EntitasExtensions =
     [<AllowNullLiteral>]
     type MineComponent() =
         inherit Component()
-        member val active = false with get, set
+        member val Active = false with get, set
 
     [<AllowNullLiteral>]
     type StatusComponent() =
@@ -299,885 +299,885 @@ module EntitasExtensions =
 
         (** Entity: Bounds methods*)
 
-        member this.boundsComponentPool
+        member this.BoundsComponentPool
             with get() = new Stack<BoundsComponent>()
 
-        member this.bounds
+        member this.Bounds
             with get() = this.GetComponent(Component.Bounds):?>BoundsComponent
 
         member this.HasBounds
             with get() = this.HasComponent(Component.Bounds)
  
         member this.ClearBoundsComponentPool() =
-            this.boundsComponentPool.Clear()
+            this.BoundsComponentPool.Clear()
 
-        member this.AddBounds(Radius) =
+        member this.AddBounds(radius) =
             let mutable c =
-                match this.boundsComponentPool.Count with
+                match this.BoundsComponentPool.Count with
                 | 0 -> new BoundsComponent()
-                | _ -> this.boundsComponentPool.Pop()
-            c.Radius <- Radius
+                | _ -> this.BoundsComponentPool.Pop()
+            c.Radius <- radius
             this.AddComponent(Component.Bounds, c) |> ignore
             this
 
-        member this.ReplaceBounds(Radius) =
-            let previousComponent = if this.HasBounds then this.bounds else null
+        member this.ReplaceBounds(radius) =
+            let previousComponent = if this.HasBounds then this.Bounds else null
             let mutable c =
-                match this.boundsComponentPool.Count with
+                match this.BoundsComponentPool.Count with
                 | 0 -> new BoundsComponent()
-                | _ -> this.boundsComponentPool.Pop()
-            c.Radius <- Radius
+                | _ -> this.BoundsComponentPool.Pop()
+            c.Radius <- radius
             this.ReplaceComponent(Component.Bounds, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.boundsComponentPool.Push(previousComponent)
+                this.BoundsComponentPool.Push(previousComponent)
             this
 
         member this.RemoveBounds() =
-            let c = this.bounds
+            let c = this.Bounds
             this.RemoveComponent(Component.Bounds) |> ignore
-            this.boundsComponentPool.Push(c)
+            this.BoundsComponentPool.Push(c)
             this
 
 
         (** Entity: Bullet methods*)
-        static member bulletComponent= new BulletComponent()
+        static member BulletComponent= new BulletComponent()
 
-        member this.isBullet
+        member this.IsBullet
             with get() =
                 this.HasComponent(Component.Bullet)
             and set(value) =
-                if (value <> this.isBullet) then
-                    this.AddComponent(Component.Bullet, Entity.bulletComponent) |> ignore
+                if (value <> this.IsBullet) then
+                    this.AddComponent(Component.Bullet, Entity.BulletComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Bullet) |> ignore
                 
         member this.SetBullet(value) =
-            this.isBullet <- value
+            this.IsBullet <- value
             this
 
 
         (** Entity: ColorTween methods*)
 
-        member this.colorTweenComponentPool
+        member this.ColorTweenComponentPool
             with get() = new Stack<ColorTweenComponent>()
 
-        member this.colorTween
+        member this.ColorTween
             with get() = this.GetComponent(Component.ColorTween):?>ColorTweenComponent
 
         member this.HasColorTween
             with get() = this.HasComponent(Component.ColorTween)
  
         member this.ClearColorTweenComponentPool() =
-            this.colorTweenComponentPool.Clear()
+            this.ColorTweenComponentPool.Clear()
 
-        member this.AddColorTween(RedMin, RedMax, RedSpeed, GreenMin, GreenMax, GreenSpeed, BlueMin, BlueMax, BlueSpeed, AlphaMin, AlphaMax, AlphaSpeed, RedAnimate, GreenAnimate, BlueAnimate, AlphaAnimate, Repeat) =
+        member this.AddColorTween(redMin, redMax, redSpeed, greenMin, greenMax, greenSpeed, blueMin, blueMax, blueSpeed, alphaMin, alphaMax, alphaSpeed, redAnimate, greenAnimate, blueAnimate, alphaAnimate, repeat) =
             let mutable c =
-                match this.colorTweenComponentPool.Count with
+                match this.ColorTweenComponentPool.Count with
                 | 0 -> new ColorTweenComponent()
-                | _ -> this.colorTweenComponentPool.Pop()
-            c.RedMin <- RedMin
-            c.RedMax <- RedMax
-            c.RedSpeed <- RedSpeed
-            c.GreenMin <- GreenMin
-            c.GreenMax <- GreenMax
-            c.GreenSpeed <- GreenSpeed
-            c.BlueMin <- BlueMin
-            c.BlueMax <- BlueMax
-            c.BlueSpeed <- BlueSpeed
-            c.AlphaMin <- AlphaMin
-            c.AlphaMax <- AlphaMax
-            c.AlphaSpeed <- AlphaSpeed
-            c.RedAnimate <- RedAnimate
-            c.GreenAnimate <- GreenAnimate
-            c.BlueAnimate <- BlueAnimate
-            c.AlphaAnimate <- AlphaAnimate
-            c.Repeat <- Repeat
+                | _ -> this.ColorTweenComponentPool.Pop()
+            c.RedMin <- redMin
+            c.RedMax <- redMax
+            c.RedSpeed <- redSpeed
+            c.GreenMin <- greenMin
+            c.GreenMax <- greenMax
+            c.GreenSpeed <- greenSpeed
+            c.BlueMin <- blueMin
+            c.BlueMax <- blueMax
+            c.BlueSpeed <- blueSpeed
+            c.AlphaMin <- alphaMin
+            c.AlphaMax <- alphaMax
+            c.AlphaSpeed <- alphaSpeed
+            c.RedAnimate <- redAnimate
+            c.GreenAnimate <- greenAnimate
+            c.BlueAnimate <- blueAnimate
+            c.AlphaAnimate <- alphaAnimate
+            c.Repeat <- repeat
             this.AddComponent(Component.ColorTween, c) |> ignore
             this
 
-        member this.ReplaceColorTween(RedMin, RedMax, RedSpeed, GreenMin, GreenMax, GreenSpeed, BlueMin, BlueMax, BlueSpeed, AlphaMin, AlphaMax, AlphaSpeed, RedAnimate, GreenAnimate, BlueAnimate, AlphaAnimate, Repeat) =
-            let previousComponent = if this.HasColorTween then this.colorTween else null
+        member this.ReplaceColorTween(redMin, redMax, redSpeed, greenMin, greenMax, greenSpeed, blueMin, blueMax, blueSpeed, alphaMin, alphaMax, alphaSpeed, redAnimate, greenAnimate, blueAnimate, alphaAnimate, repeat) =
+            let previousComponent = if this.HasColorTween then this.ColorTween else null
             let mutable c =
-                match this.colorTweenComponentPool.Count with
+                match this.ColorTweenComponentPool.Count with
                 | 0 -> new ColorTweenComponent()
-                | _ -> this.colorTweenComponentPool.Pop()
-            c.RedMin <- RedMin
-            c.RedMax <- RedMax
-            c.RedSpeed <- RedSpeed
-            c.GreenMin <- GreenMin
-            c.GreenMax <- GreenMax
-            c.GreenSpeed <- GreenSpeed
-            c.BlueMin <- BlueMin
-            c.BlueMax <- BlueMax
-            c.BlueSpeed <- BlueSpeed
-            c.AlphaMin <- AlphaMin
-            c.AlphaMax <- AlphaMax
-            c.AlphaSpeed <- AlphaSpeed
-            c.RedAnimate <- RedAnimate
-            c.GreenAnimate <- GreenAnimate
-            c.BlueAnimate <- BlueAnimate
-            c.AlphaAnimate <- AlphaAnimate
-            c.Repeat <- Repeat
+                | _ -> this.ColorTweenComponentPool.Pop()
+            c.RedMin <- redMin
+            c.RedMax <- redMax
+            c.RedSpeed <- redSpeed
+            c.GreenMin <- greenMin
+            c.GreenMax <- greenMax
+            c.GreenSpeed <- greenSpeed
+            c.BlueMin <- blueMin
+            c.BlueMax <- blueMax
+            c.BlueSpeed <- blueSpeed
+            c.AlphaMin <- alphaMin
+            c.AlphaMax <- alphaMax
+            c.AlphaSpeed <- alphaSpeed
+            c.RedAnimate <- redAnimate
+            c.GreenAnimate <- greenAnimate
+            c.BlueAnimate <- blueAnimate
+            c.AlphaAnimate <- alphaAnimate
+            c.Repeat <- repeat
             this.ReplaceComponent(Component.ColorTween, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.colorTweenComponentPool.Push(previousComponent)
+                this.ColorTweenComponentPool.Push(previousComponent)
             this
 
         member this.RemoveColorTween() =
-            let c = this.colorTween
+            let c = this.ColorTween
             this.RemoveComponent(Component.ColorTween) |> ignore
-            this.colorTweenComponentPool.Push(c)
+            this.ColorTweenComponentPool.Push(c)
             this
 
 
         (** Entity: Enemy methods*)
-        static member enemyComponent= new EnemyComponent()
+        static member EnemyComponent= new EnemyComponent()
 
-        member this.isEnemy
+        member this.IsEnemy
             with get() =
                 this.HasComponent(Component.Enemy)
             and set(value) =
-                if (value <> this.isEnemy) then
-                    this.AddComponent(Component.Enemy, Entity.enemyComponent) |> ignore
+                if (value <> this.IsEnemy) then
+                    this.AddComponent(Component.Enemy, Entity.EnemyComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Enemy) |> ignore
                 
         member this.SetEnemy(value) =
-            this.isEnemy <- value
+            this.IsEnemy <- value
             this
 
 
         (** Entity: Expires methods*)
 
-        member this.expiresComponentPool
+        member this.ExpiresComponentPool
             with get() = new Stack<ExpiresComponent>()
 
-        member this.expires
+        member this.Expires
             with get() = this.GetComponent(Component.Expires):?>ExpiresComponent
 
         member this.HasExpires
             with get() = this.HasComponent(Component.Expires)
  
         member this.ClearExpiresComponentPool() =
-            this.expiresComponentPool.Clear()
+            this.ExpiresComponentPool.Clear()
 
-        member this.AddExpires(Delay) =
+        member this.AddExpires(delay) =
             let mutable c =
-                match this.expiresComponentPool.Count with
+                match this.ExpiresComponentPool.Count with
                 | 0 -> new ExpiresComponent()
-                | _ -> this.expiresComponentPool.Pop()
-            c.Delay <- Delay
+                | _ -> this.ExpiresComponentPool.Pop()
+            c.Delay <- delay
             this.AddComponent(Component.Expires, c) |> ignore
             this
 
-        member this.ReplaceExpires(Delay) =
-            let previousComponent = if this.HasExpires then this.expires else null
+        member this.ReplaceExpires(delay) =
+            let previousComponent = if this.HasExpires then this.Expires else null
             let mutable c =
-                match this.expiresComponentPool.Count with
+                match this.ExpiresComponentPool.Count with
                 | 0 -> new ExpiresComponent()
-                | _ -> this.expiresComponentPool.Pop()
-            c.Delay <- Delay
+                | _ -> this.ExpiresComponentPool.Pop()
+            c.Delay <- delay
             this.ReplaceComponent(Component.Expires, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.expiresComponentPool.Push(previousComponent)
+                this.ExpiresComponentPool.Push(previousComponent)
             this
 
         member this.RemoveExpires() =
-            let c = this.expires
+            let c = this.Expires
             this.RemoveComponent(Component.Expires) |> ignore
-            this.expiresComponentPool.Push(c)
+            this.ExpiresComponentPool.Push(c)
             this
 
 
         (** Entity: Firing methods*)
-        static member firingComponent= new FiringComponent()
+        static member FiringComponent= new FiringComponent()
 
-        member this.isFiring
+        member this.IsFiring
             with get() =
                 this.HasComponent(Component.Firing)
             and set(value) =
-                if (value <> this.isFiring) then
-                    this.AddComponent(Component.Firing, Entity.firingComponent) |> ignore
+                if (value <> this.IsFiring) then
+                    this.AddComponent(Component.Firing, Entity.FiringComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Firing) |> ignore
                 
         member this.SetFiring(value) =
-            this.isFiring <- value
+            this.IsFiring <- value
             this
 
 
         (** Entity: Health methods*)
 
-        member this.healthComponentPool
+        member this.HealthComponentPool
             with get() = new Stack<HealthComponent>()
 
-        member this.health
+        member this.Health
             with get() = this.GetComponent(Component.Health):?>HealthComponent
 
         member this.HasHealth
             with get() = this.HasComponent(Component.Health)
  
         member this.ClearHealthComponentPool() =
-            this.healthComponentPool.Clear()
+            this.HealthComponentPool.Clear()
 
-        member this.AddHealth(Health, MaximumHealth) =
+        member this.AddHealth(health, maximumHealth) =
             let mutable c =
-                match this.healthComponentPool.Count with
+                match this.HealthComponentPool.Count with
                 | 0 -> new HealthComponent()
-                | _ -> this.healthComponentPool.Pop()
-            c.Health <- Health
-            c.MaximumHealth <- MaximumHealth
+                | _ -> this.HealthComponentPool.Pop()
+            c.Health <- health
+            c.MaximumHealth <- maximumHealth
             this.AddComponent(Component.Health, c) |> ignore
             this
 
-        member this.ReplaceHealth(Health, MaximumHealth) =
-            let previousComponent = if this.HasHealth then this.health else null
+        member this.ReplaceHealth(health, maximumHealth) =
+            let previousComponent = if this.HasHealth then this.Health else null
             let mutable c =
-                match this.healthComponentPool.Count with
+                match this.HealthComponentPool.Count with
                 | 0 -> new HealthComponent()
-                | _ -> this.healthComponentPool.Pop()
-            c.Health <- Health
-            c.MaximumHealth <- MaximumHealth
+                | _ -> this.HealthComponentPool.Pop()
+            c.Health <- health
+            c.MaximumHealth <- maximumHealth
             this.ReplaceComponent(Component.Health, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.healthComponentPool.Push(previousComponent)
+                this.HealthComponentPool.Push(previousComponent)
             this
 
         member this.RemoveHealth() =
-            let c = this.health
+            let c = this.Health
             this.RemoveComponent(Component.Health) |> ignore
-            this.healthComponentPool.Push(c)
+            this.HealthComponentPool.Push(c)
             this
 
 
         (** Entity: ParallaxStar methods*)
-        static member parallaxStarComponent= new ParallaxStarComponent()
+        static member ParallaxStarComponent= new ParallaxStarComponent()
 
-        member this.isParallaxStar
+        member this.IsParallaxStar
             with get() =
                 this.HasComponent(Component.ParallaxStar)
             and set(value) =
-                if (value <> this.isParallaxStar) then
-                    this.AddComponent(Component.ParallaxStar, Entity.parallaxStarComponent) |> ignore
+                if (value <> this.IsParallaxStar) then
+                    this.AddComponent(Component.ParallaxStar, Entity.ParallaxStarComponent) |> ignore
                 else
                     this.RemoveComponent(Component.ParallaxStar) |> ignore
                 
         member this.SetParallaxStar(value) =
-            this.isParallaxStar <- value
+            this.IsParallaxStar <- value
             this
 
 
         (** Entity: Player methods*)
-        static member playerComponent= new PlayerComponent()
+        static member PlayerComponent= new PlayerComponent()
 
-        member this.isPlayer
+        member this.IsPlayer
             with get() =
                 this.HasComponent(Component.Player)
             and set(value) =
-                if (value <> this.isPlayer) then
-                    this.AddComponent(Component.Player, Entity.playerComponent) |> ignore
+                if (value <> this.IsPlayer) then
+                    this.AddComponent(Component.Player, Entity.PlayerComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Player) |> ignore
                 
         member this.SetPlayer(value) =
-            this.isPlayer <- value
+            this.IsPlayer <- value
             this
 
 
         (** Entity: Position methods*)
 
-        member this.positionComponentPool
+        member this.PositionComponentPool
             with get() = new Stack<PositionComponent>()
 
-        member this.position
+        member this.Position
             with get() = this.GetComponent(Component.Position):?>PositionComponent
 
         member this.HasPosition
             with get() = this.HasComponent(Component.Position)
  
         member this.ClearPositionComponentPool() =
-            this.positionComponentPool.Clear()
+            this.PositionComponentPool.Clear()
 
-        member this.AddPosition(X, Y) =
+        member this.AddPosition(x, y) =
             let mutable c =
-                match this.positionComponentPool.Count with
+                match this.PositionComponentPool.Count with
                 | 0 -> new PositionComponent()
-                | _ -> this.positionComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.PositionComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.AddComponent(Component.Position, c) |> ignore
             this
 
-        member this.ReplacePosition(X, Y) =
-            let previousComponent = if this.HasPosition then this.position else null
+        member this.ReplacePosition(x, y) =
+            let previousComponent = if this.HasPosition then this.Position else null
             let mutable c =
-                match this.positionComponentPool.Count with
+                match this.PositionComponentPool.Count with
                 | 0 -> new PositionComponent()
-                | _ -> this.positionComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.PositionComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.ReplaceComponent(Component.Position, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.positionComponentPool.Push(previousComponent)
+                this.PositionComponentPool.Push(previousComponent)
             this
 
         member this.RemovePosition() =
-            let c = this.position
+            let c = this.Position
             this.RemoveComponent(Component.Position) |> ignore
-            this.positionComponentPool.Push(c)
+            this.PositionComponentPool.Push(c)
             this
 
 
         (** Entity: ScaleTween methods*)
 
-        member this.scaleTweenComponentPool
+        member this.ScaleTweenComponentPool
             with get() = new Stack<ScaleTweenComponent>()
 
-        member this.scaleTween
+        member this.ScaleTween
             with get() = this.GetComponent(Component.ScaleTween):?>ScaleTweenComponent
 
         member this.HasScaleTween
             with get() = this.HasComponent(Component.ScaleTween)
  
         member this.ClearScaleTweenComponentPool() =
-            this.scaleTweenComponentPool.Clear()
+            this.ScaleTweenComponentPool.Clear()
 
-        member this.AddScaleTween(Min, Max, Speed, Repeat, Active) =
+        member this.AddScaleTween(min, max, speed, repeat, active) =
             let mutable c =
-                match this.scaleTweenComponentPool.Count with
+                match this.ScaleTweenComponentPool.Count with
                 | 0 -> new ScaleTweenComponent()
-                | _ -> this.scaleTweenComponentPool.Pop()
-            c.Min <- Min
-            c.Max <- Max
-            c.Speed <- Speed
-            c.Repeat <- Repeat
-            c.Active <- Active
+                | _ -> this.ScaleTweenComponentPool.Pop()
+            c.Min <- min
+            c.Max <- max
+            c.Speed <- speed
+            c.Repeat <- repeat
+            c.Active <- active
             this.AddComponent(Component.ScaleTween, c) |> ignore
             this
 
-        member this.ReplaceScaleTween(Min, Max, Speed, Repeat, Active) =
-            let previousComponent = if this.HasScaleTween then this.scaleTween else null
+        member this.ReplaceScaleTween(min, max, speed, repeat, active) =
+            let previousComponent = if this.HasScaleTween then this.ScaleTween else null
             let mutable c =
-                match this.scaleTweenComponentPool.Count with
+                match this.ScaleTweenComponentPool.Count with
                 | 0 -> new ScaleTweenComponent()
-                | _ -> this.scaleTweenComponentPool.Pop()
-            c.Min <- Min
-            c.Max <- Max
-            c.Speed <- Speed
-            c.Repeat <- Repeat
-            c.Active <- Active
+                | _ -> this.ScaleTweenComponentPool.Pop()
+            c.Min <- min
+            c.Max <- max
+            c.Speed <- speed
+            c.Repeat <- repeat
+            c.Active <- active
             this.ReplaceComponent(Component.ScaleTween, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.scaleTweenComponentPool.Push(previousComponent)
+                this.ScaleTweenComponentPool.Push(previousComponent)
             this
 
         member this.RemoveScaleTween() =
-            let c = this.scaleTween
+            let c = this.ScaleTween
             this.RemoveComponent(Component.ScaleTween) |> ignore
-            this.scaleTweenComponentPool.Push(c)
+            this.ScaleTweenComponentPool.Push(c)
             this
 
 
         (** Entity: SoundEffect methods*)
 
-        member this.soundEffectComponentPool
+        member this.SoundEffectComponentPool
             with get() = new Stack<SoundEffectComponent>()
 
-        member this.soundEffect
+        member this.SoundEffect
             with get() = this.GetComponent(Component.SoundEffect):?>SoundEffectComponent
 
         member this.HasSoundEffect
             with get() = this.HasComponent(Component.SoundEffect)
  
         member this.ClearSoundEffectComponentPool() =
-            this.soundEffectComponentPool.Clear()
+            this.SoundEffectComponentPool.Clear()
 
-        member this.AddSoundEffect(Effect) =
+        member this.AddSoundEffect(effect) =
             let mutable c =
-                match this.soundEffectComponentPool.Count with
+                match this.SoundEffectComponentPool.Count with
                 | 0 -> new SoundEffectComponent()
-                | _ -> this.soundEffectComponentPool.Pop()
-            c.Effect <- Effect
+                | _ -> this.SoundEffectComponentPool.Pop()
+            c.Effect <- effect
             this.AddComponent(Component.SoundEffect, c) |> ignore
             this
 
-        member this.ReplaceSoundEffect(Effect) =
-            let previousComponent = if this.HasSoundEffect then this.soundEffect else null
+        member this.ReplaceSoundEffect(effect) =
+            let previousComponent = if this.HasSoundEffect then this.SoundEffect else null
             let mutable c =
-                match this.soundEffectComponentPool.Count with
+                match this.SoundEffectComponentPool.Count with
                 | 0 -> new SoundEffectComponent()
-                | _ -> this.soundEffectComponentPool.Pop()
-            c.Effect <- Effect
+                | _ -> this.SoundEffectComponentPool.Pop()
+            c.Effect <- effect
             this.ReplaceComponent(Component.SoundEffect, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.soundEffectComponentPool.Push(previousComponent)
+                this.SoundEffectComponentPool.Push(previousComponent)
             this
 
         member this.RemoveSoundEffect() =
-            let c = this.soundEffect
+            let c = this.SoundEffect
             this.RemoveComponent(Component.SoundEffect) |> ignore
-            this.soundEffectComponentPool.Push(c)
+            this.SoundEffectComponentPool.Push(c)
             this
 
 
         (** Entity: View methods*)
 
-        member this.viewComponentPool
+        member this.ViewComponentPool
             with get() = new Stack<ViewComponent>()
 
-        member this.view
+        member this.View
             with get() = this.GetComponent(Component.View):?>ViewComponent
 
         member this.HasView
             with get() = this.HasComponent(Component.View)
  
         member this.ClearViewComponentPool() =
-            this.viewComponentPool.Clear()
+            this.ViewComponentPool.Clear()
 
-        member this.AddView(GameObject) =
+        member this.AddView(gameObject) =
             let mutable c =
-                match this.viewComponentPool.Count with
+                match this.ViewComponentPool.Count with
                 | 0 -> new ViewComponent()
-                | _ -> this.viewComponentPool.Pop()
-            c.GameObject <- GameObject
+                | _ -> this.ViewComponentPool.Pop()
+            c.GameObject <- gameObject
             this.AddComponent(Component.View, c) |> ignore
             this
 
-        member this.ReplaceView(GameObject) =
-            let previousComponent = if this.HasView then this.view else null
+        member this.ReplaceView(gameObject) =
+            let previousComponent = if this.HasView then this.View else null
             let mutable c =
-                match this.viewComponentPool.Count with
+                match this.ViewComponentPool.Count with
                 | 0 -> new ViewComponent()
-                | _ -> this.viewComponentPool.Pop()
-            c.GameObject <- GameObject
+                | _ -> this.ViewComponentPool.Pop()
+            c.GameObject <- gameObject
             this.ReplaceComponent(Component.View, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.viewComponentPool.Push(previousComponent)
+                this.ViewComponentPool.Push(previousComponent)
             this
 
         member this.RemoveView() =
-            let c = this.view
+            let c = this.View
             this.RemoveComponent(Component.View) |> ignore
-            this.viewComponentPool.Push(c)
+            this.ViewComponentPool.Push(c)
             this
 
 
         (** Entity: Velocity methods*)
 
-        member this.velocityComponentPool
+        member this.VelocityComponentPool
             with get() = new Stack<VelocityComponent>()
 
-        member this.velocity
+        member this.Velocity
             with get() = this.GetComponent(Component.Velocity):?>VelocityComponent
 
         member this.HasVelocity
             with get() = this.HasComponent(Component.Velocity)
  
         member this.ClearVelocityComponentPool() =
-            this.velocityComponentPool.Clear()
+            this.VelocityComponentPool.Clear()
 
-        member this.AddVelocity(X, Y) =
+        member this.AddVelocity(x, y) =
             let mutable c =
-                match this.velocityComponentPool.Count with
+                match this.VelocityComponentPool.Count with
                 | 0 -> new VelocityComponent()
-                | _ -> this.velocityComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.VelocityComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.AddComponent(Component.Velocity, c) |> ignore
             this
 
-        member this.ReplaceVelocity(X, Y) =
-            let previousComponent = if this.HasVelocity then this.velocity else null
+        member this.ReplaceVelocity(x, y) =
+            let previousComponent = if this.HasVelocity then this.Velocity else null
             let mutable c =
-                match this.velocityComponentPool.Count with
+                match this.VelocityComponentPool.Count with
                 | 0 -> new VelocityComponent()
-                | _ -> this.velocityComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.VelocityComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.ReplaceComponent(Component.Velocity, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.velocityComponentPool.Push(previousComponent)
+                this.VelocityComponentPool.Push(previousComponent)
             this
 
         member this.RemoveVelocity() =
-            let c = this.velocity
+            let c = this.Velocity
             this.RemoveComponent(Component.Velocity) |> ignore
-            this.velocityComponentPool.Push(c)
+            this.VelocityComponentPool.Push(c)
             this
 
 
         (** Entity: Score methods*)
 
-        member this.scoreComponentPool
+        member this.ScoreComponentPool
             with get() = new Stack<ScoreComponent>()
 
-        member this.score
+        member this.Score
             with get() = this.GetComponent(Component.Score):?>ScoreComponent
 
         member this.HasScore
             with get() = this.HasComponent(Component.Score)
  
         member this.ClearScoreComponentPool() =
-            this.scoreComponentPool.Clear()
+            this.ScoreComponentPool.Clear()
 
-        member this.AddScore(Value) =
+        member this.AddScore(value) =
             let mutable c =
-                match this.scoreComponentPool.Count with
+                match this.ScoreComponentPool.Count with
                 | 0 -> new ScoreComponent()
-                | _ -> this.scoreComponentPool.Pop()
-            c.Value <- Value
+                | _ -> this.ScoreComponentPool.Pop()
+            c.Value <- value
             this.AddComponent(Component.Score, c) |> ignore
             this
 
-        member this.ReplaceScore(Value) =
-            let previousComponent = if this.HasScore then this.score else null
+        member this.ReplaceScore(value) =
+            let previousComponent = if this.HasScore then this.Score else null
             let mutable c =
-                match this.scoreComponentPool.Count with
+                match this.ScoreComponentPool.Count with
                 | 0 -> new ScoreComponent()
-                | _ -> this.scoreComponentPool.Pop()
-            c.Value <- Value
+                | _ -> this.ScoreComponentPool.Pop()
+            c.Value <- value
             this.ReplaceComponent(Component.Score, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.scoreComponentPool.Push(previousComponent)
+                this.ScoreComponentPool.Push(previousComponent)
             this
 
         member this.RemoveScore() =
-            let c = this.score
+            let c = this.Score
             this.RemoveComponent(Component.Score) |> ignore
-            this.scoreComponentPool.Push(c)
+            this.ScoreComponentPool.Push(c)
             this
 
 
         (** Entity: Destroy methods*)
-        static member destroyComponent= new DestroyComponent()
+        static member DestroyComponent= new DestroyComponent()
 
-        member this.isDestroy
+        member this.IsDestroy
             with get() =
                 this.HasComponent(Component.Destroy)
             and set(value) =
-                if (value <> this.isDestroy) then
-                    this.AddComponent(Component.Destroy, Entity.destroyComponent) |> ignore
+                if (value <> this.IsDestroy) then
+                    this.AddComponent(Component.Destroy, Entity.DestroyComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Destroy) |> ignore
                 
         member this.SetDestroy(value) =
-            this.isDestroy <- value
+            this.IsDestroy <- value
             this
 
 
         (** Entity: Mouse methods*)
 
-        member this.mouseComponentPool
+        member this.MouseComponentPool
             with get() = new Stack<MouseComponent>()
 
-        member this.mouse
+        member this.Mouse
             with get() = this.GetComponent(Component.Mouse):?>MouseComponent
 
         member this.HasMouse
             with get() = this.HasComponent(Component.Mouse)
  
         member this.ClearMouseComponentPool() =
-            this.mouseComponentPool.Clear()
+            this.MouseComponentPool.Clear()
 
-        member this.AddMouse(X, Y) =
+        member this.AddMouse(x, y) =
             let mutable c =
-                match this.mouseComponentPool.Count with
+                match this.MouseComponentPool.Count with
                 | 0 -> new MouseComponent()
-                | _ -> this.mouseComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.MouseComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.AddComponent(Component.Mouse, c) |> ignore
             this
 
-        member this.ReplaceMouse(X, Y) =
-            let previousComponent = if this.HasMouse then this.mouse else null
+        member this.ReplaceMouse(x, y) =
+            let previousComponent = if this.HasMouse then this.Mouse else null
             let mutable c =
-                match this.mouseComponentPool.Count with
+                match this.MouseComponentPool.Count with
                 | 0 -> new MouseComponent()
-                | _ -> this.mouseComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.MouseComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.ReplaceComponent(Component.Mouse, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.mouseComponentPool.Push(previousComponent)
+                this.MouseComponentPool.Push(previousComponent)
             this
 
         member this.RemoveMouse() =
-            let c = this.mouse
+            let c = this.Mouse
             this.RemoveComponent(Component.Mouse) |> ignore
-            this.mouseComponentPool.Push(c)
+            this.MouseComponentPool.Push(c)
             this
 
 
         (** Entity: Scale methods*)
 
-        member this.scaleComponentPool
+        member this.ScaleComponentPool
             with get() = new Stack<ScaleComponent>()
 
-        member this.scale
+        member this.Scale
             with get() = this.GetComponent(Component.Scale):?>ScaleComponent
 
         member this.HasScale
             with get() = this.HasComponent(Component.Scale)
  
         member this.ClearScaleComponentPool() =
-            this.scaleComponentPool.Clear()
+            this.ScaleComponentPool.Clear()
 
-        member this.AddScale(X, Y) =
+        member this.AddScale(x, y) =
             let mutable c =
-                match this.scaleComponentPool.Count with
+                match this.ScaleComponentPool.Count with
                 | 0 -> new ScaleComponent()
-                | _ -> this.scaleComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.ScaleComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.AddComponent(Component.Scale, c) |> ignore
             this
 
-        member this.ReplaceScale(X, Y) =
-            let previousComponent = if this.HasScale then this.scale else null
+        member this.ReplaceScale(x, y) =
+            let previousComponent = if this.HasScale then this.Scale else null
             let mutable c =
-                match this.scaleComponentPool.Count with
+                match this.ScaleComponentPool.Count with
                 | 0 -> new ScaleComponent()
-                | _ -> this.scaleComponentPool.Pop()
-            c.X <- X
-            c.Y <- Y
+                | _ -> this.ScaleComponentPool.Pop()
+            c.X <- x
+            c.Y <- y
             this.ReplaceComponent(Component.Scale, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.scaleComponentPool.Push(previousComponent)
+                this.ScaleComponentPool.Push(previousComponent)
             this
 
         member this.RemoveScale() =
-            let c = this.scale
+            let c = this.Scale
             this.RemoveComponent(Component.Scale) |> ignore
-            this.scaleComponentPool.Push(c)
+            this.ScaleComponentPool.Push(c)
             this
 
 
         (** Entity: Resource methods*)
 
-        member this.resourceComponentPool
+        member this.ResourceComponentPool
             with get() = new Stack<ResourceComponent>()
 
-        member this.resource
+        member this.Resource
             with get() = this.GetComponent(Component.Resource):?>ResourceComponent
 
         member this.HasResource
             with get() = this.HasComponent(Component.Resource)
  
         member this.ClearResourceComponentPool() =
-            this.resourceComponentPool.Clear()
+            this.ResourceComponentPool.Clear()
 
-        member this.AddResource(Name) =
+        member this.AddResource(name) =
             let mutable c =
-                match this.resourceComponentPool.Count with
+                match this.ResourceComponentPool.Count with
                 | 0 -> new ResourceComponent()
-                | _ -> this.resourceComponentPool.Pop()
-            c.Name <- Name
+                | _ -> this.ResourceComponentPool.Pop()
+            c.Name <- name
             this.AddComponent(Component.Resource, c) |> ignore
             this
 
-        member this.ReplaceResource(Name) =
-            let previousComponent = if this.HasResource then this.resource else null
+        member this.ReplaceResource(name) =
+            let previousComponent = if this.HasResource then this.Resource else null
             let mutable c =
-                match this.resourceComponentPool.Count with
+                match this.ResourceComponentPool.Count with
                 | 0 -> new ResourceComponent()
-                | _ -> this.resourceComponentPool.Pop()
-            c.Name <- Name
+                | _ -> this.ResourceComponentPool.Pop()
+            c.Name <- name
             this.ReplaceComponent(Component.Resource, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.resourceComponentPool.Push(previousComponent)
+                this.ResourceComponentPool.Push(previousComponent)
             this
 
         member this.RemoveResource() =
-            let c = this.resource
+            let c = this.Resource
             this.RemoveComponent(Component.Resource) |> ignore
-            this.resourceComponentPool.Push(c)
+            this.ResourceComponentPool.Push(c)
             this
 
 
         (** Entity: Layer methods*)
 
-        member this.layerComponentPool
+        member this.LayerComponentPool
             with get() = new Stack<LayerComponent>()
 
-        member this.layer
+        member this.Layer
             with get() = this.GetComponent(Component.Layer):?>LayerComponent
 
         member this.HasLayer
             with get() = this.HasComponent(Component.Layer)
  
         member this.ClearLayerComponentPool() =
-            this.layerComponentPool.Clear()
+            this.LayerComponentPool.Clear()
 
-        member this.AddLayer(Ordinal) =
+        member this.AddLayer(ordinal) =
             let mutable c =
-                match this.layerComponentPool.Count with
+                match this.LayerComponentPool.Count with
                 | 0 -> new LayerComponent()
-                | _ -> this.layerComponentPool.Pop()
-            c.Ordinal <- Ordinal
+                | _ -> this.LayerComponentPool.Pop()
+            c.Ordinal <- ordinal
             this.AddComponent(Component.Layer, c) |> ignore
             this
 
-        member this.ReplaceLayer(Ordinal) =
-            let previousComponent = if this.HasLayer then this.layer else null
+        member this.ReplaceLayer(ordinal) =
+            let previousComponent = if this.HasLayer then this.Layer else null
             let mutable c =
-                match this.layerComponentPool.Count with
+                match this.LayerComponentPool.Count with
                 | 0 -> new LayerComponent()
-                | _ -> this.layerComponentPool.Pop()
-            c.Ordinal <- Ordinal
+                | _ -> this.LayerComponentPool.Pop()
+            c.Ordinal <- ordinal
             this.ReplaceComponent(Component.Layer, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.layerComponentPool.Push(previousComponent)
+                this.LayerComponentPool.Push(previousComponent)
             this
 
         member this.RemoveLayer() =
-            let c = this.layer
+            let c = this.Layer
             this.RemoveComponent(Component.Layer) |> ignore
-            this.layerComponentPool.Push(c)
+            this.LayerComponentPool.Push(c)
             this
 
 
         (** Entity: Background methods*)
 
-        member this.backgroundComponentPool
+        member this.BackgroundComponentPool
             with get() = new Stack<BackgroundComponent>()
 
-        member this.background
+        member this.Background
             with get() = this.GetComponent(Component.Background):?>BackgroundComponent
 
         member this.HasBackground
             with get() = this.HasComponent(Component.Background)
  
         member this.ClearBackgroundComponentPool() =
-            this.backgroundComponentPool.Clear()
+            this.BackgroundComponentPool.Clear()
 
-        member this.AddBackground(Filter) =
+        member this.AddBackground(filter) =
             let mutable c =
-                match this.backgroundComponentPool.Count with
+                match this.BackgroundComponentPool.Count with
                 | 0 -> new BackgroundComponent()
-                | _ -> this.backgroundComponentPool.Pop()
-            c.Filter <- Filter
+                | _ -> this.BackgroundComponentPool.Pop()
+            c.Filter <- filter
             this.AddComponent(Component.Background, c) |> ignore
             this
 
-        member this.ReplaceBackground(Filter) =
-            let previousComponent = if this.HasBackground then this.background else null
+        member this.ReplaceBackground(filter) =
+            let previousComponent = if this.HasBackground then this.Background else null
             let mutable c =
-                match this.backgroundComponentPool.Count with
+                match this.BackgroundComponentPool.Count with
                 | 0 -> new BackgroundComponent()
-                | _ -> this.backgroundComponentPool.Pop()
-            c.Filter <- Filter
+                | _ -> this.BackgroundComponentPool.Pop()
+            c.Filter <- filter
             this.ReplaceComponent(Component.Background, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.backgroundComponentPool.Push(previousComponent)
+                this.BackgroundComponentPool.Push(previousComponent)
             this
 
         member this.RemoveBackground() =
-            let c = this.background
+            let c = this.Background
             this.RemoveComponent(Component.Background) |> ignore
-            this.backgroundComponentPool.Push(c)
+            this.BackgroundComponentPool.Push(c)
             this
 
 
         (** Entity: Mine methods*)
-        static member mineComponent= new MineComponent()
+        static member MineComponent= new MineComponent()
 
-        member this.isMine
+        member this.IsMine
             with get() =
                 this.HasComponent(Component.Mine)
             and set(value) =
-                if (value <> this.isMine) then
-                    this.AddComponent(Component.Mine, Entity.mineComponent) |> ignore
+                if (value <> this.IsMine) then
+                    this.AddComponent(Component.Mine, Entity.MineComponent) |> ignore
                 else
                     this.RemoveComponent(Component.Mine) |> ignore
                 
         member this.SetMine(value) =
-            this.isMine <- value
+            this.IsMine <- value
             this
 
 
         (** Entity: Status methods*)
 
-        member this.statusComponentPool
+        member this.StatusComponentPool
             with get() = new Stack<StatusComponent>()
 
-        member this.status
+        member this.Status
             with get() = this.GetComponent(Component.Status):?>StatusComponent
 
         member this.HasStatus
             with get() = this.HasComponent(Component.Status)
  
         member this.ClearStatusComponentPool() =
-            this.statusComponentPool.Clear()
+            this.StatusComponentPool.Clear()
 
-        member this.AddStatus(Percent, Immunity) =
+        member this.AddStatus(percent, immunity) =
             let mutable c =
-                match this.statusComponentPool.Count with
+                match this.StatusComponentPool.Count with
                 | 0 -> new StatusComponent()
-                | _ -> this.statusComponentPool.Pop()
-            c.Percent <- Percent
-            c.Immunity <- Immunity
+                | _ -> this.StatusComponentPool.Pop()
+            c.Percent <- percent
+            c.Immunity <- immunity
             this.AddComponent(Component.Status, c) |> ignore
             this
 
-        member this.ReplaceStatus(Percent, Immunity) =
-            let previousComponent = if this.HasStatus then this.status else null
+        member this.ReplaceStatus(percent, immunity) =
+            let previousComponent = if this.HasStatus then this.Status else null
             let mutable c =
-                match this.statusComponentPool.Count with
+                match this.StatusComponentPool.Count with
                 | 0 -> new StatusComponent()
-                | _ -> this.statusComponentPool.Pop()
-            c.Percent <- Percent
-            c.Immunity <- Immunity
+                | _ -> this.StatusComponentPool.Pop()
+            c.Percent <- percent
+            c.Immunity <- immunity
             this.ReplaceComponent(Component.Status, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.statusComponentPool.Push(previousComponent)
+                this.StatusComponentPool.Push(previousComponent)
             this
 
         member this.RemoveStatus() =
-            let c = this.status
+            let c = this.Status
             this.RemoveComponent(Component.Status) |> ignore
-            this.statusComponentPool.Push(c)
+            this.StatusComponentPool.Push(c)
             this
 
 
         (** Entity: Life methods*)
 
-        member this.lifeComponentPool
+        member this.LifeComponentPool
             with get() = new Stack<LifeComponent>()
 
-        member this.life
+        member this.Life
             with get() = this.GetComponent(Component.Life):?>LifeComponent
 
         member this.HasLife
             with get() = this.HasComponent(Component.Life)
  
         member this.ClearLifeComponentPool() =
-            this.lifeComponentPool.Clear()
+            this.LifeComponentPool.Clear()
 
-        member this.AddLife(Count) =
+        member this.AddLife(count) =
             let mutable c =
-                match this.lifeComponentPool.Count with
+                match this.LifeComponentPool.Count with
                 | 0 -> new LifeComponent()
-                | _ -> this.lifeComponentPool.Pop()
-            c.Count <- Count
+                | _ -> this.LifeComponentPool.Pop()
+            c.Count <- count
             this.AddComponent(Component.Life, c) |> ignore
             this
 
-        member this.ReplaceLife(Count) =
-            let previousComponent = if this.HasLife then this.life else null
+        member this.ReplaceLife(count) =
+            let previousComponent = if this.HasLife then this.Life else null
             let mutable c =
-                match this.lifeComponentPool.Count with
+                match this.LifeComponentPool.Count with
                 | 0 -> new LifeComponent()
-                | _ -> this.lifeComponentPool.Pop()
-            c.Count <- Count
+                | _ -> this.LifeComponentPool.Pop()
+            c.Count <- count
             this.ReplaceComponent(Component.Life, c) |> ignore
             if not(isNull(previousComponent)) then
-                this.lifeComponentPool.Push(previousComponent)
+                this.LifeComponentPool.Push(previousComponent)
             this
 
         member this.RemoveLife() =
-            let c = this.life
+            let c = this.Life
             this.RemoveComponent(Component.Life) |> ignore
-            this.lifeComponentPool.Push(c)
+            this.LifeComponentPool.Push(c)
             this
 
