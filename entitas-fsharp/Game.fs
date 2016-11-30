@@ -41,16 +41,23 @@ type ShmupWarz (width, height) as this =
                 entity.Scale.X, entity.Scale.Y
             else
                 1.0f, 1.0f
-        let color = 
-            if entity.HasColorTween then
-                Color((int)entity.ColorTween.RedMin, (int)entity.ColorTween.GreenMin, (int)entity.ColorTween.BlueMin)
+
+        let tint = 
+            if entity.HasTint then
+                entity.Tint.Color:?>Color
             else 
                 Color.White
+
+//        let color = 
+//            if entity.HasColorTween then
+//                Color((int)entity.ColorTween.RedMin, (int)entity.ColorTween.GreenMin, (int)entity.ColorTween.BlueMin)
+//            else 
+//                Color.White
         let w = int(float32 sprite.Width * scaleX)
         let h = int(float32 sprite.Height * scaleY)
         let x = int(entity.Position.X) - w/2
         let y = int(entity.Position.Y) - h/2
-        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), color)    
+        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), tint)    
 
     override this.Initialize() =
         this.IsMouseVisible <- true

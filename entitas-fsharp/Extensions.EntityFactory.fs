@@ -60,16 +60,19 @@ module EntityFactory =
         member this.CreateBullet(x, y) =
             //GreenYellow = 0xadff2f
             let r = (float32) 0xad
-            let g = (float32) 0xff
+            let g = (float32) 0xaf
             let b = (float32) 0x2f
+            let m = 255.0f
             let a = 255.0f
+            let s = 10.0f
             this.CreateEntity("Bullet")
                 .AddLayer((float32)Layer.BULLET)
                 .AddExpires(2.0f)
                 .AddBounds(3.0f)
                 .AddVelocity(0.0f, -800.0f)
                 .AddPosition(x, y)
-                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
+                .AddTint(Color.GreenYellow)
+                .AddColorTween(r, m, s, g, m, s, b, m, s, a, m, s, true, true, true, true, true)
                 .AddSoundEffect(float32(EFFECT_PEW))
                 .SetBullet(true)
                 .AddResource("images/bullet")
@@ -208,16 +211,19 @@ module EntityFactory =
         member this.CreateBigExplosion(x, y) =
             let scale = 0.5f
             //LightGoldenrodYellow = 0xfafad2
-            let r = (float32) 0xfa
-            let g = (float32) 0xfa
-            let b = (float32) 0xd2
+            let r = (float32) 0xaa
+            let g = (float32) 0xaa
+            let b = (float32) 0xa2
+            let m = 255.0f
             let a = 255.0f
+            let s = 10.0f
             this.CreateEntity("BigExplosion")
                 .AddLayer((float32)Layer.EXPLOSION)
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
+                .AddColorTween(r, m, s, g, m, s, b, m, s, a, m, s, true, true, true, true, true)
+                .AddTint(Color.LightGoldenrodYellow)
                 .AddPosition(x, y)
                 .AddResource("images/explosion")
 
@@ -231,16 +237,19 @@ module EntityFactory =
         member this.CreateSmallExplosion(x, y) =
             let scale = 1.0f
             //PaleGoldenrod = 0xeee8aa
-            let r = (float32) 0xee
-            let g = (float32) 0xe8
+            let r = (float32) 0xae
+            let g = (float32) 0xa8
             let b = (float32) 0xaa
+            let m = 255.0f
             let a = 255.0f
+            let s = -10.0f
             this.CreateEntity("SmallExplosion")
                 .AddLayer((float32)Layer.EXPLOSION)
                 .AddExpires(0.5f)
                 .AddScale(scale, scale)
                 .AddScaleTween(float32(scale/100.0f), scale, float32(-3), false, true)
-                .AddColorTween(r, 0.0f, 0.0f, g, 0.0f, 0.0f, b, 0.0f, 0.0f, a, 0.0f, 0.0f, true, true, true, true, true)
+                .AddColorTween(r, m, s, g, m, s, b, m, s, a, m, s, true, true, true, true, true)
+                .AddTint(Color.PaleGoldenrod)
                 .AddPosition(x, y)
                 .AddResource("images/bang")
 

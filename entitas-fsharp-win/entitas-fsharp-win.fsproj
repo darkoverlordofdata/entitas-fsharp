@@ -108,7 +108,6 @@
     <Compile Include="..\entitas-fsharp\Program.fs">
       <Link>Program.fs</Link>
     </Compile>
-
     <None Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
