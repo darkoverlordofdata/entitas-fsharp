@@ -16,8 +16,8 @@ module EntitasExtensions =
     * Component extensions
     *)
     type Component with
-        static member Bounds with get() = 0
-        static member Background with get() = 1
+        static member Background with get() = 0
+        static member Bounds with get() = 1
         static member Bullet with get() = 2
         static member ColorTween with get() = 3
         static member Destroy with get() = 4
@@ -38,20 +38,21 @@ module EntitasExtensions =
         static member Score with get() = 19
         static member SoundEffect with get() = 20
         static member Status with get() = 21
-        static member View with get() = 22
-        static member Velocity with get() = 23
-        static member TotalComponents with get() = 24
+        static member Tint with get() = 22
+        static member View with get() = 23
+        static member Velocity with get() = 24
+        static member TotalComponents with get() = 25
 
-
-    [<AllowNullLiteral>]
-    type BoundsComponent() =
-        inherit Component()
-        member val Radius = 0.0f with get, set
 
     [<AllowNullLiteral>]
     type BackgroundComponent() =
         inherit Component()
         member val Filter = null with get, set
+
+    [<AllowNullLiteral>]
+    type BoundsComponent() =
+        inherit Component()
+        member val Radius = 0.0f with get, set
 
     [<AllowNullLiteral>]
     type BulletComponent() =
@@ -179,6 +180,11 @@ module EntitasExtensions =
         member val Immunity = 0.0f with get, set
 
     [<AllowNullLiteral>]
+    type TintComponent() =
+        inherit Component()
+        member val Color = null with get, set
+
+    [<AllowNullLiteral>]
     type ViewComponent() =
         inherit Component()
         member val GameObject = null with get, set
@@ -195,13 +201,13 @@ module EntitasExtensions =
     *)
     type Matcher with
 
-        static member Bounds
-            with get() = 
-                Matcher.AllOf(Component.Bounds) 
-
         static member Background
             with get() = 
                 Matcher.AllOf(Component.Background) 
+
+        static member Bounds
+            with get() = 
+                Matcher.AllOf(Component.Bounds) 
 
         static member Bullet
             with get() = 
@@ -283,6 +289,10 @@ module EntitasExtensions =
             with get() = 
                 Matcher.AllOf(Component.Status) 
 
+        static member Tint
+            with get() = 
+                Matcher.AllOf(Component.Tint) 
+
         static member View
             with get() = 
                 Matcher.AllOf(Component.View) 
@@ -296,48 +306,6 @@ module EntitasExtensions =
     * Entity extensions
     *)
     type Entity with
-
-        (** Entity: Bounds methods*)
-
-        member this.BoundsComponentPool
-            with get() = new Stack<BoundsComponent>()
-
-        member this.Bounds
-            with get() = this.GetComponent(Component.Bounds):?>BoundsComponent
-
-        member this.HasBounds
-            with get() = this.HasComponent(Component.Bounds)
- 
-        member this.ClearBoundsComponentPool() =
-            this.BoundsComponentPool.Clear()
-
-        member this.AddBounds(radius) =
-            let mutable c =
-                match this.BoundsComponentPool.Count with
-                | 0 -> new BoundsComponent()
-                | _ -> this.BoundsComponentPool.Pop()
-            c.Radius <- radius
-            this.AddComponent(Component.Bounds, c) |> ignore
-            this
-
-        member this.ReplaceBounds(radius) =
-            let previousComponent = if this.HasBounds then this.Bounds else null
-            let mutable c =
-                match this.BoundsComponentPool.Count with
-                | 0 -> new BoundsComponent()
-                | _ -> this.BoundsComponentPool.Pop()
-            c.Radius <- radius
-            this.ReplaceComponent(Component.Bounds, c) |> ignore
-            if not(isNull(previousComponent)) then
-                this.BoundsComponentPool.Push(previousComponent)
-            this
-
-        member this.RemoveBounds() =
-            let c = this.Bounds
-            this.RemoveComponent(Component.Bounds) |> ignore
-            this.BoundsComponentPool.Push(c)
-            this
-
 
         (** Entity: Background methods*)
 
@@ -378,6 +346,48 @@ module EntitasExtensions =
             let c = this.Background
             this.RemoveComponent(Component.Background) |> ignore
             this.BackgroundComponentPool.Push(c)
+            this
+
+
+        (** Entity: Bounds methods*)
+
+        member this.BoundsComponentPool
+            with get() = new Stack<BoundsComponent>()
+
+        member this.Bounds
+            with get() = this.GetComponent(Component.Bounds):?>BoundsComponent
+
+        member this.HasBounds
+            with get() = this.HasComponent(Component.Bounds)
+ 
+        member this.ClearBoundsComponentPool() =
+            this.BoundsComponentPool.Clear()
+
+        member this.AddBounds(radius) =
+            let mutable c =
+                match this.BoundsComponentPool.Count with
+                | 0 -> new BoundsComponent()
+                | _ -> this.BoundsComponentPool.Pop()
+            c.Radius <- radius
+            this.AddComponent(Component.Bounds, c) |> ignore
+            this
+
+        member this.ReplaceBounds(radius) =
+            let previousComponent = if this.HasBounds then this.Bounds else null
+            let mutable c =
+                match this.BoundsComponentPool.Count with
+                | 0 -> new BoundsComponent()
+                | _ -> this.BoundsComponentPool.Pop()
+            c.Radius <- radius
+            this.ReplaceComponent(Component.Bounds, c) |> ignore
+            if not(isNull(previousComponent)) then
+                this.BoundsComponentPool.Push(previousComponent)
+            this
+
+        member this.RemoveBounds() =
+            let c = this.Bounds
+            this.RemoveComponent(Component.Bounds) |> ignore
+            this.BoundsComponentPool.Push(c)
             this
 
 
@@ -1093,6 +1103,48 @@ module EntitasExtensions =
             let c = this.Status
             this.RemoveComponent(Component.Status) |> ignore
             this.StatusComponentPool.Push(c)
+            this
+
+
+        (** Entity: Tint methods*)
+
+        member this.TintComponentPool
+            with get() = new Stack<TintComponent>()
+
+        member this.Tint
+            with get() = this.GetComponent(Component.Tint):?>TintComponent
+
+        member this.HasTint
+            with get() = this.HasComponent(Component.Tint)
+ 
+        member this.ClearTintComponentPool() =
+            this.TintComponentPool.Clear()
+
+        member this.AddTint(color) =
+            let mutable c =
+                match this.TintComponentPool.Count with
+                | 0 -> new TintComponent()
+                | _ -> this.TintComponentPool.Pop()
+            c.Color <- color
+            this.AddComponent(Component.Tint, c) |> ignore
+            this
+
+        member this.ReplaceTint(color) =
+            let previousComponent = if this.HasTint then this.Tint else null
+            let mutable c =
+                match this.TintComponentPool.Count with
+                | 0 -> new TintComponent()
+                | _ -> this.TintComponentPool.Pop()
+            c.Color <- color
+            this.ReplaceComponent(Component.Tint, c) |> ignore
+            if not(isNull(previousComponent)) then
+                this.TintComponentPool.Push(previousComponent)
+            this
+
+        member this.RemoveTint() =
+            let c = this.Tint
+            this.RemoveComponent(Component.Tint) |> ignore
+            this.TintComponentPool.Push(c)
             this
 
 

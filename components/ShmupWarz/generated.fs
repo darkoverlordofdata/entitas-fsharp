@@ -38,9 +38,10 @@ module EntitasExtensions =
         static member Score with get() = 19
         static member SoundEffect with get() = 20
         static member Status with get() = 21
-        static member View with get() = 22
-        static member Velocity with get() = 23
-        static member TotalComponents with get() = 24
+        static member Tint with get() = 22
+        static member View with get() = 23
+        static member Velocity with get() = 24
+        static member TotalComponents with get() = 25
 
 
     [<AllowNullLiteral>]
@@ -179,6 +180,11 @@ module EntitasExtensions =
         member val Immunity = 0.0f with get, set
 
     [<AllowNullLiteral>]
+    type TintComponent() =
+        inherit Component()
+        member val Color = null with get, set
+
+    [<AllowNullLiteral>]
     type ViewComponent() =
         inherit Component()
         member val GameObject = null with get, set
@@ -282,6 +288,10 @@ module EntitasExtensions =
         static member Status
             with get() = 
                 Matcher.AllOf(Component.Status) 
+
+        static member Tint
+            with get() = 
+                Matcher.AllOf(Component.Tint) 
 
         static member View
             with get() = 
@@ -1093,6 +1103,48 @@ module EntitasExtensions =
             let c = this.Status
             this.RemoveComponent(Component.Status) |> ignore
             this.StatusComponentPool.Push(c)
+            this
+
+
+        (** Entity: Tint methods*)
+
+        member this.TintComponentPool
+            with get() = new Stack<TintComponent>()
+
+        member this.Tint
+            with get() = this.GetComponent(Component.Tint):?>TintComponent
+
+        member this.HasTint
+            with get() = this.HasComponent(Component.Tint)
+ 
+        member this.ClearTintComponentPool() =
+            this.TintComponentPool.Clear()
+
+        member this.AddTint(color) =
+            let mutable c =
+                match this.TintComponentPool.Count with
+                | 0 -> new TintComponent()
+                | _ -> this.TintComponentPool.Pop()
+            c.Color <- color
+            this.AddComponent(Component.Tint, c) |> ignore
+            this
+
+        member this.ReplaceTint(color) =
+            let previousComponent = if this.HasTint then this.Tint else null
+            let mutable c =
+                match this.TintComponentPool.Count with
+                | 0 -> new TintComponent()
+                | _ -> this.TintComponentPool.Pop()
+            c.Color <- color
+            this.ReplaceComponent(Component.Tint, c) |> ignore
+            if not(isNull(previousComponent)) then
+                this.TintComponentPool.Push(previousComponent)
+            this
+
+        member this.RemoveTint() =
+            let c = this.Tint
+            this.RemoveComponent(Component.Tint) |> ignore
+            this.TintComponentPool.Push(c)
             this
 
 

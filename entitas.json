@@ -89,6 +89,9 @@
       "Percent:float32",
       "Immunity:float32"
     ],
+    "Tint": [
+      "Color:null"
+    ],
     "View": [
       "GameObject:null"
     ],
