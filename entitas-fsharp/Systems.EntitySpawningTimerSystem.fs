@@ -22,7 +22,7 @@ type Timers =
     | Timer3 = 12
 
 
-type EntitySpawningTimerSystem(world:World, width, height) =
+type EntitySpawningTimerSystem(world:World, width) =
 
     let mutable t1 = 0.0f
     let mutable t2 = 0.0f
@@ -34,13 +34,13 @@ type EntitySpawningTimerSystem(world:World, width, height) =
         if delta < 0.0f then
             match enemy with
             | Enemy1 -> 
-                world.CreateEnemy1(width, height) |> ignore
+                world.CreateEnemy1(width) |> ignore
                 float32(Timers.Timer1)
             | Enemy2 ->
-                world.CreateEnemy2(width, height) |> ignore
+                world.CreateEnemy2(width) |> ignore
                 float32(Timers.Timer2)
             | Enemy3 ->
-                world.CreateEnemy3(width, height) |> ignore
+                world.CreateEnemy3(width) |> ignore
                 float32(Timers.Timer3)
 
         else

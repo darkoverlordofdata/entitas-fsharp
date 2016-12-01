@@ -21,10 +21,10 @@ namespace ShmupWarz
     #nowarn "51" // address-of operator can occur in the code
     #nowarn "1183" // unused 'this' reference
     
-    exception ReturnException0bf085c6264e4377944a2ac396808bc1 of obj
-    exception ReturnNoneException0bf085c6264e4377944a2ac396808bc1
+    exception ReturnException272441ad92654a99840bffdcd08f4de2 of obj
+    exception ReturnNoneException272441ad92654a99840bffdcd08f4de2
     [<AutoOpen>]
-    module FuncConvertFinalOverload0bf085c6264e4377944a2ac396808bc1 =
+    module FuncConvertFinalOverload272441ad92654a99840bffdcd08f4de2 =
       // This extension member adds to the FuncConvert type and is the last resort member in the method overloading rules. 
       type global.Microsoft.FSharp.Core.FuncConvert with
           /// A utility function to convert function values from tupled to curried form

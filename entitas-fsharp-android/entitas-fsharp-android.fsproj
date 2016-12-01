@@ -94,23 +94,53 @@
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Content\Content.mgcb" />
     <Compile Include="Polyfill.fs" />
-    <Compile Include="Entitas.fs" />
-    <Compile Include="EntitasExtensions.fs" />
-    <Compile Include="Extensions.EntityFactory.fs" />
-    <Compile Include="Systems.ViewManagerSystem.fs" />
-    <Compile Include="Systems.CollisionSystem.fs" />
-    <Compile Include="Systems.ColorTweenSystem.fs" />
-    <Compile Include="Systems.EntitySpawningTimerSystem.fs" />
-    <Compile Include="Systems.ExpiringSystem.fs" />
-    <Compile Include="Systems.MovementSystem.fs" />
-    <Compile Include="Systems.PlayerInputSystem.fs" />
-    <Compile Include="Systems.RemoveOffscreenShipsSystem.fs" />
-    <Compile Include="Systems.RenderSystem.fs" />
-    <Compile Include="Systems.ScaleTweenSystem.fs" />
-    <Compile Include="Systems.SoundEffectSystem.fs" />
-    <Compile Include="Game.fs" />
-    <Compile Include="MainActivity.fs" />
     <Content Include="packages.config" />
+    <Compile Include="..\entitas-fsharp\Entitas.fs">
+      <Link>Entitas.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\EntitasExtensions.fs">
+      <Link>EntitasExtensions.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Extensions.EntityFactory.fs">
+      <Link>Extensions.EntityFactory.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ViewManagerSystem.fs">
+      <Link>Systems.ViewManagerSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.CollisionSystem.fs">
+      <Link>Systems.CollisionSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ColorTweenSystem.fs">
+      <Link>Systems.ColorTweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.EntitySpawningTimerSystem.fs">
+      <Link>Systems.EntitySpawningTimerSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ExpiringSystem.fs">
+      <Link>Systems.ExpiringSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.MovementSystem.fs">
+      <Link>Systems.MovementSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.PlayerInputSystem.fs">
+      <Link>Systems.PlayerInputSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.RemoveOffscreenShipsSystem.fs">
+      <Link>Systems.RemoveOffscreenShipsSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.RenderSystem.fs">
+      <Link>Systems.RenderSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.ScaleTweenSystem.fs">
+      <Link>Systems.ScaleTweenSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Systems.SoundEffectSystem.fs">
+      <Link>Systems.SoundEffectSystem.fs</Link>
+    </Compile>
+    <Compile Include="..\entitas-fsharp\Game.fs">
+      <Link>Game.fs</Link>
+    </Compile>
+    <Compile Include="MainActivity.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

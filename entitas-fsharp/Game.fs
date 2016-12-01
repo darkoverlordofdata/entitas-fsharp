@@ -1,16 +1,18 @@
 ﻿namespace ShmupWarz
 
 open Entitas
+open System
 open Microsoft.Xna.Framework
 open Microsoft.Xna.Framework.Graphics
 open Microsoft.Xna.Framework.Input
  
-type ShmupWarz (width, height) as this =
+type ShmupWarz (width, height, mobile) as this =
     inherit Game()
  
+    let pixelFactor = if mobile then 2.0f else 1.0f
     let graphics = new GraphicsDeviceManager(this)
     do
-        graphics.IsFullScreen <- false
+        graphics.IsFullScreen <- mobile
         graphics.PreferredBackBufferWidth <- width
         graphics.PreferredBackBufferHeight <- height
         graphics.ApplyChanges()
@@ -19,13 +21,16 @@ type ShmupWarz (width, height) as this =
     let world = new World(Component.TotalComponents)
     let bgdImage = lazy(this.Content.Load<Texture2D>("images/BackdropBlackLittleSparkBlack"))
     let bgdRect = Rectangle(0, 0, width, height)
+    let scaleX = (float32) (width / 320) // pixelFactor
+    let scaleY = (float32) (height / 480) // pixelFactor
+    let matrix = Matrix.CreateScale(scaleX, scaleY, 1.0f)
 
     let createSystems(world:World) =
         world.Add(new MovementSystem(world))
-        world.Add(new PlayerInputSystem(world))
+        world.Add(new PlayerInputSystem(world, pixelFactor))
         world.Add(new SoundEffectSystem(world))
         world.Add(new CollisionSystem(world))
-        world.Add(new EntitySpawningTimerSystem(world, width, height))
+        world.Add(new EntitySpawningTimerSystem(world, int((float32 width)/pixelFactor)))
         world.Add(new ColorTweenSystem(world))
         world.Add(new ScaleTweenSystem(world))
         world.Add(new RemoveOffscreenShipsSystem(world))
@@ -41,18 +46,11 @@ type ShmupWarz (width, height) as this =
                 entity.Scale.X, entity.Scale.Y
             else
                 1.0f, 1.0f
-
         let tint = 
             if entity.HasTint then
                 entity.Tint.Color:?>Color
             else 
                 Color.White
-
-//        let color = 
-//            if entity.HasColorTween then
-//                Color((int)entity.ColorTween.RedMin, (int)entity.ColorTween.GreenMin, (int)entity.ColorTween.BlueMin)
-//            else 
-//                Color.White
         let w = int(float32 sprite.Width * scaleX)
         let h = int(float32 sprite.Height * scaleY)
         let x = int(entity.Position.X) - w/2
@@ -77,7 +75,10 @@ type ShmupWarz (width, height) as this =
  
     override this.Draw (gameTime) =
         this.GraphicsDevice.Clear Color.Black
-        spriteBatch.Value.Begin()
+        if mobile then
+            spriteBatch.Value.Begin(transformMatrix = Nullable matrix)
+        else
+            spriteBatch.Value.Begin()
         spriteBatch.Value.Draw(bgdImage.Value, bgdRect, Color.White)   
         RenderSystem.Stage
         |> List.sortBy(fun e -> e.Layer.Ordinal)

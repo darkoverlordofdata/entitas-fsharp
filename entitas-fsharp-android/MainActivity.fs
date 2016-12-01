@@ -13,7 +13,7 @@ open Android.Views
     , AlwaysRetainTaskState = true
     , LaunchMode = Android.Content.PM.LaunchMode.SingleInstance
     , ScreenOrientation = ScreenOrientation.Portrait
-    //, ConfigurationChanges = (ConfigChanges.Orientation ||| ConfigChanges.Keyboard ||| ConfigChanges.KeyboardHidden ||| ConfigChanges.ScreenSize)
+    , ConfigurationChanges = (ConfigChanges.Orientation ||| ConfigChanges.Keyboard ||| ConfigChanges.KeyboardHidden ||| ConfigChanges.ScreenSize)
     )>]
 type MainActivity () =
     inherit Microsoft.Xna.Framework.AndroidGameActivity()
@@ -22,7 +22,7 @@ type MainActivity () =
         
         base.OnCreate(bundle)
 
-        let g = new ShmupWarz(this.Resources.DisplayMetrics.HeightPixels, this.Resources.DisplayMetrics.WidthPixels)//, true)
+        let g = new ShmupWarz(this.Resources.DisplayMetrics.WidthPixels, this.Resources.DisplayMetrics.HeightPixels, true)
         this.SetContentView(g.Services.GetService(typedefof<View>) :?> View)
         g.Run()
 

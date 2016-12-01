@@ -1,4 +1,4 @@
-﻿namespace entitas_fsharp_android
+﻿namespace ShmupWarz
 module AssemblyInfo =
 
   open System.Reflection
@@ -8,11 +8,11 @@ module AssemblyInfo =
   // Information about this assembly is defined by the following attributes. 
   // Change them to the values specific to your project.
 
-  [<assembly: AssemblyTitle("entitas_fsharp_android")>]
+  [<assembly: AssemblyTitle("ShmupWarz")>]
   [<assembly: AssemblyDescription("")>]
   [<assembly: AssemblyConfiguration("")>]
   [<assembly: AssemblyCompany("")>]
-  [<assembly: AssemblyProduct("entitas-fsharp-android")>]
+  [<assembly: AssemblyProduct("ShmupWarz")>]
   [<assembly: AssemblyCopyright("Copyright ©  2016")>]
   [<assembly: AssemblyTrademark("")>]
   [<assembly: AssemblyCulture("")>]

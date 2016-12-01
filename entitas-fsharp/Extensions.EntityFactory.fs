@@ -132,8 +132,8 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy1(width, height) =
-            let x = rnd.Next(width-35)
+        member this.CreateEnemy1(width) =
+            let x = rnd.Next(width)
             let y = 45
             let pos = new Vector2(float32(x), float32(y))
             this.CreateEntity("Enemy1")
@@ -150,8 +150,8 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy2(width, height) =
-            let x = rnd.Next(width-86)
+        member this.CreateEnemy2(width) =
+            let x = rnd.Next(width)
             let y = 86
             let pos = new Vector2(float32(x), float32(y))
             this.CreateEntity("Enemy2")
@@ -168,8 +168,8 @@ module EntityFactory =
          *
          * @returns new enemy entity
          *)
-        member this.CreateEnemy3(width, height) =
-            let x = rnd.Next(width-320)
+        member this.CreateEnemy3(width) =
+            let x = rnd.Next(width)
             let y = 160
             let pos = new Vector2(float32(x), float32(y))
             this.CreateEntity("Enemy3")
