@@ -93,8 +93,8 @@
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Content\Content.mgcb" />
-    <Compile Include="Polyfill.fs" />
     <Content Include="packages.config" />
+    <Compile Include="Polyfill.fs" />
     <Compile Include="..\entitas-fsharp\Entitas.fs">
       <Link>Entitas.fs</Link>
     </Compile>

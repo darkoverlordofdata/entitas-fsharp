@@ -20,10 +20,12 @@ type ShmupWarz (width, height, mobile) as this =
     let spriteBatch = lazy(new SpriteBatch(this.GraphicsDevice))
     let world = new World(Component.TotalComponents)
     let bgdImage = lazy(this.Content.Load<Texture2D>("images/BackdropBlackLittleSparkBlack"))
+    let fntImage = lazy(this.Content.Load<Texture2D>("images/tom-thumb-white"))
     let bgdRect = Rectangle(0, 0, width, height)
     let scaleX = (float32) (width / 320) // pixelFactor
     let scaleY = (float32) (height / 480) // pixelFactor
     let matrix = Matrix.CreateScale(scaleX, scaleY, 1.0f)
+    let mutable fpsRect = Rectangle(0, 0, 16, 24)
 
     let createSystems(world:World) =
         world.Add(new MovementSystem(world))
@@ -55,7 +57,29 @@ type ShmupWarz (width, height, mobile) as this =
         let h = int(float32 sprite.Height * scaleY)
         let x = int(entity.Position.X) - w/2
         let y = int(entity.Position.Y) - h/2
-        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), tint)    
+        spriteBatch.Draw(sprite, Rectangle(x, y, w, h), tint)   
+        
+    (** Draw a FPS in top left corner *)
+    let drawFps(spriteBatch:SpriteBatch, fps:float32)  =
+        let ms = int fps
+        let d0 = ms / 10        // 9x.xx
+        let d1 = ms - d0*10     // x9.xx
+        let fp = int((fps - float32 ms) * 100.f)
+        let d2 = fp / 10        // xx.9x
+        let d3 = fp - d2*10     // xx.x9
+
+        fpsRect.Y <- 24
+        fpsRect.X <- 16*(16+d0)
+        spriteBatch.Draw(fntImage.Value, Vector2(0.f, 0.f), Nullable(fpsRect), Color.White)    
+        fpsRect.X <- 16*(16+d1)
+        spriteBatch.Draw(fntImage.Value, Vector2(16.f, 0.f), Nullable(fpsRect), Color.White)    
+        fpsRect.X <- 224
+        spriteBatch.Draw(fntImage.Value, Vector2(32.f, 0.f), Nullable(fpsRect), Color.White)    
+        fpsRect.X <- 16*(16+d2)
+        spriteBatch.Draw(fntImage.Value, Vector2(48.f, 0.f), Nullable(fpsRect), Color.White)    
+        fpsRect.X <- 16*(16+d3)
+        spriteBatch.Draw(fntImage.Value, Vector2(64.f, 0.f), Nullable(fpsRect), Color.White)    
+         
 
     override this.Initialize() =
         this.IsMouseVisible <- true
@@ -80,6 +104,7 @@ type ShmupWarz (width, height, mobile) as this =
         else
             spriteBatch.Value.Begin()
         spriteBatch.Value.Draw(bgdImage.Value, bgdRect, Color.White)   
+        drawFps(spriteBatch.Value, 1.f / float32 gameTime.ElapsedGameTime.TotalSeconds)
         RenderSystem.Stage
         |> List.sortBy(fun e -> e.Layer.Ordinal)
         |> List.iter(drawSprite(spriteBatch.Value))
