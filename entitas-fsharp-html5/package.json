@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "compile": "fable --symbols HTML5 .",
+    "start": ".vscode/server web",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "darkoverlordofdata@gmail.com",
